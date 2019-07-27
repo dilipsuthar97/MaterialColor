@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/root_layout"
+            android:background="@color/white"
+            android:fitsSystemWindows="true"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+        <include
+                android:id="@+id/include"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                layout="@layout/toolbar_home"/>
+
+        <com.irozon.justbar.JustBar
+                android:id="@+id/justBar"
+                android:paddingTop="8.0dip"
+                android:paddingBottom="8.0dip"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/banner_container"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent">
+
+            <com.irozon.justbar.BarItem
+                    android:id="@+id/nav_home"
+                    android:layout_width="0.0dip"
+                    android:layout_height="0.0dip"
+                    app:icon="@drawable/ic_dashboard"
+                    app:radius="25.0dip"
+                    app:selected="true"
+                    app:selectedColor="@color/colorAccent"
+                    app:selectedIconColor="@color/white"
+                    app:unSelectedColor="#ffdcdcdc"
+                    app:unSelectedIconColor="@color/black"/>
+
+            <com.irozon.justbar.BarItem
+                    android:id="@+id/nav_gradient"
+                    android:layout_width="0.0dip"
+                    android:layout_height="0.0dip"
+                    app:icon="@drawable/ic_bubble_chart"
+                    app:radius="25.0dip"
+                    app:selectedColor="@color/colorAccent"
+                    app:selectedIconColor="@color/white"
+                    app:unSelectedColor="#ffdcdcdc"
+                    app:unSelectedIconColor="@color/black"/>
+
+            <com.irozon.justbar.BarItem
+                    android:id="@+id/nav_color_picker"
+                    android:layout_width="0.0dip"
+                    android:layout_height="0.0dip"
+                    app:icon="@drawable/ic_format_color"
+                    app:radius="25.0dip"
+                    app:selectedColor="@color/colorAccent"
+                    app:selectedIconColor="@color/white"
+                    app:unSelectedColor="#ffdcdcdc"
+                    app:unSelectedIconColor="@color/black"/>
+
+            <com.irozon.justbar.BarItem
+                    android:id="@+id/nav_settings"
+                    android:layout_width="0.0dip"
+                    android:layout_height="0.0dip"
+                    app:icon="@drawable/ic_settings"
+                    app:radius="25.0dip"
+                    app:selectedColor="@color/colorAccent"
+                    app:selectedIconColor="@color/white"
+                    app:unSelectedColor="#ffdcdcdc"
+                    app:unSelectedIconColor="@color/black"/>
+        </com.irozon.justbar.JustBar>
+
+        <com.google.android.gms.ads.AdView
+                xmlns:ads="http://schemas.android.com/apk/res-auto"
+                android:orientation="vertical"
+                android:id="@+id/banner_container"
+                android:focusable="false"
+                android:visibility="gone"
+                android:clickable="false"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                ads:adSize="BANNER"
+                ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+                ads:layout_constraintBottom_toBottomOf="parent"
+                ads:layout_constraintEnd_toEndOf="parent"
+                ads:layout_constraintHorizontal_bias="0.0"
+                ads:layout_constraintStart_toStartOf="parent"/>
+
+        <FrameLayout
+                android:id="@+id/fragment"
+                android:layout_width="fill_parent"
+                android:layout_height="0.0dip"
+                app:layout_constraintBottom_toBottomOf="@id/view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/include"/>
+
+        <View
+                android:id="@+id/view"
+                android:background="@drawable/bg_overlay_dark_soft"
+                android:layout_width="wrap_content"
+                android:layout_height="5.0dip"
+                app:layout_constraintBottom_toTopOf="@id/justBar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
