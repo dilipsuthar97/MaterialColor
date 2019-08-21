@@ -1,4 +1,4 @@
-package com.techflow.materialcolor
+package com.techflow.materialcolor.activity
 
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
+import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivityCustomColorBinding
 import com.techflow.materialcolor.utils.Tools
 
@@ -19,7 +20,9 @@ class CustomColorActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        bind = DataBindingUtil.setContentView(this, R.layout.activity_custom_color)
+        bind = DataBindingUtil.setContentView(this,
+            R.layout.activity_custom_color
+        )
 
         Tools.setSystemBarColor(this, R.color.colorPrimary)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

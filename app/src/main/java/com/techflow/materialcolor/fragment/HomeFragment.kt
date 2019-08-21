@@ -14,8 +14,14 @@ import com.techflow.materialcolor.R
 
 class HomeFragment : Fragment() {
 
+    companion object {
+        fun getInstance(): HomeFragment {
+            return HomeFragment()
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
+        retainInstance = true
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
