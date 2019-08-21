@@ -1,4 +1,4 @@
-package com.techflow.materialcolor
+package com.techflow.materialcolor.activity
 
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -20,16 +20,18 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.google.android.material.snackbar.Snackbar
 import com.irozon.justbar.JustBar
+import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivityHomeBinding
 import com.techflow.materialcolor.fragment.ColorPickerFragment
 import com.techflow.materialcolor.fragment.GradientFragment
 import com.techflow.materialcolor.fragment.HomeFragment
 import com.techflow.materialcolor.fragment.SettingFragment
-import com.techflow.materialcolor.utils.Prefrences
+import com.techflow.materialcolor.utils.Preferences
 import com.techflow.materialcolor.utils.SharedPref
 
 /**
- * Modified by DILIP on 30/06/2019
+ * @author
+ * Modified by DILIP SUTHAR on 30/06/2019
  */
 class HomeActivity : AppCompatActivity() {
 
@@ -39,20 +41,12 @@ class HomeActivity : AppCompatActivity() {
 
     private lateinit var sharedPref: SharedPref
     private lateinit var progressDialog: ProgressDialog
-    private lateinit var justBar: JustBar
-
-    // Fragments
-    private lateinit var homeFragment: HomeFragment
-    private lateinit var gradientFragment: GradientFragment
-    private lateinit var colorPickerFragment: ColorPickerFragment
-    private lateinit var settingFragment: SettingFragment
-
-    // Others
-    private var exitTime: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
+        binding = DataBindingUtil.setContentView(this,
+            R.layout.activity_home
+        )
         sharedPref = SharedPref.getInstance(applicationContext)
 
         MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713")
@@ -70,7 +64,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        appCloser()
+        //appCloser()
     }
 
     override fun onDestroy() {
@@ -96,15 +90,11 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun initComponent() {
-        homeFragment = HomeFragment()
-        gradientFragment = GradientFragment()
-        colorPickerFragment = ColorPickerFragment()
-        settingFragment = SettingFragment()
-        displayFragment(homeFragment)
+        displayFragment(HomeFragment.getInstance())
     }
 
     private fun initIntro() {
-        if (!sharedPref.getBooleanData(Prefrences.isFirstRun)) {
+        if (!sharedPref.getBooleanData(Preferences.isFirstRun)) {
             Snackbar.make(binding.rootLayout, "Long press on card to copy code", Snackbar.LENGTH_INDEFINITE)
                 .setAction("NEXT") {
                     Snackbar.make(binding.rootLayout, "Tap on card to see different shades", Snackbar.LENGTH_INDEFINITE)
@@ -113,7 +103,7 @@ class HomeActivity : AppCompatActivity() {
                         }.show()
                 }.show()
 
-            sharedPref.saveBooleanData(Prefrences.isFirstRun, value = true)
+            sharedPref.saveBooleanData(Preferences.isFirstRun, value = true)
         }
     }
 
@@ -121,19 +111,19 @@ class HomeActivity : AppCompatActivity() {
         binding.justBar.setOnBarItemClickListener { barItem, position ->
             when(barItem.id) {
                 R.id.nav_home -> {
-                    displayFragment(homeFragment)
+                    displayFragment(HomeFragment.getInstance())
                     supportActionBar?.title = "MaterialColor"
                 }
                 R.id.nav_gradient -> {
-                    displayFragment(gradientFragment)
+                    displayFragment(GradientFragment.getInstance())
                     supportActionBar?.title = "Gradients"
                 }
                 R.id.nav_color_picker -> {
-                    displayFragment(colorPickerFragment)
+                    displayFragment(ColorPickerFragment.getInstance())
                     supportActionBar?.title = "Color Picker"
                 }
                 R.id.nav_settings -> {
-                    displayFragment(settingFragment)
+                    displayFragment(SettingFragment.getInstance())
                     supportActionBar?.title = "Settings"
                 }
             }
@@ -172,11 +162,14 @@ class HomeActivity : AppCompatActivity() {
         if (fragment != null) {
             val transaction = fragmentManager.beginTransaction()
             transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-            transaction.replace(R.id.fragment, fragment)
+            transaction.add(R.id.fragment, fragment, fragment.tag)
+            // TODO: Add fragment back stack code here
+            //transaction.replace(R.id.fragment, fragment)
             transaction.commit()
         }
     }
 
+    private var exitTime: Long = 0
     private fun appCloser() {
         if (System.currentTimeMillis() - exitTime > 2000) {
             Toast.makeText(this, "Press again to close app", Toast.LENGTH_SHORT).show()

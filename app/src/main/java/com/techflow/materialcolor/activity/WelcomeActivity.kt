@@ -1,4 +1,4 @@
-package com.techflow.materialcolor
+package com.techflow.materialcolor.activity
 
 import android.content.Intent
 import android.os.Build
