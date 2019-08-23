@@ -18,7 +18,6 @@ class WelcomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
-        Tools.setSystemBarColor(act = this, color = R.color.colorPrimaryDark)
         initComponent()
         Tools.setSystemBarColor(this, R.color.colorPrimary)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

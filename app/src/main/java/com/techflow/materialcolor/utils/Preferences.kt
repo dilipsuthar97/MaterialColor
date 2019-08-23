@@ -4,4 +4,7 @@ package com.techflow.materialcolor.utils
  */
 object Preferences {
     const val isFirstRun = "is_first_run"
+    const val RED = "red"
+    const val GREEN = "green"
+    const val BLUE = "blue"
 }

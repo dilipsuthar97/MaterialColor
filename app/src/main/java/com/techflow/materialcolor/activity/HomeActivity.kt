@@ -7,7 +7,6 @@ import android.view.View
 import com.techflow.materialcolor.utils.Tools
 import android.app.ProgressDialog
 import android.content.Intent
-import android.os.Handler
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -15,11 +14,8 @@ import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.MobileAds
+import androidx.fragment.app.FragmentManager
 import com.google.android.material.snackbar.Snackbar
-import com.irozon.justbar.JustBar
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivityHomeBinding
 import com.techflow.materialcolor.fragment.ColorPickerFragment
@@ -36,20 +32,24 @@ import com.techflow.materialcolor.utils.SharedPref
 class HomeActivity : AppCompatActivity() {
 
     val TAG = HomeActivity::class.java.simpleName
+    val BACK_STACK_ROOT_NAME = "root_fragment"
 
     private lateinit var binding: ActivityHomeBinding
 
     private lateinit var sharedPref: SharedPref
     private lateinit var progressDialog: ProgressDialog
 
+    private lateinit var homeFragment: HomeFragment
+    private lateinit var gradientFragment: GradientFragment
+    private lateinit var colorPickerFragment: ColorPickerFragment
+    private lateinit var settingFragment: SettingFragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,
             R.layout.activity_home
         )
-        sharedPref = SharedPref.getInstance(applicationContext)
-
-        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713")
+        sharedPref = SharedPref.getInstance(this)
 
         Tools.setSystemBarColor(this, R.color.colorPrimary)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -64,13 +64,21 @@ class HomeActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        //appCloser()
+        /*val manager = supportFragmentManager
+        val fragmentList = manager.fragments
+        if (fragmentList.size - 1 >= 0) {
+            Log.d(TAG, manager.backStackEntryCount.toString())
+            val fragment = manager.fragments.last()
+            manager.beginTransaction().replace(R.id.fragment, fragment)
+            manager.popBackStack()
+        }
+        else
+            appCloser()*/
+        appCloser()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        if (binding.bannerContainer != null)
-            binding.bannerContainer.destroy()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -90,11 +98,16 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun initComponent() {
-        displayFragment(HomeFragment.getInstance())
+        homeFragment = HomeFragment.getInstance()
+        gradientFragment = GradientFragment.getInstance()
+        colorPickerFragment = ColorPickerFragment.getInstance()
+        settingFragment = SettingFragment.getInstance()
+
+        displayFragment(homeFragment)
     }
 
     private fun initIntro() {
-        if (!sharedPref.getBooleanData(Preferences.isFirstRun)) {
+        if (!sharedPref.getBoolean(Preferences.isFirstRun)) {
             Snackbar.make(binding.rootLayout, "Long press on card to copy code", Snackbar.LENGTH_INDEFINITE)
                 .setAction("NEXT") {
                     Snackbar.make(binding.rootLayout, "Tap on card to see different shades", Snackbar.LENGTH_INDEFINITE)
@@ -103,7 +116,7 @@ class HomeActivity : AppCompatActivity() {
                         }.show()
                 }.show()
 
-            sharedPref.saveBooleanData(Preferences.isFirstRun, value = true)
+            sharedPref.saveData(Preferences.isFirstRun, value = true)
         }
     }
 
@@ -111,19 +124,19 @@ class HomeActivity : AppCompatActivity() {
         binding.justBar.setOnBarItemClickListener { barItem, position ->
             when(barItem.id) {
                 R.id.nav_home -> {
-                    displayFragment(HomeFragment.getInstance())
+                    displayFragment(homeFragment)
                     supportActionBar?.title = "MaterialColor"
                 }
                 R.id.nav_gradient -> {
-                    displayFragment(GradientFragment.getInstance())
+                    displayFragment(gradientFragment)
                     supportActionBar?.title = "Gradients"
                 }
                 R.id.nav_color_picker -> {
-                    displayFragment(ColorPickerFragment.getInstance())
+                    displayFragment(colorPickerFragment)
                     supportActionBar?.title = "Color Picker"
                 }
                 R.id.nav_settings -> {
-                    displayFragment(SettingFragment.getInstance())
+                    displayFragment(settingFragment)
                     supportActionBar?.title = "Settings"
                 }
             }
@@ -131,40 +144,21 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun initAd() {
-        val adRequest: AdRequest = AdRequest.Builder().build()
-
-        Handler().postDelayed({
-            binding.bannerContainer.loadAd(adRequest)
-        }, 1000)
-
-        binding.bannerContainer.adListener = object: AdListener() {
-            override fun onAdLoaded() {
-                Log.d(TAG, "onAdLoaded: called")
-                binding.bannerContainer.visibility = View.VISIBLE
-            }
-
-            override fun onAdClosed() {
-                Log.d(TAG, "onAdClosed: called")
-                binding.bannerContainer.visibility = View.GONE
-            }
-
-            override fun onAdFailedToLoad(p0: Int) {
-                Log.d(TAG, "onAdFailedToLoad: called")
-                binding.bannerContainer.loadAd(adRequest)
-            }
-        }
-
     }
 
+    /**
+     *
+     */
     private fun displayFragment(fragment: Fragment) {
         val backStackName = fragment.javaClass.name
         val fragmentManager = supportFragmentManager
         if (fragment != null) {
             val transaction = fragmentManager.beginTransaction()
             transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-            transaction.add(R.id.fragment, fragment, fragment.tag)
+            //transaction.add(R.id.fragment, fragment, fragment.tag)
             // TODO: Add fragment back stack code here
-            //transaction.replace(R.id.fragment, fragment)
+            transaction.replace(R.id.fragment, fragment, BACK_STACK_ROOT_NAME)
+            //transaction.addToBackStack(BACK_STACK_ROOT_NAME)
             transaction.commit()
         }
     }
@@ -178,4 +172,5 @@ class HomeActivity : AppCompatActivity() {
         }
         finish()
     }
+
 }

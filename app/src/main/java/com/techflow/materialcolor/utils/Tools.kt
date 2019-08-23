@@ -8,6 +8,7 @@ import android.content.ClipData
 import androidx.core.content.ContextCompat.getSystemService
 import android.content.ClipboardManager
 import android.content.Context
+import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 /**
  * Created by Dilip on 16/02/19
@@ -19,7 +20,7 @@ object Tools {
             val window = act.window
             window.addFlags(Int.MIN_VALUE)
             window.clearFlags(0)
-            window.statusBarColor = act.resources.getColor(R.color.colorPrimaryDark)
+            window.statusBarColor = ContextCompat.getColor(act, R.color.colorPrimaryDark)
         }
     }
 
@@ -28,13 +29,22 @@ object Tools {
             val window = act.window
             window.addFlags(Int.MIN_VALUE)
             window.clearFlags(0)
-            window.statusBarColor = act.resources.getColor(color)
+            window.statusBarColor = ContextCompat.getColor(act, color)
+        }
+    }
+
+    fun setSystemBarColorById(act: Activity, color: Int) {
+        if (Build.VERSION.SDK_INT >= 22) {
+            val window = act.window
+            window.addFlags(Int.MIN_VALUE)
+            window.clearFlags(0)
+            window.statusBarColor = color
         }
     }
 
     fun copyToClipboard(context: Context, data: String) {
         val clip = "clipboard"
-        (context.getSystemService(clip) as ClipboardManager).setPrimaryClip(ClipData.newPlainText(clip, data))
+        (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText(clip, data))
     }
 
 }
