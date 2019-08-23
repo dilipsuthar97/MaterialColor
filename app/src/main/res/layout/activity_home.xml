@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/root_layout"
             android:background="@color/white"
             android:fitsSystemWindows="true"
@@ -19,11 +18,11 @@
 
         <com.irozon.justbar.JustBar
                 android:id="@+id/justBar"
-                android:paddingTop="8.0dip"
-                android:paddingBottom="8.0dip"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@id/banner_container"
+                android:paddingTop="8.0dip"
+                android:paddingBottom="8.0dip"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent">
@@ -38,7 +37,7 @@
                     app:selectedColor="@color/colorAccent"
                     app:selectedIconColor="@color/white"
                     app:unSelectedColor="#ffdcdcdc"
-                    app:unSelectedIconColor="@color/black"/>
+                    app:unSelectedIconColor="@color/black" />
 
             <com.irozon.justbar.BarItem
                     android:id="@+id/nav_gradient"
@@ -49,7 +48,7 @@
                     app:selectedColor="@color/colorAccent"
                     app:selectedIconColor="@color/white"
                     app:unSelectedColor="#ffdcdcdc"
-                    app:unSelectedIconColor="@color/black"/>
+                    app:unSelectedIconColor="@color/black" />
 
             <com.irozon.justbar.BarItem
                     android:id="@+id/nav_color_picker"
@@ -60,7 +59,7 @@
                     app:selectedColor="@color/colorAccent"
                     app:selectedIconColor="@color/white"
                     app:unSelectedColor="#ffdcdcdc"
-                    app:unSelectedIconColor="@color/black"/>
+                    app:unSelectedIconColor="@color/black" />
 
             <com.irozon.justbar.BarItem
                     android:id="@+id/nav_settings"
@@ -71,24 +70,8 @@
                     app:selectedColor="@color/colorAccent"
                     app:selectedIconColor="@color/white"
                     app:unSelectedColor="#ffdcdcdc"
-                    app:unSelectedIconColor="@color/black"/>
+                    app:unSelectedIconColor="@color/black" />
         </com.irozon.justbar.JustBar>
-
-        <com.google.android.gms.ads.AdView
-                xmlns:ads="http://schemas.android.com/apk/res-auto"
-                android:orientation="vertical"
-                android:id="@+id/banner_container"
-                android:focusable="false"
-                android:visibility="gone"
-                android:clickable="false"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                ads:adSize="BANNER"
-                ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
-                ads:layout_constraintBottom_toBottomOf="parent"
-                ads:layout_constraintEnd_toEndOf="parent"
-                ads:layout_constraintHorizontal_bias="0.0"
-                ads:layout_constraintStart_toStartOf="parent"/>
 
         <FrameLayout
                 android:id="@+id/fragment"

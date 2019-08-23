@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:orientation="vertical"
             android:background="@android:color/white"
             android:layout_width="fill_parent"
@@ -71,7 +70,7 @@
                                 <TextView
                                         android:textSize="15.0sp"
                                         android:textColor="@color/colorTextSecondary"
-                                        android:id="@+id/txt_hex_code"
+                                        android:id="@+id/tv_hex_code"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="\#000000"/>
@@ -103,7 +102,7 @@
                                 <TextView
                                         android:textSize="15.0sp"
                                         android:textColor="@color/colorTextSecondary"
-                                        android:id="@+id/txt_rgb_code"
+                                        android:id="@+id/tv_rgb_code"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="(0,0,0)"/>

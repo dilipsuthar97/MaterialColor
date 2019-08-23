@@ -2,6 +2,8 @@ package com.techflow.materialcolor.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.content.edit
+
 /**
  * Created by Dilip on 16/02/19
  */
@@ -13,23 +15,32 @@ class SharedPref constructor(context: Context){
     companion object {
 
         var instance: SharedPref? = null
-
         fun getInstance(context: Context): SharedPref {
             if (instance == null) {
                 instance = SharedPref(context)
             }
-
             return instance as SharedPref
         }
-
     }
 
-    public fun saveBooleanData(key: String, value: Boolean) {
-        sharedPreferences.edit().putBoolean(key, value).apply()
+    fun getString(key: String, default: String = ""): String? {
+        return sharedPreferences.getString(key, default)
     }
 
-    public fun getBooleanData(key: String): Boolean {
-        return sharedPreferences.getBoolean(key, false)
+    fun getInt(key: String, default: Int = -1): Int {
+        return sharedPreferences.getInt(key, default)
+    }
+
+    fun getBoolean(key: String, default: Boolean = false): Boolean {
+        return sharedPreferences.getBoolean(key, default)
+    }
+
+    fun saveData(key: String, value: Any) {
+        when (value) {
+            is Boolean -> sharedPreferences.edit().putBoolean(key, value).apply()
+            is String -> sharedPreferences.edit().putString(key, value).apply()
+            is Int -> sharedPreferences.edit().putInt(key, value).apply()
+        }
     }
 
 }
