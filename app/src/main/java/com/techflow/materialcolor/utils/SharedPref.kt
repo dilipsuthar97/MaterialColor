@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 
 /**
- * Created by Dilip on 16/02/19
+ * Created by DILIP SUTHAR on 16/02/19
  */
 class SharedPref constructor(context: Context){
 

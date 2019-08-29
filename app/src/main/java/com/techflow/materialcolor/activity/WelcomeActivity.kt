@@ -6,23 +6,26 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import android.widget.TextView
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.utils.Tools
 
 /**
- * Created by Dilip on 16/02/19
+ * Created by DILIP SUTHAR on 16/02/19
  */
 
-class WelcomeActivity : AppCompatActivity() {
+class WelcomeActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
         initComponent()
-        Tools.setSystemBarColor(this, R.color.colorPrimary)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        }
+
+        findViewById<TextView>(R.id.tv_bottom_msg).text = (StringBuilder()
+            .append("Made with ")
+            .append(String(Character.toChars(0x2764)))
+            .append(" by ${resources.getString(R.string.brand_name)}"))
+
     }
 
     private fun initComponent() {

@@ -26,10 +26,9 @@ import com.techflow.materialcolor.utils.Preferences
 import com.techflow.materialcolor.utils.SharedPref
 
 /**
- * @author
  * Modified by DILIP SUTHAR on 30/06/2019
  */
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : BaseActivity() {
 
     val TAG = HomeActivity::class.java.simpleName
     val BACK_STACK_ROOT_NAME = "root_fragment"
@@ -46,9 +45,7 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this,
-            R.layout.activity_home
-        )
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
         sharedPref = SharedPref.getInstance(this)
 
         Tools.setSystemBarColor(this, R.color.colorPrimary)
@@ -64,6 +61,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        // Back stack code
         /*val manager = supportFragmentManager
         val fragmentList = manager.fragments
         if (fragmentList.size - 1 >= 0) {
@@ -75,10 +73,6 @@ class HomeActivity : AppCompatActivity() {
         else
             appCloser()*/
         appCloser()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -107,7 +101,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun initIntro() {
-        if (!sharedPref.getBoolean(Preferences.isFirstRun)) {
+        if (sharedPref.getBoolean(Preferences.isFirstRun, true)) {
             Snackbar.make(binding.rootLayout, "Long press on card to copy code", Snackbar.LENGTH_INDEFINITE)
                 .setAction("NEXT") {
                     Snackbar.make(binding.rootLayout, "Tap on card to see different shades", Snackbar.LENGTH_INDEFINITE)
@@ -116,7 +110,7 @@ class HomeActivity : AppCompatActivity() {
                         }.show()
                 }.show()
 
-            sharedPref.saveData(Preferences.isFirstRun, value = true)
+            sharedPref.saveData(Preferences.isFirstRun, value = false)
         }
     }
 
@@ -146,9 +140,6 @@ class HomeActivity : AppCompatActivity() {
     private fun initAd() {
     }
 
-    /**
-     *
-     */
     private fun displayFragment(fragment: Fragment) {
         val backStackName = fragment.javaClass.name
         val fragmentManager = supportFragmentManager
@@ -156,7 +147,6 @@ class HomeActivity : AppCompatActivity() {
             val transaction = fragmentManager.beginTransaction()
             transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
             //transaction.add(R.id.fragment, fragment, fragment.tag)
-            // TODO: Add fragment back stack code here
             transaction.replace(R.id.fragment, fragment, BACK_STACK_ROOT_NAME)
             //transaction.addToBackStack(BACK_STACK_ROOT_NAME)
             transaction.commit()
