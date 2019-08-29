@@ -1,60 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:background="@color/white"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:background="@color/white">
 
     <LinearLayout
-            android:gravity="center_horizontal"
-            android:layout_gravity="center_vertical"
-            android:orientation="vertical"
             android:id="@+id/lyt_img"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
         <ImageView
                 android:layout_width="100.0dip"
                 android:layout_height="100.0dip"
-                android:src="@drawable/logo"/>
+                android:src="@drawable/logo" />
 
         <View
                 android:layout_width="0.0dip"
-                android:layout_height="10.0dip"/>
+                android:layout_height="10.0dip" />
 
         <TextView
-                android:textSize="32.0sp"
-                android:textColor="@color/colorTextPrimary"
                 android:id="@+id/txt_appname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/aclonica"
                 android:text="@string/app_name"
-                android:fontFamily="@font/aclonica"/>
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="32.0sp" />
     </LinearLayout>
 
-    <LinearLayout
-            android:gravity="center_horizontal"
-            android:layout_gravity="bottom"
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-
-        <TextView
-                android:textSize="29sp"
-                android:layout_marginTop="9dp"
-                android:layout_marginEnd="2dp"
-                android:textColor="@color/colorTextPrimary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/copyright"/>
-
-        <TextView
-                android:textSize="16sp"
-                android:textColor="@color/colorTextPrimary"
-                android:gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/brand_name"/>
-    </LinearLayout>
+    <androidx.emoji.widget.EmojiTextView
+            android:id="@+id/tv_bottom_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:imeOptions="actionSend"
+            android:inputType="textCapSentences|textMultiLine"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="@string/brand_name" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

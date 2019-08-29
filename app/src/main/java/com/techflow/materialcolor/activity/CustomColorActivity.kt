@@ -22,7 +22,7 @@ import com.techflow.materialcolor.utils.Tools
  * Created by DILIP SUTHAR on 16/02/19
  */
 
-class CustomColorActivity : AppCompatActivity() {
+class CustomColorActivity : BaseActivity() {
 
     private lateinit var bind: ActivityCustomColorBinding
 
@@ -109,14 +109,12 @@ class CustomColorActivity : AppCompatActivity() {
         })
 
         bind.lytHex.setOnClickListener {
-            Tools.copyToClipboard(this, hexCode)
-            Toast.makeText(this, "HEX code $hexCode copied on clipboard", Toast.LENGTH_SHORT).show()
+            Tools.copyToClipboard(this, hexCode, "HEX code $hexCode")
         }
 
         bind.lytRgb.setOnClickListener {
             val rgbCode = "( $red, $green, $blue )"
-            Tools.copyToClipboard(this, rgbCode)
-            Toast.makeText(this, "RGB code $rgbCode copied on clipboard", Toast.LENGTH_SHORT).show()
+            Tools.copyToClipboard(this, rgbCode, "RGB code $rgbCode")
         }
 
     }

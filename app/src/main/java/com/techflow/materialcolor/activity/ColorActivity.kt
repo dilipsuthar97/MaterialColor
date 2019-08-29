@@ -1,5 +1,6 @@
 package com.techflow.materialcolor.activity
 
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -15,7 +16,7 @@ import com.techflow.materialcolor.model.Color
 import com.techflow.materialcolor.utils.Tools
 import kotlinx.android.synthetic.main.activity_color.*
 
-class ColorActivity : AppCompatActivity() {
+class ColorActivity : BaseActivity() {
 
     private val TAG = "MaterialColor"
 
@@ -33,6 +34,10 @@ class ColorActivity : AppCompatActivity() {
         Log.d(TAG, "colorname: $colorName")
         Log.d(TAG, "color: $color")
         Log.d(TAG, "pos: $pos")
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            window.decorView.systemUiVisibility = 0
+        }
 
         initToolbar(colorName, color)
         initComponent(pos)
@@ -64,8 +69,7 @@ class ColorActivity : AppCompatActivity() {
             }
 
             override fun onItemLongClick(view: View, color: Color, position: Int) {
-                Tools.copyToClipboard(this@ColorActivity, color.colorCode)
-                Toast.makeText(this@ColorActivity, "HEX code ${color.colorCode} copied on clipboard", Toast.LENGTH_SHORT).show()
+                Tools.copyToClipboard(this@ColorActivity, color.colorCode, "HEX code ${color.colorCode}")
             }
         }
 

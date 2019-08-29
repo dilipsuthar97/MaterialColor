@@ -27,14 +27,12 @@ class AdapterGradient(private val items: ArrayList<Gradient>, private val contex
             holder.setData(items[position])
             holder.btnPColor.setOnClickListener {
                 AnimUtils.bounceAnim(it)
-                Tools.copyToClipboard(context, items[position].primaryColor)
-                Toast.makeText(context, "HEX code ${items[position].primaryColor} copied on clipboard", Toast.LENGTH_SHORT).show()
+                Tools.copyToClipboard(context, items[position].primaryColor, "HEX code ${items[position].primaryColor}")
             }
 
             holder.btnSColor.setOnClickListener {
                 AnimUtils.bounceAnim(it)
-                Tools.copyToClipboard(context, items[position].secondaryColor)
-                Toast.makeText(context, "HEX code ${items[position].secondaryColor} copied on clipboard", Toast.LENGTH_SHORT).show()
+                Tools.copyToClipboard(context, items[position].secondaryColor, "HEX code ${items[position].secondaryColor}")
             }
         }
     }

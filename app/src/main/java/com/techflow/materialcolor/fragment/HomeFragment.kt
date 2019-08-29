@@ -46,8 +46,7 @@ class HomeFragment : Fragment() {
             }
 
             override fun onItemLongClick(view: View, color: Color, position: Int) {
-                Tools.copyToClipboard(context!!, color.colorCode)
-                Toast.makeText(context!!, "HEX code ${color.colorCode} copied on clipboard", Toast.LENGTH_SHORT).show()
+                Tools.copyToClipboard(context!!, color.colorCode, "HEX code ${color.colorCode}")
             }
         }
     }
