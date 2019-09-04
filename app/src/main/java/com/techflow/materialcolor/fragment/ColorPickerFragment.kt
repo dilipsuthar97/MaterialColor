@@ -1,24 +1,18 @@
 package com.techflow.materialcolor.fragment
 
-
-import android.app.AlertDialog
-import android.content.DialogInterface
+import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.database.DatabaseUtils
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
-import android.os.Binder
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TableRow
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.palette.graphics.Palette
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.techflow.materialcolor.R
 
 import com.techflow.materialcolor.databinding.FragmentColorPickerBinding
@@ -26,23 +20,18 @@ import com.techflow.materialcolor.model.ColorFromImage
 import com.techflow.materialcolor.utils.AnimUtils
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
-import androidx.core.view.ViewCompat
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.afollestad.materialdialogs.MaterialDialog
 import com.getkeepsafe.taptargetview.TapTarget
-import com.getkeepsafe.taptargetview.TapTargetSequence
 import com.getkeepsafe.taptargetview.TapTargetView
 import com.techflow.materialcolor.adapter.AdapterColorFromImage
+import com.techflow.materialcolor.helpers.PermissionHelper
 import com.techflow.materialcolor.utils.Preferences
 import com.techflow.materialcolor.utils.SharedPref
 import com.techflow.materialcolor.utils.Tools
-import kotlinx.android.synthetic.main.fragment_color_picker.*
-
-
 /**
  * Modified by DILIP SUTHAR on 29/08/19
  */
 class ColorPickerFragment : Fragment() {
-    private val REQUEST_CODE = 101
 
     companion object {
         fun getInstance(): ColorPickerFragment {
@@ -66,29 +55,23 @@ class ColorPickerFragment : Fragment() {
         bind.btnImgChooser.setOnClickListener {
             AnimUtils.bounceAnim(it)
             when {
-                checkPermission() -> openImagePicker()
-                ActivityCompat.shouldShowRequestPermissionRationale(activity!!, android.Manifest.permission.READ_EXTERNAL_STORAGE) -> showPermissionDeniedDialog()
-                else -> requestPermission()
+                PermissionHelper.permissionGranted(context!!, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)) -> openImagePicker()
+                ActivityCompat.shouldShowRequestPermissionRationale(activity!!, Manifest.permission.READ_EXTERNAL_STORAGE) -> showPermissionDeniedDialog()
+                else -> PermissionHelper.requestPermission(activity!!, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE))
             }
         }
     }
 
-    private fun checkPermission(): Boolean =
-        ContextCompat.checkSelfPermission(activity!!, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-
-    private fun requestPermission() =
-        ActivityCompat.requestPermissions(activity!!, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_CODE)
-
     private fun showPermissionDeniedDialog() {
-        val builder = AlertDialog.Builder(context)
-        builder.setTitle("Permission denied previously")
-            .setMessage("Without the STORAGE permission the app is unable to load image. Are you sure you want to deny this permission?")
-            .setPositiveButton("I'M SURE") { _, _ ->
-
+        MaterialDialog(context!!).show {
+            cornerRadius(16f)
+            title(text = "Permission denied previously")
+            message(text = "Without the STORAGE permission the app is unable to load image. Are you sure you want to deny this permission?")
+            positiveButton(text = "I'm sure") {}
+            negativeButton(text = "Retry") {
+                PermissionHelper.requestPermission(activity!!, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE))
             }
-            .setNegativeButton("RETRY") { _, _ ->
-                requestPermission()
-            }
+        }
     }
 
     private fun openImagePicker() {
@@ -181,8 +164,8 @@ class ColorPickerFragment : Fragment() {
                         .descriptionTextSize(18)
                         .descriptionTextColor(R.color.white)
                         .cancelable(false)
-                        .targetRadius(90),
-                    object : TapTargetView.Listener() {
+                        .targetRadius(90)
+                    /*object : TapTargetView.Listener() {
                         override fun onTargetClick(view: TapTargetView?) {
                             when {
                                 checkPermission() -> openImagePicker()
@@ -190,7 +173,7 @@ class ColorPickerFragment : Fragment() {
                                 else -> requestPermission()
                             }
                         }
-                    }
+                    }*/
                 )
             }
 

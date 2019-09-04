@@ -5,13 +5,14 @@ import android.os.Build
 import androidx.annotation.ColorRes
 import com.techflow.materialcolor.R
 import android.content.ClipData
-import androidx.core.content.ContextCompat.getSystemService
 import android.content.ClipboardManager
 import android.content.Context
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.content.getSystemService
+import android.net.ConnectivityManager
+
+
 /**
  * Created by Dilip on 16/02/19
  */
@@ -71,6 +72,12 @@ object Tools {
         (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager)
             .setPrimaryClip(ClipData.newPlainText(clip, data))
         Toast.makeText(context, "$msg copied to clipboard", Toast.LENGTH_SHORT).show()
+    }
+
+    fun hasNetwork(ctx: Context): Boolean {
+        val networkInfo =
+            (ctx.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).activeNetworkInfo
+        return !(networkInfo == null || !networkInfo.isConnected)
     }
 
 }
