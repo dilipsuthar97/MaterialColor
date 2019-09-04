@@ -12,8 +12,8 @@ android {
         applicationId "com.techflow.materialcolor"
         minSdkVersion 22
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        versionCode 206
+        versionName "2.0.6"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -39,14 +39,18 @@ dependencies {
     implementation 'androidx.emoji:emoji:1.0.0'
     implementation 'androidx.emoji:emoji-bundled:1.0.0'                         // Emoji handler
     implementation 'androidx.palette:palette:1.0.0'                             // Color Extractor form image
+    implementation 'com.android.billingclient:billing:1.2'                      // In app purchase
+    implementation 'androidx.browser:browser:1.0.0'                             // Browser
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-//    implementation 'com.google.android.gms:play-services-ads:18.0.0'
+    // Third party
     implementation 'com.irozon.justbar:justbar:1.0.1'                   // Bottom bar
     implementation 'com.balysv:material-ripple:1.0.2'                   // Ripple effect
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0' // Image cropper
     implementation 'com.getkeepsafe.taptargetview:taptargetview:1.12.0' // Tap target view
+    implementation 'com.afollestad.material-dialogs:core:3.1.0'         // Material dialog
+    implementation 'com.mikhaellopez:circularimageview:3.2.0'           // Circle Image View
 }

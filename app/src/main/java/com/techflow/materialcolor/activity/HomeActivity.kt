@@ -53,11 +53,17 @@ class HomeActivity : BaseActivity() {
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         }
 
+        /*binding.rootLayout.systemUiVisibility =
+            (View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)*/
+
         initToolbar()
         initComponent()
         initIntro()
         initBottomNavigation()
-        //initAd()
+        if (SharedPref.getInstance(this).getBoolean(Preferences.SHOW_AD))
+            initAd()
     }
 
     override fun onBackPressed() {

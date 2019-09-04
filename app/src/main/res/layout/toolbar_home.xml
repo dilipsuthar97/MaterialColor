@@ -10,5 +10,6 @@
         android:layout_height="?actionBarSize"
         app:titleTextColor="@color/colorTextPrimary"
         app:contentInsetStartWithNavigation="0.0dip"
-        app:layout_scrollFlags="enterAlways|snap"
+        app:layout_scrollFlags="enterAlways|snap|scroll"
+        android:fitsSystemWindows="true"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
