@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MaterialColorAppTheme">
+        <attr name="colorPrimary" format="color"/>
+        <attr name="colorPrimaryDark" format="color"/>
+        <attr name="colorAccent" format="color"/>
+        <attr name="colorDivider" format="color"/>
+        <attr name="colorTextPrimary" format="color"/>
+        <attr name="colorTextSecondary" format="color"/>
+
+        <attr name="tabSelectedColor" format="color"/>
+        <attr name="tabUnselectedColor" format="color"/>
+        <attr name="tabBgColor" format="color"/>
+        <attr name="statusBarColor" format="color"/>
+        <attr name="appBarColor" format="color"/>
+        <attr name="cardDialogColor" format="color"/>
+    </declare-styleable>
+</resources>

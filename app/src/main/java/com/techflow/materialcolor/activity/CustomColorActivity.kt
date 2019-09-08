@@ -15,6 +15,7 @@ import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivityCustomColorBinding
 import com.techflow.materialcolor.utils.Preferences
 import com.techflow.materialcolor.utils.SharedPref
+import com.techflow.materialcolor.utils.ThemeUtils
 import com.techflow.materialcolor.utils.Tools
 
 /**
@@ -41,14 +42,11 @@ class CustomColorActivity : BaseActivity() {
         green = sharedPref.getInt(Preferences.GREEN, 125)
         blue = sharedPref.getInt(Preferences.BLUE, 125)
 
-        Tools.setSystemBarColor(this, R.color.colorPrimary)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        }
         setSupportActionBar(bind.toolbar as Toolbar)
         supportActionBar?.title = "Palette creator"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
+        Tools.changeNavigationIconColor(bind.toolbar as Toolbar, ThemeUtils.getThemeAttrColor(this, R.attr.colorTextPrimary))
 
         initComponent()
     }

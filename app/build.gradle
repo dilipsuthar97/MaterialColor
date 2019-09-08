@@ -50,7 +50,7 @@ dependencies {
     implementation 'com.irozon.justbar:justbar:1.0.1'                   // Bottom bar
     implementation 'com.balysv:material-ripple:1.0.2'                   // Ripple effect
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0' // Image cropper
-    implementation 'com.getkeepsafe.taptargetview:taptargetview:1.12.0' // Tap target view
+    implementation 'com.getkeepsafe.taptargetview:taptargetview:1.13.0' // Tap target view
     implementation 'com.afollestad.material-dialogs:core:3.1.0'         // Material dialog
     implementation 'com.mikhaellopez:circularimageview:3.2.0'           // Circle Image View
 }

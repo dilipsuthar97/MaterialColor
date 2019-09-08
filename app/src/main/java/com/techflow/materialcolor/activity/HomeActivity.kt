@@ -24,6 +24,8 @@ import com.techflow.materialcolor.fragment.HomeFragment
 import com.techflow.materialcolor.fragment.SettingFragment
 import com.techflow.materialcolor.utils.Preferences
 import com.techflow.materialcolor.utils.SharedPref
+import com.techflow.materialcolor.utils.ThemeUtils
+
 /**
  * Modified by DILIP SUTHAR on 30/06/2019
  */
@@ -46,11 +48,6 @@ class HomeActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
         sharedPref = SharedPref.getInstance(this)
-
-        Tools.setSystemBarColor(this, R.color.colorPrimary)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        }
 
         /*binding.rootLayout.systemUiVisibility =
             (View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -82,6 +79,7 @@ class HomeActivity : BaseActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_home, menu)
+        Tools.changeMenuIconColor(menu!!, ThemeUtils.getThemeAttrColor(this, R.attr.colorTextPrimary))
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -115,7 +113,7 @@ class HomeActivity : BaseActivity() {
                         }.show()
                 }.show()
 
-            sharedPref.saveData(Preferences.isFirstRun, value = false)
+            sharedPref.saveData(Preferences.isFirstRun, false)
         }
     }
 
@@ -143,6 +141,7 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun initAd() {
+
     }
 
     private fun displayFragment(fragment: Fragment) {

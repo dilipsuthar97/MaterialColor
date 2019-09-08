@@ -27,7 +27,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
-                        android:background="@android:color/white"
+                        app:cardBackgroundColor="?attr/cardDialogColor"
                         app:cardCornerRadius="10dp"
                         app:cardElevation="3dp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -45,7 +45,7 @@
                                 android:layout_marginStart="16dp"
                                 android:layout_marginTop="16dp"
                                 android:text="Remove ads"
-                                android:textColor="@color/black"
+                                android:textColor="?attr/colorTextPrimary"
                                 android:textSize="16sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -57,6 +57,7 @@
                                 android:layout_marginStart="16dp"
                                 android:layout_marginBottom="16dp"
                                 android:text="Remove ads forever"
+                                android:textColor="?attr/colorTextSecondary"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/textView5" />
@@ -90,17 +91,70 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.cardview.widget.CardView>
 
+                <androidx.cardview.widget.CardView
+                        android:id="@+id/lyt_theme"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="8dp"
+                        app:cardBackgroundColor="?attr/cardDialogColor"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="3dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/lyt_remove_ads">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                        <TextView
+                                android:id="@+id/tv_theme_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginTop="16dp"
+                                android:text="Theme"
+                                android:textColor="?attr/colorTextPrimary"
+                                android:textSize="16sp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                                android:id="@+id/tv_theme_desc"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginBottom="16dp"
+                                android:textColor="?attr/colorTextSecondary"
+                                android:text="Get that whiteness out of my sight!"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/tv_theme_title" />
+
+                        <Switch
+                                android:id="@+id/switch_change_theme"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="16dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
                 <TextView
                         android:id="@+id/textView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingLeft="15dp"
                         android:text="Support"
+                        android:textColor="?attr/colorTextSecondary"
                         android:textSize="22sp"
                         android:layout_marginTop="16dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/lyt_remove_ads" />
+                        app:layout_constraintTop_toBottomOf="@+id/lyt_theme" />
 
                 <androidx.cardview.widget.CardView
                         android:id="@+id/cardView"
@@ -109,6 +163,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
+                        app:cardBackgroundColor="?attr/cardDialogColor"
                         app:cardCornerRadius="10dp"
                         app:cardElevation="3dp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -139,12 +194,12 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="Rate us on Google PlayStore"
-                                    android:textColor="@color/black" />
+                                    android:textColor="?attr/colorTextPrimary" />
                         </LinearLayout>
 
                         <View
                                 android:layout_width="match_parent"
-                                android:layout_height="1dp"
+                                android:layout_height="0.5dp"
                                 android:background="?android:attr/listDivider" />
 
                         <LinearLayout
@@ -166,12 +221,12 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="Share"
-                                    android:textColor="@color/black" />
+                                    android:textColor="?attr/colorTextPrimary" />
                         </LinearLayout>
 
                         <View
                                 android:layout_width="match_parent"
-                                android:layout_height="1dp"
+                                android:layout_height="0.5dp"
                                 android:background="?android:attr/listDivider" />
 
                         <LinearLayout
@@ -193,12 +248,12 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="DM us on Instagram"
-                                    android:textColor="@color/black" />
+                                    android:textColor="?attr/colorTextPrimary" />
                         </LinearLayout>
 
                         <View
                                 android:layout_width="match_parent"
-                                android:layout_height="1dp"
+                                android:layout_height="0.5dp"
                                 android:background="?android:attr/listDivider" />
 
                         <LinearLayout
@@ -223,7 +278,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:text="Feedback"
-                                        android:textColor="@color/black" />
+                                        android:textColor="?attr/colorTextPrimary" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -241,6 +296,7 @@
 
                                     <com.google.android.material.textfield.TextInputEditText
                                             android:id="@+id/et_feedback_title"
+                                            android:textColor="?attr/colorTextPrimary"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content" />
                                 </com.google.android.material.textfield.TextInputLayout>
@@ -251,10 +307,12 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="5dp"
                                         android:hint="Feedback about app, bugs"
-                                        app:hintEnabled="true">
+                                        app:hintEnabled="true"
+                                        app:boxStrokeColor="?attr/colorTextSecondary">
 
                                     <com.google.android.material.textfield.TextInputEditText
                                             android:id="@+id/et_feedback_msg"
+                                            android:textColor="?attr/colorTextPrimary"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content" />
                                 </com.google.android.material.textfield.TextInputLayout>
@@ -278,7 +336,7 @@
 
                         <View
                                 android:layout_width="match_parent"
-                                android:layout_height="1dp"
+                                android:layout_height="0.5dp"
                                 android:background="?android:attr/listDivider" />
 
                         <LinearLayout
@@ -300,12 +358,12 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="About us"
-                                    android:textColor="@color/black" />
+                                    android:textColor="?attr/colorTextPrimary" />
                         </LinearLayout>
 
                         <View
                                 android:layout_width="match_parent"
-                                android:layout_height="1dp"
+                                android:layout_height="0.5dp"
                                 android:background="?android:attr/listDivider" />
 
                         <LinearLayout
@@ -327,12 +385,12 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="More Apps"
-                                    android:textColor="@color/black" />
+                                    android:textColor="?attr/colorTextPrimary" />
                         </LinearLayout>
 
                         <View
                                 android:layout_width="match_parent"
-                                android:layout_height="1dp"
+                                android:layout_height="0.5dp"
                                 android:background="?android:attr/listDivider" />
 
                         <LinearLayout
@@ -354,12 +412,12 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="About Material Color"
-                                    android:textColor="@color/black" />
+                                    android:textColor="?attr/colorTextPrimary" />
                         </LinearLayout>
 
                         <View
                                 android:layout_width="match_parent"
-                                android:layout_height="1dp"
+                                android:layout_height="0.5dp"
                                 android:background="?android:attr/listDivider" />
 
                         <LinearLayout
@@ -381,12 +439,12 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="Material Color Tool"
-                                    android:textColor="@color/black" />
+                                    android:textColor="?attr/colorTextPrimary" />
                         </LinearLayout>
 
                         <View
                                 android:layout_width="match_parent"
-                                android:layout_height="1dp"
+                                android:layout_height="0.5dp"
                                 android:background="?android:attr/listDivider" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -398,6 +456,7 @@
                         android:layout_marginTop="8dp"
                         android:paddingLeft="15dp"
                         android:text="Legal"
+                        android:textColor="?attr/colorTextSecondary"
                         android:textSize="22sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="1"
@@ -409,7 +468,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
+                        android:layout_marginTop="8dp"
                         android:layout_marginBottom="16dp"
+                        app:cardBackgroundColor="?attr/cardDialogColor"
                         app:cardCornerRadius="10dp"
                         app:cardElevation="3dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -436,7 +497,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="Privacy Policy"
-                                android:textColor="@color/black" />
+                                android:textColor="?attr/colorTextPrimary" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
             </androidx.constraintlayout.widget.ConstraintLayout>

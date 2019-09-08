@@ -62,7 +62,7 @@ class HomeFragment : Fragment() {
     private fun initComponent(view: View) {
         bind.recyclerView.setHasFixedSize(true)
         bind.recyclerView.layoutManager = GridLayoutManager(context, 2)
-        adapter = AdapterColor(DataGenerator.getColorData(context!!), context!!, mOnItemClickListener)
+        adapter = AdapterColor(DataGenerator.getColorData(context!!), context!!, activity!!, mOnItemClickListener)
         bind.recyclerView.adapter = adapter
     }
 }

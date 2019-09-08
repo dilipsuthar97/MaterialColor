@@ -22,6 +22,7 @@
                 android:layout_marginTop="56dp"
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="5dp"
+                app:cardBackgroundColor="?attr/cardDialogColor"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -35,7 +36,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/colorTextPrimary"
                     android:textSize="14sp" />
         </androidx.cardview.widget.CardView>
 
@@ -47,6 +48,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="5dp"
+                app:cardBackgroundColor="?attr/cardDialogColor"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -60,7 +62,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/colorTextPrimary"
                     android:textSize="14sp" />
         </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>

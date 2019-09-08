@@ -9,6 +9,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
+            app:cardBackgroundColor="?attr/cardDialogColor"
             app:cardCornerRadius="10dp"
             app:cardElevation="1dp">
 
@@ -50,7 +51,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="50"
-                            android:textColor="@android:color/black"
+                            android:textColor="?attr/colorTextPrimary"
                             android:textSize="18sp" />
 
                     <TextView
@@ -58,7 +59,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="#FFEBEE"
-                            android:textColor="@color/colorTextSecondary"
+                            android:textColor="?attr/colorTextSecondary"
                             android:textSize="15sp" />
                 </LinearLayout>
             </LinearLayout>

@@ -98,7 +98,7 @@ class ColorActivity : BaseActivity() {
             else -> DataGenerator.getBlueGreyColorData(this)
         }
 
-        val adapter = AdapterColor(ArrayList(listColor), this, mOnItemClickListener)
+        val adapter = AdapterColor(ArrayList(listColor), this, this, mOnItemClickListener)
         recycler_view.adapter = adapter
     }
 }
