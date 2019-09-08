@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsClient
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.browser.customtabs.CustomTabsIntent.Builder;
 import androidx.browser.customtabs.CustomTabsServiceConnection
 import androidx.browser.customtabs.CustomTabsSession
@@ -44,9 +45,6 @@ class SettingFragment : Fragment(), View.OnClickListener {
     }
 
     private lateinit var bind: FragmentSettingBinding
-    private lateinit var connection: CustomTabsServiceConnection
-    private var customTabsClient: CustomTabsClient? = null
-    private lateinit var customTabsSession: CustomTabsSession
 
     // Billing
     private var skuList: ArrayList<String> = ArrayList()
@@ -83,7 +81,7 @@ class SettingFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(view: View?) {
-        val appUrl = "https://play.google.com/store/apps/details?id=${context?.packageName}"
+            val appUrl = "https://play.google.com/store/apps/details?id=${context?.packageName}"
 
         when (view?.id) {
             R.id.btn_remove_ads -> {
@@ -140,45 +138,37 @@ class SettingFragment : Fragment(), View.OnClickListener {
             R.id.btn_about -> {
                 showAboutDialog()
             }
-            R.id.btn_more_apps -> {}
-            R.id.btn_about_material_color -> {}
-            R.id.btn_material_tool -> {}
-            R.id.btn_policy -> {}
+            R.id.btn_more_apps -> { openWebView("https://play.google.com/store/apps/dev?id=5025665333769403890") }
+            R.id.btn_about_material_color -> { openWebView("https://material.io/design/color/the-color-system.html#color-theme-creation") }
+            R.id.btn_material_tool -> { openWebView("https://material.io/tools/color/#!/?view.left=0&view.right=0") }
+            R.id.btn_policy -> { openWebView("https://github.com/dilipsuthar1997/PrivacyPolicy/blob/master/MaterialColor%20Privacy%20Policy.md") }
         }
     }
 
     /** Methods */
     private fun showAboutDialog() {
         val view = View.inflate(activity, R.layout.dialog_about, null)
-        MaterialDialog(context!!).show {
+        val dialog = MaterialDialog(context!!).show {
             cornerRadius(16f)
             customView(view = view)
         }
 
         view.findViewById<MaterialButton>(R.id.btn_about_me).setOnClickListener {
             openWebView("https://about.me/dilip.suthar")
+            dialog.dismiss()
         }
     }
 
     private fun openWebView(url: String) {
-        connection = object : CustomTabsServiceConnection() {
-            override fun onCustomTabsServiceConnected(name: ComponentName?, client: CustomTabsClient?) {
-                customTabsClient = client
-                customTabsClient?.warmup(0)
-                customTabsSession = customTabsClient?.newSession(null)!!
-
-            }
-
-            override fun onServiceDisconnected(p0: ComponentName?) {
-                customTabsClient = null
-            }
-        }
-        CustomTabsClient.bindCustomTabsService(context, "com.android.chrome", connection)
-        val intent = Builder(customTabsSession)
-            .setCloseButtonIcon(BitmapFactory.decodeResource(resources, R.drawable.ic_arrow_back))
-            .setShowTitle(true)
+        val intent = Builder()
+            .addDefaultShareMenuItem()
             .setToolbarColor(ContextCompat.getColor(context!!, R.color.colorAccent))
+            .setShowTitle(true)
+            .setStartAnimations(context!!, android.R.anim.fade_in, android.R.anim.fade_out)
+            .setExitAnimations(context!!, android.R.anim.fade_in, android.R.anim.fade_out)
+            .setCloseButtonIcon(BitmapFactory.decodeResource(resources, R.drawable.ic_arrow_back))
             .build()
+
         intent.launchUrl(activity, Uri.parse(url))
     }
 
