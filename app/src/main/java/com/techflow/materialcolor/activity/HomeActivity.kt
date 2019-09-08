@@ -24,7 +24,6 @@ import com.techflow.materialcolor.fragment.HomeFragment
 import com.techflow.materialcolor.fragment.SettingFragment
 import com.techflow.materialcolor.utils.Preferences
 import com.techflow.materialcolor.utils.SharedPref
-
 /**
  * Modified by DILIP SUTHAR on 30/06/2019
  */
