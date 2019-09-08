@@ -7,10 +7,14 @@ import com.techflow.materialcolor.R
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.graphics.PorterDuff
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import android.net.ConnectivityManager
+import android.view.Menu
+import androidx.annotation.ColorInt
+import androidx.appcompat.widget.Toolbar
 
 
 /**
@@ -45,6 +49,31 @@ object Tools {
             window.addFlags(Int.MIN_VALUE)
             window.clearFlags(0)
             window.statusBarColor = color
+        }
+    }
+
+    fun changeMenuIconColor(menu: Menu, @ColorInt color: Int) {
+        for (i in 0 until menu.size()) {
+            val drawable = menu.getItem(i).icon ?: continue
+            drawable.mutate()
+            drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+        }
+    }
+
+    fun changeNavigationIconColor(toolbar: Toolbar, @ColorInt color: Int) {
+        val drawable = toolbar.navigationIcon
+        drawable?.mutate()
+        drawable?.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+    }
+
+    fun setSystemBarLight(act: Activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            act.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+    }
+
+    fun clearSystemBarLight(act: Activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            act.window.decorView.systemUiVisibility = 0
         }
     }
 

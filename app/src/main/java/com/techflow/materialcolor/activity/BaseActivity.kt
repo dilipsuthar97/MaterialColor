@@ -12,6 +12,10 @@ import com.techflow.materialcolor.utils.Tools
 
 abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        when(ThemeUtils.getTheme(this)) {
+            ThemeUtils.LIGHT -> setTheme(R.style.MaterialColor_Base_Light)
+            ThemeUtils.DARK -> setTheme(R.style.MaterialColor_Base_Dark)
+        }
         super.onCreate(savedInstanceState)
 
         // Initialize emoji first
@@ -20,16 +24,17 @@ abstract class BaseActivity : AppCompatActivity() {
 
         // Set recent app header color
         ThemeUtils.setRecentAppsHeaderColor(this)
-
         customizeStatusBar()
 
     }
 
+    /** @method customize status bar bg & icon color */
     private fun customizeStatusBar() {
-        Tools.setSystemBarColor(this, R.color.colorPrimary)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        when(ThemeUtils.getTheme(this)) {
+            ThemeUtils.LIGHT -> Tools.setSystemBarLight(this)
+            ThemeUtils.DARK -> Tools.clearSystemBarLight(this)
         }
+
+        Tools.setSystemBarColorById(this, ThemeUtils.getThemeAttrColor(this, R.attr.statusBarColor))
     }
 }

@@ -50,7 +50,7 @@ class ColorPickerFragment : Fragment() {
     }
 
     private fun initComponent() {
-        showIntro()
+        showTutorial()
 
         bind.btnImgChooser.setOnClickListener {
             AnimUtils.bounceAnim(it)
@@ -148,7 +148,7 @@ class ColorPickerFragment : Fragment() {
         }
     }
 
-    private fun showIntro() {
+    private fun showTutorial() {
         with(SharedPref.getInstance(context!!)) {
             if (getBoolean(Preferences.ColorPickerFragFR, true)) {
                 TapTargetView.showFor(activity!!,

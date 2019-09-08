@@ -23,15 +23,15 @@ import androidx.databinding.DataBindingUtil
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.android.billingclient.api.*
+import com.getkeepsafe.taptargetview.TapTarget
+import com.getkeepsafe.taptargetview.TapTargetView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.FragmentSettingBinding
-import com.techflow.materialcolor.utils.AnimUtils
-import com.techflow.materialcolor.utils.Preferences
-import com.techflow.materialcolor.utils.SharedPref
-import com.techflow.materialcolor.utils.Tools
+import com.techflow.materialcolor.utils.*
+
 /**
  * Created by DILIP SUTHAR on 16/02/19
  */
@@ -57,8 +57,10 @@ class SettingFragment : Fragment(), View.OnClickListener {
         retainInstance = true
         bind = DataBindingUtil.inflate(inflater, R.layout.fragment_setting, container, false)
 
+        showTutorial()
+
         if (Tools.hasNetwork(context!!)) {
-            setupBillingClient()
+            //setupBillingClient()
             Tools.visibleViews(bind.progressBar)
         }
 
@@ -77,6 +79,15 @@ class SettingFragment : Fragment(), View.OnClickListener {
         bind.btnMaterialTool.setOnClickListener(this)
         bind.btnPolicy.setOnClickListener(this)
 
+        if (ThemeUtils.getTheme(context!!) == ThemeUtils.DARK)
+            bind.switchChangeTheme.isChecked = true
+
+        bind.switchChangeTheme.setOnCheckedChangeListener { compoundButton, isChecked ->
+            if (isChecked) ThemeUtils.setTheme(context!!, ThemeUtils.DARK)
+            else ThemeUtils.setTheme(context!!, ThemeUtils.LIGHT)
+            activity?.recreate()
+        }
+
         return bind.root
     }
 
@@ -89,7 +100,7 @@ class SettingFragment : Fragment(), View.OnClickListener {
                 if (Tools.hasNetwork(context!!)) {
                     Tools.visibleViews(bind.progressBar)
                     Tools.inVisibleViews(bind.btnRemoveAds, type = Tools.GONE)
-                    startPurchase()
+                    //startPurchase()
                 }
             }
             R.id.btn_rate -> {
@@ -172,11 +183,32 @@ class SettingFragment : Fragment(), View.OnClickListener {
         intent.launchUrl(activity, Uri.parse(url))
     }
 
+    private fun showTutorial() {
+        val sharedPref = SharedPref.getInstance(context!!)
+
+        if (sharedPref.getBoolean(Preferences.SettingFragFR, true)) {
+            TapTargetView.showFor(activity!!,
+                TapTarget.forView(bind.btnRate, "Rate us", "Rate us on Google PlayStore.")
+                    .outerCircleColor(R.color.colorAccent)
+                    .outerCircleAlpha(0.96f)
+                    .targetCircleColor(R.color.white)
+                    .titleTextSize(20)
+                    .titleTextColor(R.color.white)
+                    .descriptionTextSize(18)
+                    .descriptionTextColor(R.color.white)
+                    .cancelable(false)
+                    .targetRadius(50)
+            )
+
+            sharedPref.saveData(Preferences.SettingFragFR, false)
+        }
+    }
+
     /** Billing methods */
-    private fun setupBillingClient() {
+    /*private fun setupBillingClient() {
         Log.d(TAG, "setupBillingClient: called")
 
-        skuList.add("sku_remove_ads")
+        skuList.add("PRODUCT_ID")
 
         // purchase listener
         billingClient = BillingClient.newBuilder(context!!).setListener { responseCode, purchases ->
@@ -190,7 +222,7 @@ class SettingFragment : Fragment(), View.OnClickListener {
                 7 -> {
                     SharedPref.getInstance(context!!).saveData(Preferences.SHOW_AD, false)
                     bind.btnRemoveAds.isEnabled = false
-                    Snackbar.make(bind.root, "You already owned this. you don't see ads anymore, Restart app.", Snackbar.LENGTH_INDEFINITE)
+                    Snackbar.make(bind.root, "You already purchased this. you don't see ads anymore, Restart app.", Snackbar.LENGTH_INDEFINITE)
                         .setAction("OK") {}
                         .show()
                 }
@@ -239,5 +271,5 @@ class SettingFragment : Fragment(), View.OnClickListener {
             billingClient.launchBillingFlow(activity!!, billingFlowParams)
         }
         setupBillingClient()
-    }
+    }*/
 }

@@ -4,7 +4,7 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:orientation="vertical"
-            android:background="@android:color/white"
+            android:background="?attr/colorPrimary"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
 
@@ -25,6 +25,7 @@
                     android:layout_marginBottom="15.0dip"
                     android:layout_marginStart="15.0dip"
                     android:layout_marginEnd="15.0dip"
+                    app:cardBackgroundColor="?attr/cardDialogColor"
                     app:cardCornerRadius="8.0dip"
                     app:cardElevation="5.0dip">
 
@@ -62,14 +63,14 @@
 
                                 <TextView
                                         android:textSize="18.0sp"
-                                        android:textColor="@color/colorTextPrimary"
+                                        android:textColor="?attr/colorTextPrimary"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="HEX"/>
 
                                 <TextView
                                         android:textSize="15.0sp"
-                                        android:textColor="@color/colorTextSecondary"
+                                        android:textColor="?attr/colorTextSecondary"
                                         android:id="@+id/tv_hex_code"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -94,14 +95,14 @@
 
                                 <TextView
                                         android:textSize="18.0sp"
-                                        android:textColor="@color/colorTextPrimary"
+                                        android:textColor="?attr/colorTextPrimary"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="RGB"/>
 
                                 <TextView
                                         android:textSize="15.0sp"
-                                        android:textColor="@color/colorTextSecondary"
+                                        android:textColor="?attr/colorTextSecondary"
                                         android:id="@+id/tv_rgb_code"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -113,12 +114,13 @@
                     <TextView
                             android:gravity="center_horizontal"
                             android:layout_width="fill_parent"
+                            android:textColor="?attr/colorTextSecondary"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="10.0dip"
                             android:text="tap on code to copy on clip"/>
 
                     <View
-                            android:background="@color/colorDivider"
+                            android:background="?android:attr/listDivider"
                             android:layout_width="fill_parent"
                             android:layout_height="0.5dip"/>
 

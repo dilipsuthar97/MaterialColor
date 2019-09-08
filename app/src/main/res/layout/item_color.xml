@@ -10,6 +10,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
+            app:cardBackgroundColor="?attr/cardDialogColor"
             app:cardCornerRadius="10dp"
             app:cardElevation="3dp">
 
@@ -37,7 +38,7 @@
                         android:layout_height="wrap_content"
                         android:paddingStart="15dp"
                         android:text="Colorname"
-                        android:textColor="@color/colorTextPrimary"
+                        android:textColor="?attr/colorTextPrimary"
                         android:textSize="18sp" />
 
                 <TextView
@@ -47,7 +48,7 @@
                         android:layout_marginBottom="5dp"
                         android:paddingStart="15dp"
                         android:text="ColorCode"
-                        android:textColor="@color/colorTextSecondary"
+                        android:textColor="?attr/colorTextSecondary"
                         android:textSize="14sp" />
             </LinearLayout>
         </com.balysv.materialripple.MaterialRippleLayout>

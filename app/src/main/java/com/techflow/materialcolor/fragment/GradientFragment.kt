@@ -40,7 +40,7 @@ class GradientFragment : Fragment() {
         bind.recyclerView.setHasFixedSize(true)
         bind.recyclerView.layoutManager = LinearLayoutManager(context)
         listGradient = DataGenerator.getGradientsData(context!!)
-        val adapter = AdapterGradient(ArrayList(listGradient), context!!)
+        val adapter = AdapterGradient(ArrayList(listGradient), context!!, activity!!)
         bind.recyclerView.adapter = adapter
     }
 

@@ -4,7 +4,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/root_layout"
-            android:background="@color/white"
+            android:background="?attr/colorPrimary"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
 
@@ -17,6 +17,7 @@
 
         <com.irozon.justbar.JustBar
                 android:id="@+id/justBar"
+                android:background="?attr/appBarColor"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="8.0dip"
@@ -34,9 +35,9 @@
                     app:radius="25.0dip"
                     app:selected="true"
                     app:selectedColor="@color/colorAccent"
+                    app:unSelectedColor="?attr/tabBgColor"
                     app:selectedIconColor="@color/white"
-                    app:unSelectedColor="#ffdcdcdc"
-                    app:unSelectedIconColor="@color/black" />
+                    app:unSelectedIconColor="?attr/tabUnselectedColor" />
 
             <com.irozon.justbar.BarItem
                     android:id="@+id/nav_gradient"
@@ -45,9 +46,9 @@
                     app:icon="@drawable/ic_bubble_chart"
                     app:radius="25.0dip"
                     app:selectedColor="@color/colorAccent"
+                    app:unSelectedColor="?attr/tabBgColor"
                     app:selectedIconColor="@color/white"
-                    app:unSelectedColor="#ffdcdcdc"
-                    app:unSelectedIconColor="@color/black" />
+                    app:unSelectedIconColor="?attr/tabUnselectedColor" />
 
             <com.irozon.justbar.BarItem
                     android:id="@+id/nav_color_picker"
@@ -56,9 +57,9 @@
                     app:icon="@drawable/ic_format_color"
                     app:radius="25.0dip"
                     app:selectedColor="@color/colorAccent"
+                    app:unSelectedColor="?attr/tabBgColor"
                     app:selectedIconColor="@color/white"
-                    app:unSelectedColor="#ffdcdcdc"
-                    app:unSelectedIconColor="@color/black" />
+                    app:unSelectedIconColor="?attr/tabUnselectedColor" />
 
             <com.irozon.justbar.BarItem
                     android:id="@+id/nav_settings"
@@ -67,9 +68,9 @@
                     app:icon="@drawable/ic_settings"
                     app:radius="25.0dip"
                     app:selectedColor="@color/colorAccent"
+                    app:unSelectedColor="?attr/tabBgColor"
                     app:selectedIconColor="@color/white"
-                    app:unSelectedColor="#ffdcdcdc"
-                    app:unSelectedIconColor="@color/black" />
+                    app:unSelectedIconColor="?attr/tabUnselectedColor" />
         </com.irozon.justbar.JustBar>
 
         <FrameLayout

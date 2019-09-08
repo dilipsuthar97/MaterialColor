@@ -11,6 +11,23 @@ import com.techflow.materialcolor.R
 
 object ThemeUtils {
 
+    const val TAG: String = "ThemeUtils"
+    const val LIGHT = "light"
+    const val DARK = "dark"
+
+    fun getTheme(context: Context): String {
+        val sharedPreferences = SharedPref.getInstance(context)
+        return sharedPreferences.getString(Preferences.THEME, LIGHT)!!
+    }
+
+    fun setTheme(context: Context, theme: String) {
+        val sharedPreferences = SharedPref.getInstance(context)
+        when (theme) {
+            LIGHT -> sharedPreferences.saveData(Preferences.THEME, LIGHT)
+            DARK -> sharedPreferences.saveData(Preferences.THEME, DARK)
+        }
+    }
+
     @ColorInt
     fun getThemeAttrColor(context: Context, @AttrRes colorAttr: Int): Int {
         val array = context.obtainStyledAttributes(null, intArrayOf(colorAttr))
