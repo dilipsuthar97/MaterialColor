@@ -4,14 +4,19 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
+import androidx.core.view.size
 import androidx.recyclerview.widget.RecyclerView
+import com.facebook.ads.*
 import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetSequence
+import com.techflow.materialcolor.BuildConfig
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.model.Gradient
 import com.techflow.materialcolor.utils.AnimUtils
@@ -26,10 +31,24 @@ class AdapterGradient(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        if (viewType == Gradient.TYPE_AD) {
+            return AdViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_ad, parent, false))
+        } else if (viewType == Gradient.TYPE_SECTION) {
+            return SectionViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_section_title, parent, false))
+        }
+
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_gradient, parent, false))
     }
 
     override fun getItemCount(): Int = items.size
+
+    override fun getItemViewType(position: Int): Int {
+        return when {
+            items[position].type == Gradient.TYPE_GRADIENT -> Gradient.TYPE_GRADIENT
+            items[position].type == Gradient.TYPE_SECTION -> Gradient.TYPE_SECTION
+            else -> Gradient.TYPE_AD
+        }
+    }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ViewHolder) {
@@ -45,10 +64,31 @@ class AdapterGradient(
             }
 
             holder.showTutorial(position, context, activity)
+        } else if (holder is AdViewHolder) {
+
+            // Check if purchased and load >> advertisement
+            if (SharedPref.getInstance(context).getBoolean(Preferences.SHOW_AD, true)) {
+                holder.loadAds(context)
+            }
+
+        } else if (holder is SectionViewHolder) {
+
+            if (position == 1) {
+                val title = SpannableString("NEW")
+                title.setSpan(UnderlineSpan(), 0, "NEW".length, 0)
+                holder.title.text = title
+            }
+            else {
+                val title = SpannableString("OLD")
+                title.setSpan(UnderlineSpan(), 0, "OLD".length, 0)
+                holder.title.text = title
+            }
+
         }
     }
 
     /** View holder */
+    // Gradient view holder
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val colorLyt: View = view.findViewById(R.id.color_lyt)
         val tvPrimaryColor: TextView = view.findViewById(R.id.tv_primary_color)
@@ -73,7 +113,7 @@ class AdapterGradient(
             val sharedPref = SharedPref.getInstance(ctx)
             val msg = "From tapping here you can copy this code."
 
-            if (sharedPref.getBoolean(Preferences.GradientFragFR, true) && pos == 1) {
+            if (sharedPref.getBoolean(Preferences.GradientFragFR, true) && pos == 3) {
                 TapTargetSequence(act)
                     .targets(
                         TapTarget.forView(tvPrimaryColor, "Primary Color HexCode", msg)
@@ -103,6 +143,42 @@ class AdapterGradient(
                 sharedPref.saveData(Preferences.GradientFragFR, false)
             }
         }
+    }
+
+    // Ad View Holder
+    class AdViewHolder(view: View): RecyclerView.ViewHolder(view) {
+        private val bannerContainer: LinearLayout = view.findViewById(R.id.banner_container)
+
+        fun loadAds(context: Context) {
+            val adView = AdView(context, BuildConfig.AUDIENCE_BANNER_ID, AdSize.BANNER_HEIGHT_50)
+            if (Tools.hasNetwork(context))
+                adView.loadAd()
+
+            adView.setAdListener(object : AdListener {
+                override fun onAdLoaded(p0: Ad?) {
+                    Tools.visibleViews(bannerContainer)
+                    if (bannerContainer.size == 0)
+                        bannerContainer.addView(adView)
+                }
+
+                override fun onAdClicked(p0: Ad?) {
+
+                }
+
+                override fun onError(p0: Ad?, p1: AdError?) {
+                    adView.loadAd()
+                }
+
+                override fun onLoggingImpression(p0: Ad?) {
+
+                }
+            })
+        }
+    }
+
+    // Section view holder
+    class SectionViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val title: TextView = view.findViewById(R.id.tv_section_title)
     }
 
 }

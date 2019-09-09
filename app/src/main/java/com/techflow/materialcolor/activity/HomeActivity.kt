@@ -1,21 +1,21 @@
 package com.techflow.materialcolor.activity
 
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import com.techflow.materialcolor.utils.Tools
 import android.app.ProgressDialog
 import android.content.Intent
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.InstallStateUpdatedListener
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.InstallStatus
+import com.google.android.play.core.install.model.UpdateAvailability
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivityHomeBinding
 import com.techflow.materialcolor.fragment.ColorPickerFragment
@@ -25,14 +25,30 @@ import com.techflow.materialcolor.fragment.SettingFragment
 import com.techflow.materialcolor.utils.Preferences
 import com.techflow.materialcolor.utils.SharedPref
 import com.techflow.materialcolor.utils.ThemeUtils
-
 /**
  * Modified by DILIP SUTHAR on 30/06/2019
+ */
+
+/**
+ *  Copyright 2019 Dilip Suthar
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
  */
 class HomeActivity : BaseActivity() {
 
     val TAG = HomeActivity::class.java.simpleName
     val BACK_STACK_ROOT_NAME = "root_fragment"
+    val UPDATE_RC = 201
 
     private lateinit var binding: ActivityHomeBinding
 
@@ -58,8 +74,7 @@ class HomeActivity : BaseActivity() {
         initComponent()
         initIntro()
         initBottomNavigation()
-        if (SharedPref.getInstance(this).getBoolean(Preferences.SHOW_AD))
-            initAd()
+        initInAppUpdate()   // Init in-app update
     }
 
     override fun onBackPressed() {
@@ -140,10 +155,6 @@ class HomeActivity : BaseActivity() {
         }
     }
 
-    private fun initAd() {
-
-    }
-
     private fun displayFragment(fragment: Fragment) {
         val backStackName = fragment.javaClass.name
         val fragmentManager = supportFragmentManager
@@ -165,6 +176,79 @@ class HomeActivity : BaseActivity() {
             return
         }
         finish()
+    }
+
+
+
+    /** @method in-app update functionality */
+    private fun initInAppUpdate() {
+        val appUpdateManager = AppUpdateManagerFactory.create(this)
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+
+        val listener = InstallStateUpdatedListener { state ->
+
+            // Show update downloading...
+            if (state.installStatus() == InstallStatus.DOWNLOADING) {
+
+                Snackbar.make(binding.rootLayout,
+                    "Downloading update...",
+                    Snackbar.LENGTH_LONG
+                ).apply {
+                    show()
+                }
+
+            }
+
+            // If the process of downloading is finished, start the completion flow.
+            if (state.installStatus() == InstallStatus.DOWNLOADED) {
+
+                Snackbar.make(binding.rootLayout,
+                    "An update has just been downloaded from Google Play",
+                    Snackbar.LENGTH_INDEFINITE
+                ).apply {
+                    setAction("INSTALL") { appUpdateManager.completeUpdate() }
+                    show()
+                }
+
+            }
+
+            // If the downloading is failed
+            if (state.installStatus() == InstallStatus.FAILED) {
+
+                Snackbar.make(binding.rootLayout,
+                    "Update downloading failed!",
+                    Snackbar.LENGTH_LONG
+                ).apply {
+                    show()
+                }
+
+            }
+
+        }
+
+        // Register update listener
+        appUpdateManager.registerListener(listener)
+
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+
+            if ((appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                        // For a flexible update, use AppUpdateType.FLEXIBLE
+                        && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE))) {
+
+                Toast.makeText(this, "Update available", Toast.LENGTH_SHORT).show()
+
+                // Start update flow dialog
+                appUpdateManager.startUpdateFlowForResult(
+                    appUpdateInfo,
+                    AppUpdateType.FLEXIBLE,
+                    this,
+                    UPDATE_RC)
+
+            }
+
+        }.addOnFailureListener { e ->
+            e.printStackTrace()
+        }
     }
 
 }

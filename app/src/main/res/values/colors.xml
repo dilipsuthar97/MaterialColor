@@ -2,7 +2,6 @@
 <resources>
     <!-->>>>>>>>>>>>>>> Light base colors <<<<<<<<<<<<<<<-->
     <color name="colorAccent">#00cea5</color>
-    <color name="colorDivider">#bdbdbd</color>
     <color name="colorPrimary">#ffffff</color>
     <color name="colorPrimaryDark">#cfcfcf</color>
     <color name="colorTextPrimary">#000000</color>
@@ -10,13 +9,11 @@
     <color name="statusBarColor">#FFF</color>
     <color name="appBarColor">#FFF</color>
     <color name="cardDialogColor">#FFF</color>
-    <color name="tabSelectedColor">#00cea5</color>
     <color name="tabUnselectedColor">#000</color>
     <color name="tabBgColor">@color/overlay_dark_20</color>
 
     <!-->>>>>>>>>>>>>>> Dark base colors <<<<<<<<<<<<<<<-->
     <color name="colorAccent_dark">#00cea5</color>
-    <color name="colorDivider_dark">#bdbdbd</color>
     <color name="colorPrimary_dark">#000000</color>
     <color name="colorPrimaryDark_dark">#212121</color>
     <color name="colorTextPrimary_dark">#FFFFFF</color>
@@ -24,7 +21,6 @@
     <color name="statusBarColor_dark">#000</color>
     <color name="appBarColor_dark">#212121</color>
     <color name="cardDialogColor_dark">#303030</color>
-    <color name="tabSelectedColor_dark">#00cea5</color>
     <color name="tabUnselectedColor_dark">#FFF</color>
     <color name="tabBgColor_dark">@color/overlay_light_20</color>
 

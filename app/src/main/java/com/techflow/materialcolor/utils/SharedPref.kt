@@ -2,8 +2,6 @@ package com.techflow.materialcolor.utils
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.core.content.edit
-
 /**
  * Created by DILIP SUTHAR on 16/02/19
  */

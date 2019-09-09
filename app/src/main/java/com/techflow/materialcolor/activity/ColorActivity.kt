@@ -20,7 +20,7 @@ class ColorActivity : BaseActivity() {
 
     private val TAG = "MaterialColor"
 
-    private lateinit var listColor: List<Color>
+    private lateinit var listColor: ArrayList<Color>
     private lateinit var mOnItemClickListener: AdapterColor.OnItemClickListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +40,7 @@ class ColorActivity : BaseActivity() {
         }
 
         initToolbar(colorName, color)
-        initComponent(pos)
+        initComponent(colorName)
 
     }
 
@@ -59,7 +59,7 @@ class ColorActivity : BaseActivity() {
         Tools.setSystemBarColorById(this, color)
     }
 
-    private fun initComponent(pos: Int) {
+    private fun initComponent(colorName: String) {
 
         /** Listener */
         mOnItemClickListener = object : AdapterColor.OnItemClickListener {
@@ -76,29 +76,38 @@ class ColorActivity : BaseActivity() {
         recycler_view.setHasFixedSize(true)
         recycler_view.layoutManager = LinearLayoutManager(this)
 
-        listColor = when (pos) {
-            0 -> DataGenerator.getRedColorData(this)
-            1 -> DataGenerator.getPinkColorData(this)
-            2 -> DataGenerator.getPurpleColorData(this)
-            3 -> DataGenerator.getDeepPurpleColorData(this)
-            4 -> DataGenerator.getIndigoColorData(this)
-            5 -> DataGenerator.getBlueColorData(this)
-            6 -> DataGenerator.getLightBlueColorData(this)
-            7 -> DataGenerator.getCyanColorData(this)
-            8 -> DataGenerator.getTealColorData(this)
-            9 -> DataGenerator.getGreenColorData(this)
-            10 -> DataGenerator.getLightGreenColorData(this)
-            11 -> DataGenerator.getLimeColorData(this)
-            12 -> DataGenerator.getYellowColorData(this)
-            13 -> DataGenerator.getAmberColorData(this)
-            14 -> DataGenerator.getOrangeColorData(this)
-            15 -> DataGenerator.getDeepOrangeColorData(this)
-            16 -> DataGenerator.getBrownColorData(this)
-            17 -> DataGenerator.getGreyColorData(this)
+        listColor = when (colorName) {
+            "Red" -> DataGenerator.getRedColorData(this)
+            "Pink" -> DataGenerator.getPinkColorData(this)
+            "Purple" -> DataGenerator.getPurpleColorData(this)
+            "Deep Purple" -> DataGenerator.getDeepPurpleColorData(this)
+            "Indigo" -> DataGenerator.getIndigoColorData(this)
+            "Blue" -> DataGenerator.getBlueColorData(this)
+            "Light Blue" -> DataGenerator.getLightBlueColorData(this)
+            "Cyan" -> DataGenerator.getCyanColorData(this)
+            "Teal" -> DataGenerator.getTealColorData(this)
+            "Green" -> DataGenerator.getGreenColorData(this)
+            "Light Green" -> DataGenerator.getLightGreenColorData(this)
+            "Lime" -> DataGenerator.getLimeColorData(this)
+            "Yellow" -> DataGenerator.getYellowColorData(this)
+            "Amber" -> DataGenerator.getAmberColorData(this)
+            "Orange" -> DataGenerator.getOrangeColorData(this)
+            "Deep Orange" -> DataGenerator.getDeepOrangeColorData(this)
+            "Brown" -> DataGenerator.getBrownColorData(this)
+            "Grey" -> DataGenerator.getGreyColorData(this)
             else -> DataGenerator.getBlueGreyColorData(this)
         }
 
-        val adapter = AdapterColor(ArrayList(listColor), this, this, mOnItemClickListener)
+        var adCount = 0
+
+        for (i in listColor.indices) {
+            if (i % 5 == 0) {
+                listColor.add(adCount, Color(Color.TYPE_AD, -1, "", ""))
+                adCount += 5 + 1
+            }
+        }
+
+        val adapter = AdapterColor(listColor, this, this, mOnItemClickListener)
         recycler_view.adapter = adapter
     }
 }

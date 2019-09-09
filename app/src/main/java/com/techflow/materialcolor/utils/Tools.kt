@@ -15,8 +15,6 @@ import android.net.ConnectivityManager
 import android.view.Menu
 import androidx.annotation.ColorInt
 import androidx.appcompat.widget.Toolbar
-
-
 /**
  * Created by Dilip on 16/02/19
  */

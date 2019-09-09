@@ -6,6 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.emoji.bundled.BundledEmojiCompatConfig
 import androidx.emoji.text.EmojiCompat
+import com.facebook.ads.AudienceNetworkAds
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.utils.ThemeUtils
 import com.techflow.materialcolor.utils.Tools
@@ -25,6 +26,9 @@ abstract class BaseActivity : AppCompatActivity() {
         // Set recent app header color
         ThemeUtils.setRecentAppsHeaderColor(this)
         customizeStatusBar()
+
+        // Initialize the Audience Network SDK
+        AudienceNetworkAds.initialize(this)
 
     }
 

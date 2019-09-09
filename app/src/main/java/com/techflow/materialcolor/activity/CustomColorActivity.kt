@@ -1,14 +1,9 @@
 package com.techflow.materialcolor.activity
 
-import android.content.SharedPreferences
 import android.graphics.Color
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import android.widget.SeekBar
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import com.techflow.materialcolor.R
@@ -17,12 +12,9 @@ import com.techflow.materialcolor.utils.Preferences
 import com.techflow.materialcolor.utils.SharedPref
 import com.techflow.materialcolor.utils.ThemeUtils
 import com.techflow.materialcolor.utils.Tools
-
 /**
- * @author
  * Created by DILIP SUTHAR on 16/02/19
  */
-
 class CustomColorActivity : BaseActivity() {
 
     private lateinit var bind: ActivityCustomColorBinding
