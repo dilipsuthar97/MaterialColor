@@ -677,6 +677,36 @@
     </array>
 
     <string-array name="gradients_primary_color">
+        <!-- NEW -->
+        <item>#ff9a9e</item>
+        <item>#a18cd1</item>
+        <item>#fad0c4</item>
+        <item>#ffecd2</item>
+        <item>#ff9a9e</item>
+        <item>#f6d365</item>
+        <item>#fbc2eb</item>
+        <item>#fdcbf1</item>
+        <item>#a1c4fd</item>
+        <item>#d4fc79</item>
+        <item>#84fab0</item>
+        <item>#cfd9df</item>
+        <item>#a6c0fe</item>
+        <item>#fccb90</item>
+        <item>#e0c3fc</item>
+        <item>#f093fb</item>
+        <item>#4facfe</item>
+        <item>#43e97b</item>
+        <item>#fa709a</item>
+        <item>#30cfd0</item>
+        <item>#a8edea</item>
+        <item>#5ee7df</item>
+        <item>#d299c2</item>
+        <item>#f5f7fa</item>
+        <item>#667eea</item>
+        <item>#fdfcfb</item>
+        <item>#89f7fe</item>
+
+        <!-- OLD -->
         <item>#FDEB71</item>
         <item>#ABDCFF</item>
         <item>#FEB692</item>
@@ -739,6 +769,36 @@
         <item>#FF96F9</item>
     </string-array>
     <string-array name="gradients_secondary_color">
+        <!-- NEW -->
+        <item>#fad0c4</item>
+        <item>#fbc2eb</item>
+        <item>#ffd1ff</item>
+        <item>#fcb69f</item>
+        <item>#fecfef</item>
+        <item>#fda085</item>
+        <item>#a6c1ee</item>
+        <item>#e6dee9</item>
+        <item>#c2e9fb</item>
+        <item>#96e6a1</item>
+        <item>#8fd3f4</item>
+        <item>#e2ebf0</item>
+        <item>#f68084</item>
+        <item>#d57eeb</item>
+        <item>#8ec5fc</item>
+        <item>#f5576c</item>
+        <item>#00f2fe</item>
+        <item>#38f9d7</item>
+        <item>#fee140</item>
+        <item>#330867</item>
+        <item>#fed6e3</item>
+        <item>#b490ca</item>
+        <item>#fef9d7</item>
+        <item>#c3cfe2</item>
+        <item>#764ba2</item>
+        <item>#e2d1c3</item>
+        <item>#66a6ff</item>
+
+        <!-- OLD -->
         <item>#F8D800</item>
         <item>#0396FF</item>
         <item>#EA5455</item>

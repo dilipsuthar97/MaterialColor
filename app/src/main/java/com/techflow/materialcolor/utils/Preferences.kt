@@ -1,8 +1,5 @@
 package com.techflow.materialcolor.utils
 
-import android.content.Context
-import android.content.SharedPreferences
-
 /**
  * Created by DILIP SUTHAR on 16/02/19
  */

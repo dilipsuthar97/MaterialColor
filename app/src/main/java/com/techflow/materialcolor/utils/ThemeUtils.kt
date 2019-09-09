@@ -42,7 +42,7 @@ object ThemeUtils {
         val icon = BitmapFactory.decodeResource(activity.resources, R.mipmap.ic_launcher)
         val taskDescription = ActivityManager.TaskDescription(
             activity.getString(R.string.app_name),
-            icon, ContextCompat.getColor(activity, R.color.colorPrimaryDark)
+            icon, getThemeAttrColor(activity, R.attr.colorPrimary)
         )
         activity.setTaskDescription(taskDescription)
         icon?.recycle()

@@ -17,16 +17,16 @@ object DataGenerator {
         return items
     }
 
-    fun getGradientsData(ctx: Context): List<Gradient> {
+    fun getGradientsData(ctx: Context): ArrayList<Gradient> {
         val items = ArrayList<Gradient>()
         val pColors = ctx.resources.getStringArray(R.array.gradients_primary_color)
         val sColors = ctx.resources.getStringArray(R.array.gradients_secondary_color)
         for (i in pColors.indices)
-           items.add(Gradient(pColors[i], sColors[i]))
+           items.add(Gradient(Gradient.TYPE_GRADIENT, pColors[i], sColors[i]))
         return items
     }
 
-    fun getRedColorData(ctx: Context): List<Color> {
+    fun getRedColorData(ctx: Context): ArrayList<Color> {
         val items = ArrayList<Color>()
         val list_color_name = ctx.resources.getStringArray(R.array.color_names_shades_with_A)
         val list_color_code = ctx.resources.getStringArray(R.array.color_code_red)
@@ -36,7 +36,7 @@ object DataGenerator {
         return items
     }
 
-    fun getPinkColorData(ctx: Context): List<Color> {
+    fun getPinkColorData(ctx: Context): ArrayList<Color> {
         val items = ArrayList<Color>()
         val list_color_name = ctx.resources.getStringArray(R.array.color_names_shades_with_A)
         val list_color_code = ctx.resources.getStringArray(R.array.color_code_pink)
@@ -46,7 +46,7 @@ object DataGenerator {
         return items
     }
 
-    fun getPurpleColorData(ctx: Context): List<Color> {
+    fun getPurpleColorData(ctx: Context): ArrayList<Color> {
         val items = ArrayList<Color>()
         val list_color_name = ctx.resources.getStringArray(R.array.color_names_shades_with_A)
         val list_color_code = ctx.resources.getStringArray(R.array.color_code_purple)
@@ -56,7 +56,7 @@ object DataGenerator {
         return items
     }
 
-    fun getDeepPurpleColorData(ctx: Context): List<Color> {
+    fun getDeepPurpleColorData(ctx: Context): ArrayList<Color> {
         val items = ArrayList<Color>()
         val list_color_name = ctx.resources.getStringArray(R.array.color_names_shades_with_A)
         val list_color_code = ctx.resources.getStringArray(R.array.color_code_deep_purple)
@@ -66,7 +66,7 @@ object DataGenerator {
         return items
     }
 
-    fun getIndigoColorData(ctx: Context): List<Color> {
+    fun getIndigoColorData(ctx: Context): ArrayList<Color> {
         val items = ArrayList<Color>()
         val list_color_name = ctx.resources.getStringArray(R.array.color_names_shades_with_A)
         val list_color_code = ctx.resources.getStringArray(R.array.color_code_indigo)
@@ -76,7 +76,7 @@ object DataGenerator {
         return items
     }
 
-    fun getBlueColorData(ctx: Context): List<Color> {
+    fun getBlueColorData(ctx: Context): ArrayList<Color> {
         val items = ArrayList<Color>()
         val list_color_name = ctx.resources.getStringArray(R.array.color_names_shades_with_A)
         val list_color_code = ctx.resources.getStringArray(R.array.color_code_blue)
@@ -86,7 +86,7 @@ object DataGenerator {
         return items
     }
 
-    fun getLightBlueColorData(ctx: Context): List<Color> {
+    fun getLightBlueColorData(ctx: Context): ArrayList<Color> {
         val items = ArrayList<Color>()
         val list_color_name = ctx.resources.getStringArray(R.array.color_names_shades_with_A)
         val list_color_code = ctx.resources.getStringArray(R.array.color_code_light_blue)
@@ -96,7 +96,7 @@ object DataGenerator {
         return items
     }
 
-    fun getCyanColorData(ctx: Context): List<Color> {
+    fun getCyanColorData(ctx: Context): ArrayList<Color> {
         val items = ArrayList<Color>()
         val list_color_name = ctx.resources.getStringArray(R.array.color_names_shades_with_A)
         val list_color_code = ctx.resources.getStringArray(R.array.color_code_cyan)
@@ -106,7 +106,7 @@ object DataGenerator {
         return items
     }
 
-    fun getTealColorData(ctx: Context): List<Color> {
+    fun getTealColorData(ctx: Context): ArrayList<Color> {
         val items = ArrayList<Color>()
         val list_color_name = ctx.resources.getStringArray(R.array.color_names_shades_with_A)
         val list_color_code = ctx.resources.getStringArray(R.array.color_code_teal)
@@ -116,7 +116,7 @@ object DataGenerator {
         return items
     }
 
-    fun getGreenColorData(ctx: Context): List<Color> {
+    fun getGreenColorData(ctx: Context): ArrayList<Color> {
         val items = ArrayList<Color>()
         val list_color_name = ctx.resources.getStringArray(R.array.color_names_shades_with_A)
         val list_color_code = ctx.resources.getStringArray(R.array.color_code_green)
@@ -126,7 +126,7 @@ object DataGenerator {
         return items
     }
 
-    fun getLightGreenColorData(ctx: Context): List<Color> {
+    fun getLightGreenColorData(ctx: Context): ArrayList<Color> {
         val items = ArrayList<Color>()
         val list_color_name = ctx.resources.getStringArray(R.array.color_names_shades_with_A)
         val list_color_code = ctx.resources.getStringArray(R.array.color_code_light_green)
@@ -136,7 +136,7 @@ object DataGenerator {
         return items
     }
 
-    fun getLimeColorData(ctx: Context): List<Color> {
+    fun getLimeColorData(ctx: Context): ArrayList<Color> {
         val items = ArrayList<Color>()
         val list_color_name = ctx.resources.getStringArray(R.array.color_names_shades_with_A)
         val list_color_code = ctx.resources.getStringArray(R.array.color_code_lime)
@@ -146,7 +146,7 @@ object DataGenerator {
         return items
     }
 
-    fun getYellowColorData(ctx: Context): List<Color> {
+    fun getYellowColorData(ctx: Context): ArrayList<Color> {
         val items = ArrayList<Color>()
         val list_color_name = ctx.resources.getStringArray(R.array.color_names_shades_with_A)
         val list_color_code = ctx.resources.getStringArray(R.array.color_code_yellow)
@@ -156,7 +156,7 @@ object DataGenerator {
         return items
     }
 
-    fun getAmberColorData(ctx: Context): List<Color> {
+    fun getAmberColorData(ctx: Context): ArrayList<Color> {
         val items = ArrayList<Color>()
         val list_color_name = ctx.resources.getStringArray(R.array.color_names_shades_with_A)
         val list_color_code = ctx.resources.getStringArray(R.array.color_code_amber)
@@ -166,7 +166,7 @@ object DataGenerator {
         return items
     }
 
-    fun getOrangeColorData(ctx: Context): List<Color> {
+    fun getOrangeColorData(ctx: Context): ArrayList<Color> {
         val items = ArrayList<Color>()
         val list_color_name = ctx.resources.getStringArray(R.array.color_names_shades_with_A)
         val list_color_code = ctx.resources.getStringArray(R.array.color_code_orange)
@@ -176,7 +176,7 @@ object DataGenerator {
         return items
     }
 
-    fun getDeepOrangeColorData(ctx: Context): List<Color> {
+    fun getDeepOrangeColorData(ctx: Context): ArrayList<Color> {
         val items = ArrayList<Color>()
         val list_color_name = ctx.resources.getStringArray(R.array.color_names_shades_with_A)
         val list_color_code = ctx.resources.getStringArray(R.array.color_code_deep_orange)
@@ -186,7 +186,7 @@ object DataGenerator {
         return items
     }
 
-    fun getBrownColorData(ctx: Context): List<Color> {
+    fun getBrownColorData(ctx: Context): ArrayList<Color> {
         val items = ArrayList<Color>()
         val list_color_name = ctx.resources.getStringArray(R.array.color_names_shades)
         val list_color_code = ctx.resources.getStringArray(R.array.color_code_brown)
@@ -196,7 +196,7 @@ object DataGenerator {
         return items
     }
 
-    fun getGreyColorData(ctx: Context): List<Color> {
+    fun getGreyColorData(ctx: Context): ArrayList<Color> {
         val items = ArrayList<Color>()
         val list_color_name = ctx.resources.getStringArray(R.array.color_names_shades)
         val list_color_code = ctx.resources.getStringArray(R.array.color_code_grey)
@@ -206,7 +206,7 @@ object DataGenerator {
         return items
     }
 
-    fun getBlueGreyColorData(ctx: Context): List<Color> {
+    fun getBlueGreyColorData(ctx: Context): ArrayList<Color> {
         val items = ArrayList<Color>()
         val list_color_name = ctx.resources.getStringArray(R.array.color_names_shades)
         val list_color_code = ctx.resources.getStringArray(R.array.color_code_blue_grey)

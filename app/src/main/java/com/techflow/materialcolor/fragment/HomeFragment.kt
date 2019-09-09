@@ -6,9 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.activity.ColorActivity
@@ -17,11 +16,9 @@ import com.techflow.materialcolor.data.DataGenerator
 import com.techflow.materialcolor.databinding.FragmentHomeBinding
 import com.techflow.materialcolor.model.Color
 import com.techflow.materialcolor.utils.Tools
-
 /**
  * Created by Dilip on 16/02/19
  */
-
 class HomeFragment : Fragment() {
 
     companion object {
@@ -61,8 +58,19 @@ class HomeFragment : Fragment() {
 
     private fun initComponent(view: View) {
         bind.recyclerView.setHasFixedSize(true)
-        bind.recyclerView.layoutManager = GridLayoutManager(context, 2)
-        adapter = AdapterColor(DataGenerator.getColorData(context!!), context!!, activity!!, mOnItemClickListener)
+        bind.recyclerView.layoutManager = LinearLayoutManager(context)
+        bind.recyclerView.isNestedScrollingEnabled = false
+        val colorList = DataGenerator.getColorData(context!!)
+        var adCount = 0
+
+        for (i in colorList.indices) {
+            if (i % 5 == 0) {
+                colorList.add(adCount, Color(Color.TYPE_AD, -1, "", ""))
+                adCount += 5 + 1
+            }
+        }
+
+        adapter = AdapterColor(colorList, context!!, activity!!, mOnItemClickListener)
         bind.recyclerView.adapter = adapter
     }
 }

@@ -2,7 +2,6 @@ package com.techflow.materialcolor.fragment
 
 
 import android.content.ActivityNotFoundException
-import android.content.ComponentName
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -13,11 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.browser.customtabs.CustomTabsClient
-import androidx.browser.customtabs.CustomTabsIntent
-import androidx.browser.customtabs.CustomTabsIntent.Builder;
-import androidx.browser.customtabs.CustomTabsServiceConnection
-import androidx.browser.customtabs.CustomTabsSession
+import androidx.browser.customtabs.CustomTabsIntent.Builder
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.afollestad.materialdialogs.MaterialDialog
@@ -31,7 +26,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.FragmentSettingBinding
 import com.techflow.materialcolor.utils.*
-
 /**
  * Created by DILIP SUTHAR on 16/02/19
  */
@@ -60,7 +54,7 @@ class SettingFragment : Fragment(), View.OnClickListener {
         showTutorial()
 
         if (Tools.hasNetwork(context!!)) {
-            //setupBillingClient()
+            setupBillingClient()
             Tools.visibleViews(bind.progressBar)
         }
 
@@ -100,7 +94,7 @@ class SettingFragment : Fragment(), View.OnClickListener {
                 if (Tools.hasNetwork(context!!)) {
                     Tools.visibleViews(bind.progressBar)
                     Tools.inVisibleViews(bind.btnRemoveAds, type = Tools.GONE)
-                    //startPurchase()
+                    startPurchase()
                 }
             }
             R.id.btn_rate -> {
@@ -108,8 +102,9 @@ class SettingFragment : Fragment(), View.OnClickListener {
                 startActivity(intent)
             }
             R.id.btn_share -> {
+                val msg = "MaterialColor is an amazing color tool, you should try it.\nDownload it from below link."
                 val intent = Intent(Intent.ACTION_SEND)
-                intent.putExtra(Intent.EXTRA_TEXT, appUrl)
+                intent.putExtra(Intent.EXTRA_TEXT, "$msg\n\n$appUrl")
                 intent.type = "text/link"
                 startActivity(intent)
             }
@@ -205,7 +200,7 @@ class SettingFragment : Fragment(), View.OnClickListener {
     }
 
     /** Billing methods */
-    /*private fun setupBillingClient() {
+    private fun setupBillingClient() {
         Log.d(TAG, "setupBillingClient: called")
 
         skuList.add("PRODUCT_ID")
@@ -271,5 +266,5 @@ class SettingFragment : Fragment(), View.OnClickListener {
             billingClient.launchBillingFlow(activity!!, billingFlowParams)
         }
         setupBillingClient()
-    }*/
+    }
 }

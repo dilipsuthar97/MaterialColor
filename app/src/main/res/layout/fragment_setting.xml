@@ -307,8 +307,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="5dp"
                                         android:hint="Feedback about app, bugs"
-                                        app:hintEnabled="true"
-                                        app:boxStrokeColor="?attr/colorTextSecondary">
+                                        app:hintEnabled="true">
 
                                     <com.google.android.material.textfield.TextInputEditText
                                             android:id="@+id/et_feedback_msg"
