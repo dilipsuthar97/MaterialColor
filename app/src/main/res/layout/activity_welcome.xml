@@ -33,7 +33,7 @@
                 android:textSize="32.0sp" />
     </LinearLayout>
 
-    <androidx.emoji.widget.EmojiTextView
+    <TextView
             android:id="@+id/tv_bottom_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -41,7 +41,6 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="16dp"
-            android:imeOptions="actionSend"
             android:inputType="textCapSentences|textMultiLine"
             android:textColor="?attr/colorTextPrimary"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -2,7 +2,7 @@ package com.techflow.materialcolor.activity
 
 import android.os.Bundle
 import com.techflow.materialcolor.utils.Tools
-import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
 import android.view.Menu
 import android.view.MenuItem
@@ -10,12 +10,17 @@ import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.facebook.ads.Ad
+import com.facebook.ads.AdError
+import com.facebook.ads.InterstitialAd
+import com.facebook.ads.InterstitialAdListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
+import com.techflow.materialcolor.BuildConfig
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivityHomeBinding
 import com.techflow.materialcolor.fragment.ColorPickerFragment
@@ -50,10 +55,25 @@ class HomeActivity : BaseActivity() {
     val BACK_STACK_ROOT_NAME = "root_fragment"
     val UPDATE_RC = 201
 
+    // STATIC
+    companion object {
+        // Audience
+        private lateinit var interstitialAd: InterstitialAd
+
+        fun showAd(context: Context) {
+            if (interstitialAd.isAdLoaded) {
+                if (interstitialAd.isAdInvalidated)
+                    return
+                else if (SharedPref.getInstance(context).actionShowInterstitialAd())
+                    interstitialAd.show()
+            } else if (Tools.hasNetwork(context))
+                interstitialAd.loadAd()
+        }
+    }
+
     private lateinit var binding: ActivityHomeBinding
 
     private lateinit var sharedPref: SharedPref
-    private lateinit var progressDialog: ProgressDialog
 
     private lateinit var homeFragment: HomeFragment
     private lateinit var gradientFragment: GradientFragment
@@ -74,6 +94,7 @@ class HomeActivity : BaseActivity() {
         initComponent()
         initIntro()
         initBottomNavigation()
+        initAd()
         initInAppUpdate()   // Init in-app update
     }
 
@@ -134,6 +155,11 @@ class HomeActivity : BaseActivity() {
 
     private fun initBottomNavigation() {
         binding.justBar.setOnBarItemClickListener { barItem, position ->
+
+            // Load ad
+            if (SharedPref.getInstance(this).getBoolean(Preferences.SHOW_AD, true))
+                showAd(this)
+
             when(barItem.id) {
                 R.id.nav_home -> {
                     displayFragment(homeFragment)
@@ -178,6 +204,39 @@ class HomeActivity : BaseActivity() {
         finish()
     }
 
+    private fun initAd() {
+        interstitialAd = InterstitialAd(this, BuildConfig.AUDIENCE_INTERSTITIAL_ID)
+        if (Tools.hasNetwork(this))
+            interstitialAd.loadAd()
+
+        interstitialAd.setAdListener(object : InterstitialAdListener {
+
+            override fun onInterstitialDisplayed(p0: Ad?) {
+
+            }
+
+            override fun onInterstitialDismissed(p0: Ad?) {
+
+            }
+
+            override fun onAdLoaded(p0: Ad?) {
+
+            }
+
+            override fun onError(p0: Ad?, p1: AdError?) {
+                if (Tools.hasNetwork(this@HomeActivity))
+                    interstitialAd.loadAd()
+            }
+
+            override fun onAdClicked(p0: Ad?) {
+
+            }
+
+            override fun onLoggingImpression(p0: Ad?) {
+
+            }
+        })
+    }
 
 
     /** @method in-app update functionality */

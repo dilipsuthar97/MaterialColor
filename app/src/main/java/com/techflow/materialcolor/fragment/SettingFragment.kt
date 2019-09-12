@@ -94,8 +94,10 @@ class SettingFragment : Fragment(), View.OnClickListener {
                 if (Tools.hasNetwork(context!!)) {
                     Tools.visibleViews(bind.progressBar)
                     Tools.inVisibleViews(bind.btnRemoveAds, type = Tools.GONE)
-                    startPurchase()
-                }
+                    if (::billingClient.isInitialized)
+                        startPurchase()
+                } else
+                    Toast.makeText(context, "No active network", Toast.LENGTH_SHORT).show()
             }
             R.id.btn_rate -> {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(appUrl))
@@ -247,9 +249,11 @@ class SettingFragment : Fragment(), View.OnClickListener {
                         .build()
 
                     billingClient.querySkuDetailsAsync(skuDetailParam) { _, skuDetailsList ->
-                        skuDetails = skuDetailsList[0] as SkuDetails
-                        if (skuDetails.price != null) {
-                            bind.btnRemoveAds.text = skuDetails.price   // Set product price to button text
+                        if (skuDetailsList.isNotEmpty()) {
+                            skuDetails = skuDetailsList[0] as SkuDetails
+                            if (skuDetails.price != null) {
+                                bind.btnRemoveAds.text = "Check & Pay ${skuDetails.price}"   // Set product price to button text
+                            }
                         }
                     }
                 }
