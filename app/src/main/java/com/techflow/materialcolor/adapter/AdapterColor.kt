@@ -49,7 +49,7 @@ class AdapterColor(
 
         } else if (holder is AdViewHolder) {
 
-            // Check if purchased and load >> advertisement
+            // Check if purchased and load Ad
             if (SharedPref.getInstance(context).getBoolean(Preferences.SHOW_AD, true)) {
                 holder.loadAds(context)
             }

@@ -1,11 +1,7 @@
 package com.techflow.materialcolor.activity
 
-import android.os.Build
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.emoji.bundled.BundledEmojiCompatConfig
-import androidx.emoji.text.EmojiCompat
 import com.facebook.ads.AudienceNetworkAds
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.utils.ThemeUtils
@@ -18,10 +14,6 @@ abstract class BaseActivity : AppCompatActivity() {
             ThemeUtils.DARK -> setTheme(R.style.MaterialColor_Base_Dark)
         }
         super.onCreate(savedInstanceState)
-
-        // Initialize emoji first
-        val config: EmojiCompat.Config = BundledEmojiCompatConfig(this)
-        EmojiCompat.init(config)
 
         // Set recent app header color
         ThemeUtils.setRecentAppsHeaderColor(this)

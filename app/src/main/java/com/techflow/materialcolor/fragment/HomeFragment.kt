@@ -11,10 +11,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.activity.ColorActivity
+import com.techflow.materialcolor.activity.HomeActivity
 import com.techflow.materialcolor.adapter.AdapterColor
 import com.techflow.materialcolor.data.DataGenerator
 import com.techflow.materialcolor.databinding.FragmentHomeBinding
 import com.techflow.materialcolor.model.Color
+import com.techflow.materialcolor.utils.Preferences
+import com.techflow.materialcolor.utils.SharedPref
 import com.techflow.materialcolor.utils.Tools
 /**
  * Created by Dilip on 16/02/19
@@ -35,6 +38,11 @@ class HomeFragment : Fragment() {
         super.onCreate(savedInstanceState)
         mOnItemClickListener = object : AdapterColor.OnItemClickListener {
             override fun onItemClick(view: View, color: Color, position: Int) {
+
+                // Load ad
+                if (SharedPref.getInstance(context!!).getBoolean(Preferences.SHOW_AD, true))
+                    HomeActivity.showAd(context!!)
+
                 val i = Intent(activity, ColorActivity::class.java)
                 i.putExtra("COLOR_NAME", color.colorName)
                 i.putExtra("COLOR", color.color)

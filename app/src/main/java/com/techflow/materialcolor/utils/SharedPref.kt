@@ -41,4 +41,17 @@ class SharedPref constructor(context: Context){
         }
     }
 
+    fun actionShowInterstitialAd(): Boolean {
+        var count = getInt("clicks_count", 1)
+        var isReset = false
+        if (count < 9)
+            count++
+        else {
+            count = 1
+            isReset = true
+        }
+
+        saveData("clicks_count", count)
+        return isReset
+    }
 }
