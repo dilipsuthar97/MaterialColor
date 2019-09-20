@@ -1,12 +1,15 @@
 package com.techflow.materialcolor.utils
 
 import android.app.Activity
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.os.Build
 import androidx.annotation.ColorRes
 import com.techflow.materialcolor.R
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import android.graphics.PorterDuff
 import android.view.View
 import android.widget.Toast
@@ -15,6 +18,9 @@ import android.net.ConnectivityManager
 import android.view.Menu
 import androidx.annotation.ColorInt
 import androidx.appcompat.widget.Toolbar
+import com.techflow.materialcolor.activity.WelcomeActivity
+import kotlin.system.exitProcess
+
 /**
  * Created by Dilip on 16/02/19
  */
@@ -105,6 +111,15 @@ object Tools {
         val networkInfo =
             (ctx.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).activeNetworkInfo
         return !(networkInfo == null || !networkInfo.isConnected)
+    }
+
+    fun restartApp(ctx: Context) {
+        val startIntent = Intent(ctx, WelcomeActivity::class.java)
+        val pendingIntentId = 100
+        val pendingIntent = PendingIntent.getActivity(ctx, pendingIntentId, startIntent, PendingIntent.FLAG_CANCEL_CURRENT)
+        val alarmManager = ctx.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager.set(AlarmManager.RTC, 100, pendingIntent)
+        exitProcess(0)
     }
 
 }

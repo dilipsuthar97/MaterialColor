@@ -16,7 +16,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.facebook.ads.*
 import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetSequence
-import com.techflow.materialcolor.BuildConfig
+import com.techflow.materialcolor.MaterialColor.AdType
+import com.techflow.materialcolor.MaterialColor
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.model.Gradient
 import com.techflow.materialcolor.utils.AnimUtils
@@ -150,7 +151,7 @@ class AdapterGradient(
         private val bannerContainer: LinearLayout = view.findViewById(R.id.banner_container)
 
         fun loadAds(context: Context) {
-            val adView = AdView(context, BuildConfig.AUDIENCE_BANNER_ID, AdSize.BANNER_HEIGHT_50)
+            val adView = AdView(context, MaterialColor.getAdId(AdType.BANNER), AdSize.BANNER_HEIGHT_50)
             if (Tools.hasNetwork(context))
                 adView.loadAd()
 
@@ -166,7 +167,8 @@ class AdapterGradient(
                 }
 
                 override fun onError(p0: Ad?, p1: AdError?) {
-                    adView.loadAd()
+                    if (Tools.hasNetwork(context))
+                        adView.loadAd()
                 }
 
                 override fun onLoggingImpression(p0: Ad?) {

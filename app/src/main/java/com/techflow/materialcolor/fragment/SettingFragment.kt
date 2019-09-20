@@ -22,6 +22,8 @@ import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.techflow.materialcolor.MaterialColor
 
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.FragmentSettingBinding
@@ -39,6 +41,7 @@ class SettingFragment : Fragment(), View.OnClickListener {
     }
 
     private lateinit var bind: FragmentSettingBinding
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     // Billing
     private var skuList: ArrayList<String> = ArrayList()
@@ -50,6 +53,7 @@ class SettingFragment : Fragment(), View.OnClickListener {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         retainInstance = true
         bind = DataBindingUtil.inflate(inflater, R.layout.fragment_setting, container, false)
+        firebaseAnalytics = FirebaseAnalytics.getInstance(context!!)
 
         showTutorial()
 
@@ -91,6 +95,7 @@ class SettingFragment : Fragment(), View.OnClickListener {
         when (view?.id) {
             R.id.btn_remove_ads -> {
                 AnimUtils.bounceAnim(view)
+                firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_REMOVE_ADS, null)
                 if (Tools.hasNetwork(context!!)) {
                     Tools.visibleViews(bind.progressBar)
                     Tools.inVisibleViews(bind.btnRemoveAds, type = Tools.GONE)
@@ -149,7 +154,10 @@ class SettingFragment : Fragment(), View.OnClickListener {
             R.id.btn_more_apps -> { openWebView("https://play.google.com/store/apps/dev?id=5025665333769403890") }
             R.id.btn_about_material_color -> { openWebView("https://material.io/design/color/the-color-system.html#color-theme-creation") }
             R.id.btn_material_tool -> { openWebView("https://material.io/tools/color/#!/?view.left=0&view.right=0") }
-            R.id.btn_policy -> { openWebView("https://github.com/dilipsuthar1997/PrivacyPolicy/blob/master/MaterialColor%20Privacy%20Policy.md") }
+            R.id.btn_policy -> {
+                firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_READ_POLICY, null)
+                openWebView("https://github.com/dilipsuthar1997/PrivacyPolicy/blob/master/MaterialColor%20Privacy%20Policy.md")
+            }
         }
     }
 
@@ -162,11 +170,16 @@ class SettingFragment : Fragment(), View.OnClickListener {
         }
 
         view.findViewById<MaterialButton>(R.id.btn_about_me).setOnClickListener {
+            firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_ABOUT_ME, null)
             openWebView("https://about.me/dilip.suthar")
             dialog.dismiss()
         }
     }
 
+    /** It will open URL link into chrome custom tab
+     *
+     * @param url a url link in a string format
+     */
     private fun openWebView(url: String) {
         val intent = Builder()
             .addDefaultShareMenuItem()
@@ -205,7 +218,7 @@ class SettingFragment : Fragment(), View.OnClickListener {
     private fun setupBillingClient() {
         Log.d(TAG, "setupBillingClient: called")
 
-        skuList.add("PRODUCT_ID")
+        skuList.add("PRODUCT_ID")   //TODO: Add in-app purchase product ID
 
         // purchase listener
         billingClient = BillingClient.newBuilder(context!!).setListener { responseCode, purchases ->
@@ -220,7 +233,10 @@ class SettingFragment : Fragment(), View.OnClickListener {
                     SharedPref.getInstance(context!!).saveData(Preferences.SHOW_AD, false)
                     bind.btnRemoveAds.isEnabled = false
                     Snackbar.make(bind.root, "You already purchased this. you don't see ads anymore, Restart app.", Snackbar.LENGTH_INDEFINITE)
-                        .setAction("OK") {}
+                        .setAction("RESTART") {
+                            Tools.restartApp(context!!)
+                            Toast.makeText(context, "Restarting app", Toast.LENGTH_SHORT).show()
+                        }
                         .show()
                 }
             }
