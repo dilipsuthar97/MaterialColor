@@ -20,7 +20,9 @@ import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
-import com.techflow.materialcolor.BuildConfig
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.techflow.materialcolor.MaterialColor.AdType
+import com.techflow.materialcolor.MaterialColor
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivityHomeBinding
 import com.techflow.materialcolor.fragment.ColorPickerFragment
@@ -80,10 +82,13 @@ class HomeActivity : BaseActivity() {
     private lateinit var colorPickerFragment: ColorPickerFragment
     private lateinit var settingFragment: SettingFragment
 
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
         sharedPref = SharedPref.getInstance(this)
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         /*binding.rootLayout.systemUiVisibility =
             (View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -120,8 +125,11 @@ class HomeActivity : BaseActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_custom_code)
+        if (item.itemId == R.id.action_custom_code) {
+            firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_PALETTE_CREATOR, null)
             startActivity(Intent(this, CustomColorActivity::class.java))
+            return true
+        }
         return super.onOptionsItemSelected(item)
     }
 
@@ -162,18 +170,22 @@ class HomeActivity : BaseActivity() {
 
             when(barItem.id) {
                 R.id.nav_home -> {
+                    firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_TAB_COLOR, null)
                     displayFragment(homeFragment)
                     supportActionBar?.title = "MaterialColor"
                 }
                 R.id.nav_gradient -> {
+                    firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_TAB_GRADIENT, null)
                     displayFragment(gradientFragment)
                     supportActionBar?.title = "Gradients"
                 }
                 R.id.nav_color_picker -> {
+                    firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_TAB_COLOR_PICKER, null)
                     displayFragment(colorPickerFragment)
                     supportActionBar?.title = "Color Picker"
                 }
                 R.id.nav_settings -> {
+                    firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_TAB_SETTING, null)
                     displayFragment(settingFragment)
                     supportActionBar?.title = "Settings"
                 }
@@ -205,7 +217,7 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun initAd() {
-        interstitialAd = InterstitialAd(this, BuildConfig.AUDIENCE_INTERSTITIAL_ID)
+        interstitialAd = InterstitialAd(this, MaterialColor.getAdId(AdType.INTERSTITIAL))
         if (Tools.hasNetwork(this))
             interstitialAd.loadAd()
 
