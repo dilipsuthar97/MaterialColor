@@ -69,8 +69,9 @@ class HomeFragment : Fragment() {
         bind.recyclerView.layoutManager = LinearLayoutManager(context)
         bind.recyclerView.isNestedScrollingEnabled = false
         val colorList = DataGenerator.getColorData(context!!)
-        var adCount = 0
 
+
+        var adCount = 0
         for (i in colorList.indices) {
             if (i % 5 == 0) {
                 colorList.add(adCount, Color(Color.TYPE_AD, -1, "", ""))
