@@ -27,6 +27,7 @@
     <color name="black">#ff000000</color>
     <color name="white">#ffffffff</color>
     <color name="transparent">#00ffffff</color>
+    <color name="ripple_color">#4D00CEA5</color>
 
     <color name="overlay_dark_10">#1a000000</color>
     <color name="overlay_dark_20">#33000000</color>

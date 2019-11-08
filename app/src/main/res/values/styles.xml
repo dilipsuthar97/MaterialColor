@@ -15,7 +15,8 @@
         <item name="tabBgColor">@color/tabBgColor</item>
 
         <item name="android:fontFamily">@font/google_sans_regular</item>
-        <item name="android:navigationBarColor">@color/colorAccent</item>
+        <item name="android:navigationBarColor">@color/colorAccent</item>   <!-- Navigation btn color -->
+        <item name="colorControlHighlight">@color/ripple_color</item>   <!-- Ripple color -->
 
         <item name="md_color_button_text">@color/colorAccent</item>
     </style>
@@ -35,6 +36,7 @@
 
         <item name="android:fontFamily">@font/google_sans_regular</item>
         <item name="android:navigationBarColor">@color/colorAccent</item>
+        <item name="colorControlHighlight">@color/ripple_color</item>
 
         <item name="md_color_button_text">@color/colorAccent</item>
     </style>

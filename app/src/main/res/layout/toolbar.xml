@@ -6,6 +6,6 @@
         android:background="@android:color/white"
         android:elevation="3dp"
         app:titleTextAppearance="@style/TextAppearance.Large.Bold"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
         app:contentInsetStartWithNavigation="0dp"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        app:popupTheme="@style/ThemeOverlay.MaterialComponents" />

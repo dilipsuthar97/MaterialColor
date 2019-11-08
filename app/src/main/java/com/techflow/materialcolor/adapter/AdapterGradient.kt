@@ -65,24 +65,27 @@ class AdapterGradient(
             }
 
             holder.showTutorial(position, context, activity)
-        } else if (holder is AdViewHolder) {
+        } /*else if (holder is AdViewHolder) {
 
             // Check if purchased and load >> advertisement
             if (SharedPref.getInstance(context).getBoolean(Preferences.SHOW_AD, true)) {
                 holder.loadAds(context)
             }
 
-        } else if (holder is SectionViewHolder) {
+        }*/ else if (holder is SectionViewHolder) {
 
-            if (position == 1) {
+            if (position == 0) {
+
                 val title = SpannableString("NEW")
-                title.setSpan(UnderlineSpan(), 0, "NEW".length, 0)
+                title.setSpan(UnderlineSpan(), 0, title.length, 0)
                 holder.title.text = title
-            }
-            else {
+
+            } else {
+
                 val title = SpannableString("OLD")
-                title.setSpan(UnderlineSpan(), 0, "OLD".length, 0)
+                title.setSpan(UnderlineSpan(), 0, title.length, 0)
                 holder.title.text = title
+
             }
 
         }
@@ -114,12 +117,12 @@ class AdapterGradient(
             val sharedPref = SharedPref.getInstance(ctx)
             val msg = "From tapping here you can copy this code."
 
-            if (sharedPref.getBoolean(Preferences.GradientFragFR, true) && pos == 3) {
+            if (sharedPref.getBoolean(Preferences.GradientFragFR, true) && pos == 1) {
                 TapTargetSequence(act)
                     .targets(
                         TapTarget.forView(tvPrimaryColor, "Primary Color HexCode", msg)
                             .outerCircleColor(R.color.colorAccent)
-                            .outerCircleAlpha(0.96f)
+                            .outerCircleAlpha(0.90f)
                             .targetCircleColor(R.color.white)
                             .titleTextSize(20)
                             .titleTextColor(R.color.white)
@@ -130,7 +133,7 @@ class AdapterGradient(
 
                         TapTarget.forView(tvSecondaryColor, "Secondary Color HexCode", msg)
                             .outerCircleColor(R.color.colorAccent)
-                            .outerCircleAlpha(0.96f)
+                            .outerCircleAlpha(0.90f)
                             .targetCircleColor(R.color.white)
                             .titleTextSize(20)
                             .titleTextColor(R.color.white)
@@ -148,7 +151,7 @@ class AdapterGradient(
 
     // Ad View Holder
     class AdViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        private val bannerContainer: LinearLayout = view.findViewById(R.id.banner_container)
+        /*private val bannerContainer: LinearLayout = view.findViewById(R.id.banner_container)
 
         fun loadAds(context: Context) {
             val adView = AdView(context, MaterialColor.getAdId(AdType.BANNER), AdSize.BANNER_HEIGHT_50)
@@ -175,7 +178,7 @@ class AdapterGradient(
 
                 }
             })
-        }
+        }*/
     }
 
     // Section view holder

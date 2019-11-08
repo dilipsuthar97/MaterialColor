@@ -8,10 +8,12 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.adapter.AdapterColor
 import com.techflow.materialcolor.data.DataGenerator
+import com.techflow.materialcolor.databinding.ActivityColorBinding
 import com.techflow.materialcolor.model.Color
 import com.techflow.materialcolor.utils.Tools
 import kotlinx.android.synthetic.main.activity_color.*
@@ -20,20 +22,19 @@ class ColorActivity : BaseActivity() {
 
     private val TAG = "MaterialColor"
 
+    private lateinit var bind: ActivityColorBinding
     private lateinit var listColor: ArrayList<Color>
     private lateinit var mOnItemClickListener: AdapterColor.OnItemClickListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_color)
+        bind = DataBindingUtil.setContentView(this, R.layout.activity_color)
 
         val extras = intent.extras
         val colorName = extras!!.getString("COLOR_NAME")!!
         val color = extras.getInt("COLOR")
-        val pos = extras.getInt("COLOR_POS")
         Log.d(TAG, "colorname: $colorName")
         Log.d(TAG, "color: $color")
-        Log.d(TAG, "pos: $pos")
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             window.decorView.systemUiVisibility = 0
@@ -45,13 +46,13 @@ class ColorActivity : BaseActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) finish()
+        if (item.itemId == android.R.id.home) onBackPressed()
         return true
     }
 
     /** Methods */
     private fun initToolbar(colorName: String, color: Int) {
-        setSupportActionBar(include_toolbar as Toolbar)
+        setSupportActionBar(bind.includeToolbar as Toolbar)
         include_toolbar.setBackgroundColor(color)
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -72,9 +73,6 @@ class ColorActivity : BaseActivity() {
                 Tools.copyToClipboard(this@ColorActivity, color.colorCode, "HEX code ${color.colorCode}")
             }
         }
-
-        recycler_view.setHasFixedSize(true)
-        recycler_view.layoutManager = LinearLayoutManager(this)
 
         listColor = when (colorName) {
             "Red" -> DataGenerator.getRedColorData(this)
@@ -98,16 +96,22 @@ class ColorActivity : BaseActivity() {
             else -> DataGenerator.getBlueGreyColorData(this)
         }
 
-        var adCount = 0
-
+        // Add AdView for each 5 steps >>>>>>>>>>
+        /*var adCount = 0
         for (i in listColor.indices) {
             if (i % 5 == 0) {
                 listColor.add(adCount, Color(Color.TYPE_AD, -1, "", ""))
                 adCount += 5 + 1
             }
-        }
+        }*/
 
         val adapter = AdapterColor(listColor, this, this, mOnItemClickListener)
-        recycler_view.adapter = adapter
+
+        // Recycler view
+        with(bind.recyclerView) {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(this@ColorActivity)
+            this.adapter = adapter
+        }
     }
 }

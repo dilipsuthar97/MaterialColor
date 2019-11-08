@@ -7,15 +7,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
-import com.crashlytics.android.Crashlytics
 import com.techflow.materialcolor.R
 
 import com.techflow.materialcolor.adapter.AdapterGradient
 import com.techflow.materialcolor.data.DataGenerator
 import com.techflow.materialcolor.databinding.FragmentGradientBinding
 import com.techflow.materialcolor.model.Gradient
-import com.techflow.materialcolor.utils.Preferences
-import com.techflow.materialcolor.utils.SharedPref
 import com.techflow.materialcolor.utils.ThemeUtils
 import com.techflow.materialcolor.utils.Tools
 /**
@@ -63,8 +60,8 @@ class GradientFragment : Fragment() {
         listGradient.add(28, Gradient(Gradient.TYPE_SECTION, "", ""))
 
         // Add AdView for each 5 steps >>>>>>>>>>
-        var adCount = 0
-        /*if (SharedPref.getInstance(context!!).getBoolean(Preferences.SHOW_AD, true)) {
+        /*var adCount = 0
+        if (SharedPref.getInstance(context!!).getBoolean(Preferences.SHOW_AD, true)) {
             for (i in listGradient.indices) {
                 if (i % 5 == 0) {
                     listGradient.add(adCount, Gradient(Gradient.TYPE_AD, "", ""))

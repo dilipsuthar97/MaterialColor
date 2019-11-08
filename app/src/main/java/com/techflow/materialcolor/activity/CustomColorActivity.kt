@@ -34,21 +34,24 @@ class CustomColorActivity : BaseActivity() {
         green = sharedPref.getInt(Preferences.GREEN, 125)
         blue = sharedPref.getInt(Preferences.BLUE, 125)
 
+        initToolbar()
+        initComponent()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) onBackPressed()
+        return true
+    }
+
+    /** methods */
+    private fun initToolbar() {
         setSupportActionBar(bind.toolbar as Toolbar)
         supportActionBar?.title = "Palette creator"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
         Tools.changeNavigationIconColor(bind.toolbar as Toolbar, ThemeUtils.getThemeAttrColor(this, R.attr.colorTextPrimary))
-
-        initComponent()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) finish()
-        return true
-    }
-
-    /** methods */
     private fun initComponent() {
         setResult(red, green, blue)
 
@@ -56,9 +59,10 @@ class CustomColorActivity : BaseActivity() {
         bind.seekbarGreen.progress = green
         bind.seekbarBlue.progress = blue
 
+        // Listeners
         bind.seekbarRed.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                red = p1
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, p2: Boolean) {
+                red = progress
                 setResult(red, green, blue)
             }
 
@@ -109,24 +113,8 @@ class CustomColorActivity : BaseActivity() {
 
     }
 
-    private fun rgbToHex(r: Int, g: Int, b: Int): String {
-        hexCode = ""
-        hexCode = "#"
-        var builder = StringBuilder()
-        builder.append(hexCode)
-        builder.append(Integer.toHexString(r))
-        hexCode = builder.toString()
-        builder = StringBuilder()
-        builder.append(hexCode)
-        builder.append(Integer.toHexString(g))
-        hexCode = builder.toString()
-        builder = StringBuilder()
-        builder.append(hexCode)
-        builder.append(Integer.toHexString(b))
-        hexCode = builder.toString()
-
-        return hexCode
-    }
+    private fun rgbToHex(r: Int, g: Int, b: Int): String =
+        "#${Integer.toHexString(r)}${Integer.toHexString(g)}${Integer.toHexString(b)}"
 
     private fun setResult(r: Int, g: Int, b: Int) {
         bind.tvRgbCode.text = "( $r, $g, $b )"

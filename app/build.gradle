@@ -13,8 +13,8 @@ android {
         applicationId "com.techflow.materialcolor"
         minSdkVersion 22
         targetSdkVersion 29
-        versionCode 220030102
-        versionName "3.1.2"
+        versionCode 220030101
+        versionName "3.1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

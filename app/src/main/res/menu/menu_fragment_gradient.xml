@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt">
+    <item android:icon="@drawable/ic_more_vert" android:id="@+id/action_scroll_gradient" android:orderInCategory="2" android:title="Scroll" app:showAsAction="always">
+        <menu>
+            <group android:id="@+id/grp_gradient_scroll">
+                <item android:id="@+id/scroll_new" android:title="New"/>
+                <item android:id="@+id/scroll_old" android:title="Old"/>
+            </group>
+        </menu>
+    </item>
+</menu>
