@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent.Builder
+import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.afollestad.materialdialogs.MaterialDialog
@@ -57,11 +58,12 @@ class SettingFragment : Fragment(), View.OnClickListener {
 
         showTutorial()
 
+        // Setup billing client for in-app purchase
         if (Tools.hasNetwork(context!!)) {
             setupBillingClient()
             Tools.visibleViews(bind.progressBar)
+            Tools.inVisibleViews(bind.btnRemoveAds, type = Tools.GONE)
         }
-
         if (!SharedPref.getInstance(context!!).getBoolean(Preferences.SHOW_AD, true)) {
             bind.btnRemoveAds.isEnabled = false
         }
@@ -77,9 +79,11 @@ class SettingFragment : Fragment(), View.OnClickListener {
         bind.btnMaterialTool.setOnClickListener(this)
         bind.btnPolicy.setOnClickListener(this)
 
+        // Theme setting
         if (ThemeUtils.getTheme(context!!) == ThemeUtils.DARK)
             bind.switchChangeTheme.isChecked = true
 
+        // Theme switch listener
         bind.switchChangeTheme.setOnCheckedChangeListener { compoundButton, isChecked ->
             if (isChecked) ThemeUtils.setTheme(context!!, ThemeUtils.DARK)
             else ThemeUtils.setTheme(context!!, ThemeUtils.LIGHT)
@@ -90,7 +94,7 @@ class SettingFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(view: View?) {
-            val appUrl = "https://play.google.com/store/apps/details?id=${context?.packageName}"
+        val appUrl = "https://play.google.com/store/apps/details?id=${context?.packageName}"
 
         when (view?.id) {
             R.id.btn_remove_ads -> {
@@ -109,11 +113,15 @@ class SettingFragment : Fragment(), View.OnClickListener {
                 startActivity(intent)
             }
             R.id.btn_share -> {
-                val msg = "MaterialColor is an amazing color tool, you should try it.\nDownload it from below link."
-                val intent = Intent(Intent.ACTION_SEND)
-                intent.putExtra(Intent.EXTRA_TEXT, "$msg\n\n$appUrl")
-                intent.type = "text/link"
-                startActivity(intent)
+                val msg = "MaterialColor is an amazing color tool app, you should try it.\nDownload it from below link."
+
+                val shareIntent = ShareCompat.IntentBuilder.from(activity)
+                    .setText("$msg\n\n$appUrl")
+                    .setType("text/plain")
+                    .intent
+
+                if (shareIntent.resolveActivity(activity!!.packageManager) != null)
+                    startActivity(shareIntent)
             }
             R.id.btn_dm -> {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/dilipsuthar97_dvlpr/?hl=en"))
@@ -185,6 +193,8 @@ class SettingFragment : Fragment(), View.OnClickListener {
             .addDefaultShareMenuItem()
             .setToolbarColor(ContextCompat.getColor(context!!, R.color.colorAccent))
             .setShowTitle(true)
+            .enableUrlBarHiding()
+            .addDefaultShareMenuItem()
             .setStartAnimations(context!!, android.R.anim.fade_in, android.R.anim.fade_out)
             .setExitAnimations(context!!, android.R.anim.fade_in, android.R.anim.fade_out)
             .setCloseButtonIcon(BitmapFactory.decodeResource(resources, R.drawable.ic_arrow_back))
@@ -200,7 +210,7 @@ class SettingFragment : Fragment(), View.OnClickListener {
             TapTargetView.showFor(activity!!,
                 TapTarget.forView(bind.btnRate, "Rate us", "Rate us on Google PlayStore.")
                     .outerCircleColor(R.color.colorAccent)
-                    .outerCircleAlpha(0.96f)
+                    .outerCircleAlpha(0.90f)
                     .targetCircleColor(R.color.white)
                     .titleTextSize(20)
                     .titleTextColor(R.color.white)
@@ -218,18 +228,32 @@ class SettingFragment : Fragment(), View.OnClickListener {
     private fun setupBillingClient() {
         Log.d(TAG, "setupBillingClient: called")
 
-        skuList.add("PRODUCT_ID")   //TODO: Add in-app purchase product ID
+        skuList.add("")   // TODO: Add in-app purchase product ID
 
         // purchase listener
         billingClient = BillingClient.newBuilder(context!!).setListener { responseCode, purchases ->
             when (responseCode) {
                 0 -> {
-                    Snackbar.make(bind.root, "You don't see ads anymore, Restart app.", Snackbar.LENGTH_SHORT).show()
+
+                    MaterialDialog(context!!).show {
+                        cornerRadius(16f)
+                        title(text = "Ad removed success")
+                        message(text = "You don't see ads anymore. All ads are removed permanently." +
+                                "\nDon't worry when you uninstall the app your purchase has been saved" +
+                                "and after reinstall the app you have to check your purchase by tapping Pay button." +
+                                "\n\nThanks for purchase :)")
+                        positiveButton(text = "RESTART APP") {
+                            Tools.restartApp(context!!)
+                            Toast.makeText(context, "Restarting app", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                     SharedPref.getInstance(context!!).saveData(Preferences.SHOW_AD, false)
+
                 }
                 1 -> Toast.makeText(context, "Transaction canceled.", Toast.LENGTH_SHORT).show()
                 2 -> Toast.makeText(context, "You not owned yet.", Toast.LENGTH_SHORT).show()
                 7 -> {
+
                     SharedPref.getInstance(context!!).saveData(Preferences.SHOW_AD, false)
                     bind.btnRemoveAds.isEnabled = false
                     Snackbar.make(bind.root, "You already purchased this. you don't see ads anymore, Restart app.", Snackbar.LENGTH_INDEFINITE)
@@ -238,6 +262,7 @@ class SettingFragment : Fragment(), View.OnClickListener {
                             Toast.makeText(context, "Restarting app", Toast.LENGTH_SHORT).show()
                         }
                         .show()
+
                 }
             }
 
@@ -249,8 +274,8 @@ class SettingFragment : Fragment(), View.OnClickListener {
         billingClient.startConnection(object : BillingClientStateListener {
 
             override fun onBillingServiceDisconnected() {
-                Tools.inVisibleViews(bind.progressBar, type = Tools.GONE)
-                Tools.visibleViews(bind.btnRemoveAds)
+                Tools.inVisibleViews(bind.btnRemoveAds, type = Tools.GONE)
+                Tools.visibleViews(bind.progressBar)
             }
 
             override fun onBillingSetupFinished(responseCode: Int) {

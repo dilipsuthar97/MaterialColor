@@ -118,7 +118,7 @@ object Tools {
         val pendingIntentId = 100
         val pendingIntent = PendingIntent.getActivity(ctx, pendingIntentId, startIntent, PendingIntent.FLAG_CANCEL_CURRENT)
         val alarmManager = ctx.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmManager.set(AlarmManager.RTC, 100, pendingIntent)
+        alarmManager.set(AlarmManager.RTC, 50, pendingIntent)
         exitProcess(0)
     }
 

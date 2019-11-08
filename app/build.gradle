@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
-apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 29
@@ -13,8 +13,8 @@ android {
         applicationId "com.techflow.materialcolor"
         minSdkVersion 22
         targetSdkVersion 29
-        versionCode 302
-        versionName "3.0.2"
+        versionCode 220030102
+        versionName "3.1.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -45,9 +45,11 @@ dependencies {
     implementation 'androidx.palette:palette:1.0.0'                             // Color Extractor form image
     implementation 'com.android.billingclient:billing:1.2'                      // In app purchase
     implementation 'androidx.browser:browser:1.0.0'                             // Chrome custom tab
-    implementation 'com.google.android.play:core:1.6.3'                         // Play store core
+    implementation 'com.google.android.play:core:1.6.4'                         // Play store core
+
     // Firebase
-    implementation 'com.google.firebase:firebase-analytics:17.2.0'
+    implementation 'com.google.firebase:firebase-analytics:17.2.1'              // Analytics
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'             // Crashlytics
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
