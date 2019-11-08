@@ -10,10 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.facebook.ads.Ad
-import com.facebook.ads.AdError
-import com.facebook.ads.InterstitialAd
-import com.facebook.ads.InterstitialAdListener
+import com.facebook.ads.*
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.InstallStateUpdatedListener
@@ -55,7 +52,7 @@ class HomeActivity : BaseActivity() {
 
     val TAG = HomeActivity::class.java.simpleName
     val BACK_STACK_ROOT_NAME = "root_fragment"
-    val UPDATE_RC = 201
+    val REQUEST_CODE_UPDATE = 201
 
     // STATIC
     companion object {
@@ -84,6 +81,10 @@ class HomeActivity : BaseActivity() {
 
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
+    private var adView: AdView? = null
+
+    private lateinit var activeFragment: Fragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
@@ -103,6 +104,12 @@ class HomeActivity : BaseActivity() {
         initInAppUpdate()   // Init in-app update
     }
 
+    override fun onDestroy() {
+        if (adView != null)
+            adView?.destroy()
+        super.onDestroy()
+    }
+
     override fun onBackPressed() {
         // Back stack code
         /*val manager = supportFragmentManager
@@ -115,7 +122,16 @@ class HomeActivity : BaseActivity() {
         }
         else
             appCloser()*/
-        appCloser()
+
+        if (activeFragment != homeFragment) {
+
+            binding.justBar.setSelected(0)
+            displayFragment(homeFragment)
+            activeFragment = homeFragment
+
+        } else {
+            appCloser()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -193,15 +209,18 @@ class HomeActivity : BaseActivity() {
         }
     }
 
-    private fun displayFragment(fragment: Fragment) {
-        val backStackName = fragment.javaClass.name
+    private fun displayFragment(fragment: Fragment?) {
+        val backStackName = fragment?.javaClass?.name
         val fragmentManager = supportFragmentManager
         if (fragment != null) {
+            activeFragment = fragment
+
             val transaction = fragmentManager.beginTransaction()
-            transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+            transaction.setCustomAnimations(R.anim.anim_fragment_enter, R.anim.anim_fragment_exit)
             //transaction.add(R.id.fragment, fragment, fragment.tag)
-            transaction.replace(R.id.fragment, fragment, BACK_STACK_ROOT_NAME)
+            //transaction.replace(R.id.fragment, fragment, BACK_STACK_ROOT_NAME)
             //transaction.addToBackStack(BACK_STACK_ROOT_NAME)
+            transaction.replace(R.id.fragment, fragment)
             transaction.commit()
         }
     }
@@ -217,6 +236,7 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun initAd() {
+        // Interstitial Ad
         interstitialAd = InterstitialAd(this, MaterialColor.getAdId(AdType.INTERSTITIAL))
         if (Tools.hasNetwork(this))
             interstitialAd.loadAd()
@@ -248,10 +268,39 @@ class HomeActivity : BaseActivity() {
 
             }
         })
+
+        // Banner Ad
+        adView = AdView(this, MaterialColor.getAdId(AdType.BANNER), AdSize.BANNER_HEIGHT_50)
+        if (Tools.hasNetwork(this))
+            if (SharedPref.getInstance(this).getBoolean(Preferences.SHOW_AD, true))
+                adView?.loadAd()
+
+        adView?.setAdListener(object : AdListener {
+            override fun onAdLoaded(p0: Ad?) {
+                Tools.visibleViews(binding.bannerContainer)
+                binding.bannerContainer.addView(adView)
+            }
+
+            override fun onAdClicked(p0: Ad?) {
+
+            }
+
+            override fun onError(p0: Ad?, p1: AdError?) {
+                if (Tools.hasNetwork(this@HomeActivity))
+                    if (SharedPref.getInstance(this@HomeActivity).getBoolean(Preferences.SHOW_AD, true))
+                        adView?.loadAd()
+            }
+
+            override fun onLoggingImpression(p0: Ad?) {
+
+            }
+        })
+
     }
 
 
     /** @method in-app update functionality */
+    var updateStarted = false
     private fun initInAppUpdate() {
         val appUpdateManager = AppUpdateManagerFactory.create(this)
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo
@@ -259,7 +308,7 @@ class HomeActivity : BaseActivity() {
         val listener = InstallStateUpdatedListener { state ->
 
             // Show update downloading...
-            if (state.installStatus() == InstallStatus.DOWNLOADING) {
+            if (state.installStatus() == InstallStatus.DOWNLOADING && !updateStarted) {
 
                 Snackbar.make(binding.rootLayout,
                     "Downloading update...",
@@ -268,6 +317,7 @@ class HomeActivity : BaseActivity() {
                     show()
                 }
 
+                updateStarted = true
             }
 
             // If the process of downloading is finished, start the completion flow.
@@ -313,7 +363,20 @@ class HomeActivity : BaseActivity() {
                     appUpdateInfo,
                     AppUpdateType.FLEXIBLE,
                     this,
-                    UPDATE_RC)
+                    REQUEST_CODE_UPDATE)
+
+                // If update is already download but, not installed
+                if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+
+                    Snackbar.make(binding.rootLayout,
+                        "An update has been downloaded from Google Play",
+                        Snackbar.LENGTH_INDEFINITE
+                    ).apply {
+                        setAction("INSTALL") { appUpdateManager.completeUpdate() }
+                        show()
+                    }
+
+                }
 
             }
 

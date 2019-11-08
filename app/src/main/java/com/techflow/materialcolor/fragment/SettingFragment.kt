@@ -247,6 +247,8 @@ class SettingFragment : Fragment(), View.OnClickListener {
                             Toast.makeText(context, "Restarting app", Toast.LENGTH_SHORT).show()
                         }
                     }
+
+                    // Disable ad showing
                     SharedPref.getInstance(context!!).saveData(Preferences.SHOW_AD, false)
 
                 }
@@ -254,7 +256,9 @@ class SettingFragment : Fragment(), View.OnClickListener {
                 2 -> Toast.makeText(context, "You not owned yet.", Toast.LENGTH_SHORT).show()
                 7 -> {
 
+                    // Disable ad showing
                     SharedPref.getInstance(context!!).saveData(Preferences.SHOW_AD, false)
+
                     bind.btnRemoveAds.isEnabled = false
                     Snackbar.make(bind.root, "You already purchased this. you don't see ads anymore, Restart app.", Snackbar.LENGTH_INDEFINITE)
                         .setAction("RESTART") {
@@ -266,10 +270,7 @@ class SettingFragment : Fragment(), View.OnClickListener {
                 }
             }
 
-            Tools.inVisibleViews(bind.progressBar, type = Tools.GONE)
-            Tools.visibleViews(bind.btnRemoveAds)
-        }
-            .build()
+        }.build()
 
         billingClient.startConnection(object : BillingClientStateListener {
 

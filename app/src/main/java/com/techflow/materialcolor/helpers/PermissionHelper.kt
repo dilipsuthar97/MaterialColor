@@ -8,13 +8,13 @@ import androidx.core.app.ActivityCompat
 object PermissionHelper {
     const val REQUEST_CODE = 201
 
-    fun permissionGranted(context: Context, permissions: Array<String>): Boolean {
+    fun isPermissionsGranted(context: Context, permissions: Array<String>): Boolean {
         return permissions.all { permission ->  // Function extension method
             ActivityCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
         }
     }
 
-    fun requestPermission(activity: Activity, permissions: Array<String>) {
+    fun requestPermissions(activity: Activity, permissions: Array<String>) {
         ActivityCompat.requestPermissions(activity, permissions, REQUEST_CODE)
     }
 }

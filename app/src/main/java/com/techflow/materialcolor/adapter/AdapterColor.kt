@@ -48,14 +48,14 @@ class AdapterColor(
             // Show first start-up tutorial
             holder.showTutorial(position, context, activity)
 
-        } else if (holder is AdViewHolder) {
+        }/* else if (holder is AdViewHolder) {
 
             // Check if purchased and load Ad
             if (SharedPref.getInstance(context).getBoolean(Preferences.SHOW_AD, true)) {
                 holder.loadAds(context)
             }
 
-        }
+        }*/
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -64,10 +64,6 @@ class AdapterColor(
             colorList[position].type == Color.TYPE_COLOR_SHADE -> Color.TYPE_COLOR_SHADE
             else -> Color.TYPE_AD
         }
-
-        /*return if (position % 5 == 0) Color.TYPE_AD
-        else if (colorList[position].type == Color.TYPE_COLOR) Color.TYPE_COLOR
-        else Color.TYPE_COLOR_SHADE*/
     }
 
     /** View holder */
@@ -104,7 +100,7 @@ class AdapterColor(
                         .targets(
                             TapTarget.forView(tvColorName, "Material Color", "From here you can see the different shades for this color.")
                                 .outerCircleColor(R.color.colorAccent)
-                                .outerCircleAlpha(0.96f)
+                                .outerCircleAlpha(0.90f)
                                 .targetCircleColor(R.color.white)
                                 .titleTextSize(20)
                                 .titleTextColor(R.color.white)
@@ -113,16 +109,18 @@ class AdapterColor(
                                 .cancelable(false)
                                 .targetRadius(50))
                         .start()
+
+                    sharedPref.saveData(Preferences.HomeFragFR, false)
                 }
 
-                sharedPref.saveData(Preferences.HomeFragFR, false)
             } else {
+
                 if (sharedPref.getBoolean(Preferences.ColorActFR, true) && pos == 1) {
                     TapTargetSequence(activity)
                         .targets(
                             TapTarget.forView(btnTap, "Color shades", "Long press here to copy the color code.")
                                 .outerCircleColor(R.color.colorAccent)
-                                .outerCircleAlpha(0.96f)
+                                .outerCircleAlpha(0.90f)
                                 .targetCircleColor(R.color.white)
                                 .titleTextSize(20)
                                 .titleTextColor(R.color.white)
@@ -131,16 +129,16 @@ class AdapterColor(
                                 .cancelable(false)
                                 .targetRadius(50))
                         .start()
-                }
 
-                sharedPref.saveData(Preferences.ColorActFR, false)
+                    sharedPref.saveData(Preferences.ColorActFR, false)
+                }
             }
         }
     }
 
     // Ad View Holder
     class AdViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        private val bannerContainer: LinearLayout = view.findViewById(R.id.banner_container)
+        /*private val bannerContainer: LinearLayout = view.findViewById(R.id.banner_container)
 
         fun loadAds(context: Context) {
             val adView = AdView(context, MaterialColor.getAdId(AdType.BANNER), AdSize.BANNER_HEIGHT_50)
@@ -167,7 +165,7 @@ class AdapterColor(
 
                 }
             })
-        }
+        }*/
     }
 
     /** Methods */

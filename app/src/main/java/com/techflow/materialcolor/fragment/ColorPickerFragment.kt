@@ -25,11 +25,14 @@ import com.theartofdev.edmodo.cropper.CropImageView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetView
+import com.techflow.materialcolor.activity.HomeActivity
 import com.techflow.materialcolor.adapter.AdapterColorFromImage
 import com.techflow.materialcolor.helpers.PermissionHelper
 import com.techflow.materialcolor.utils.Preferences
 import com.techflow.materialcolor.utils.SharedPref
 import com.techflow.materialcolor.utils.Tools
+import java.util.*
+
 /**
  * Modified by DILIP SUTHAR on 29/08/19
  */
@@ -55,11 +58,15 @@ class ColorPickerFragment : Fragment() {
         showTutorial()
 
         bind.btnImgChooser.setOnClickListener {
+            // Load ad
+            if (SharedPref.getInstance(context!!).getBoolean(Preferences.SHOW_AD, true))
+                HomeActivity.showAd(context!!)
+
             AnimUtils.bounceAnim(it)
             when {
-                PermissionHelper.permissionGranted(context!!, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)) -> openImagePicker()
+                PermissionHelper.isPermissionsGranted(context!!, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)) -> openImagePicker()
                 ActivityCompat.shouldShowRequestPermissionRationale(activity!!, Manifest.permission.READ_EXTERNAL_STORAGE) -> showPermissionDeniedDialog()
-                else -> PermissionHelper.requestPermission(activity!!, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE))
+                else -> PermissionHelper.requestPermissions(activity!!, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE))
             }
         }
     }
@@ -71,7 +78,7 @@ class ColorPickerFragment : Fragment() {
             message(text = "Without the STORAGE permission the app is unable to load image. Are you sure you want to deny this permission?")
             positiveButton(text = "I'm sure") {}
             negativeButton(text = "Retry") {
-                PermissionHelper.requestPermission(activity!!, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE))
+                PermissionHelper.requestPermissions(activity!!, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE))
             }
         }
     }
@@ -141,6 +148,7 @@ class ColorPickerFragment : Fragment() {
 
             Tools.inVisibleViews(bind.imgDummy, type = Tools.GONE)
             Tools.visibleViews(bind.lytColorPalette)
+
             val adapterColorFromImage = AdapterColorFromImage(palettes, context!!)
             with(bind.recyclerView) {
                 layoutManager = LinearLayoutManager(context)
@@ -159,7 +167,7 @@ class ColorPickerFragment : Fragment() {
                         "Tap here!",
                         "Tap here to choose image and extract color from image.")
                         .outerCircleColor(R.color.colorAccent)
-                        .outerCircleAlpha(0.96f)
+                        .outerCircleAlpha(0.90f)
                         .targetCircleColor(R.color.white)
                         .titleTextSize(20)
                         .titleTextColor(R.color.white)
@@ -177,14 +185,14 @@ class ColorPickerFragment : Fragment() {
                         }
                     }*/
                 )
-            }
 
-            saveData(Preferences.ColorPickerFragFR, false)
+                saveData(Preferences.ColorPickerFragFR, false)
+            }
         }
     }
 
     private fun getHexCode(color: Int): String {
-        return "#${Integer.toHexString(color).toUpperCase().substring(2)}"  // Without alpha
+        return "#${Integer.toHexString(color).toUpperCase(Locale.getDefault()).substring(2)}"  // Without alpha
         //return "#${Integer.toHexString(color).toUpperCase()}"  // With alpha
     }
 }

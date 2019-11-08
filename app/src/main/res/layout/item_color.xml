@@ -17,7 +17,7 @@
         <com.balysv.materialripple.MaterialRippleLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:mrl_rippleColor="#83808080"
+                app:mrl_rippleColor="@color/ripple_color"
                 app:mrl_rippleOverlay="true">
 
             <LinearLayout

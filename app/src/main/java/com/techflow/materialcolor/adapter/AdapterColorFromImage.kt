@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.model.ColorFromImage
 import com.techflow.materialcolor.utils.AnimUtils
@@ -17,16 +17,21 @@ class AdapterColorFromImage(
     private val context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_color_from_image, parent, false))
+        return ViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.item_color_from_image,
+                parent,
+                false))
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val colorFromImage = listColor[position]
         if (holder is ViewHolder) {
+
             with(holder) {
                 lytColor.setBackgroundColor(colorFromImage.color)
                 tvColorCode.text = colorFromImage.hexCode
-                fabCopyCode.setOnClickListener {
+
+                cardCopyCode.setOnClickListener {
                     AnimUtils.bounceAnim(it)
                     Tools.copyToClipboard(context, colorFromImage.hexCode, "Code ${colorFromImage.hexCode} ")
 
@@ -41,7 +46,7 @@ class AdapterColorFromImage(
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val lytColor: View = view.findViewById(R.id.lyt_color)
         val tvColorCode: TextView = view.findViewById(R.id.tv_color_code)
-        val fabCopyCode: FloatingActionButton = view.findViewById(R.id.fab_copy_code)
+        val cardCopyCode: CardView = view.findViewById(R.id.card_copy_code)
     }
 
 }

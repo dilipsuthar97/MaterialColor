@@ -36,17 +36,19 @@ class HomeFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // On color card item click listener
         mOnItemClickListener = object : AdapterColor.OnItemClickListener {
+
             override fun onItemClick(view: View, color: Color, position: Int) {
 
-                // Load ad
+                // Load interstitial ad
                 if (SharedPref.getInstance(context!!).getBoolean(Preferences.SHOW_AD, true))
                     HomeActivity.showAd(context!!)
 
                 val i = Intent(activity, ColorActivity::class.java)
                 i.putExtra("COLOR_NAME", color.colorName)
                 i.putExtra("COLOR", color.color)
-                i.putExtra("COLOR_POS", position)
                 startActivity(i)
             }
 
@@ -70,14 +72,14 @@ class HomeFragment : Fragment() {
         bind.recyclerView.isNestedScrollingEnabled = false
         val colorList = DataGenerator.getColorData(context!!)
 
-
-        var adCount = 0
+        // Add AdView for each 5 steps >>>>>>>>>>
+        /*var adCount = 0
         for (i in colorList.indices) {
             if (i % 5 == 0) {
                 colorList.add(adCount, Color(Color.TYPE_AD, -1, "", ""))
                 adCount += 5 + 1
             }
-        }
+        }*/
 
         adapter = AdapterColor(colorList, context!!, activity!!, mOnItemClickListener)
         bind.recyclerView.adapter = adapter
