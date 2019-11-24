@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.Toolbar
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:theme="@style/ThemeOverlay.MaterialComponents"
         android:id="@+id/toolbar"
-        app:titleTextAppearance="@style/TextAppearance.Large.Bold"
-        android:background="?attr/colorPrimary"
         android:layout_width="fill_parent"
         android:layout_height="?actionBarSize"
-        app:titleTextColor="?attr/colorTextPrimary"
+        android:background="?attr/colorPrimary"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.MaterialComponents"
         app:contentInsetStartWithNavigation="0dp"
         app:layout_scrollFlags="enterAlways|snap|scroll"
-        android:fitsSystemWindows="true"
-        app:popupTheme="@style/ThemeOverlay.MaterialComponents"/>
+        app:popupTheme="@style/ThemeOverlay.MaterialComponents"
+        app:titleTextAppearance="@style/TextAppearance.Large.Bold"
+        app:titleTextColor="?attr/colorTextPrimary" />

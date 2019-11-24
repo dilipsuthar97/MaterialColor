@@ -5,20 +5,16 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.view.size
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.facebook.ads.*
 import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetSequence
-import com.techflow.materialcolor.MaterialColor.AdType
-import com.techflow.materialcolor.MaterialColor
 import com.techflow.materialcolor.R
+import com.techflow.materialcolor.helpers.isDark
 import com.techflow.materialcolor.model.Color
 import com.techflow.materialcolor.utils.Preferences
 import com.techflow.materialcolor.utils.SharedPref
-import com.techflow.materialcolor.utils.Tools
 
 class AdapterColor(
     private val colorList: ArrayList<Color>,
@@ -42,7 +38,7 @@ class AdapterColor(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ViewHolder) {
 
-            holder.setData(colorList[position])
+            holder.setData(colorList[position], context)
             holder.setItemClickListener(onClickListener, colorList[position], position)
 
             // Show first start-up tutorial
@@ -72,12 +68,23 @@ class AdapterColor(
         private val viewColor: View = view.findViewById(R.id.view_color)
         private val tvColorName: TextView = view.findViewById(R.id.tv_color_name)
         private val tvColorCode: TextView = view.findViewById(R.id.tv_color_code)
-        private val btnTap: LinearLayout = view.findViewById(R.id.linear_layout)
+        private val btnTap: View = view.findViewById(R.id.btn_tap)
 
-        fun setData(colorCard: Color) {
+        fun setData(colorCard: Color, context: Context) {
             tvColorName.text = colorCard.colorName
             tvColorCode.text = colorCard.colorCode
             viewColor.setBackgroundColor(colorCard.color)
+
+            // Set textView color based on color luminance
+            if (itemViewType == Color.TYPE_COLOR_SHADE) {
+                if (colorCard.color.isDark()) {
+                    tvColorCode.setTextColor(ContextCompat.getColor(context, R.color.colorTextPrimary_dark))
+                    tvColorName.setTextColor(ContextCompat.getColor(context, R.color.colorTextPrimary_dark))
+                } else {
+                    tvColorCode.setTextColor(ContextCompat.getColor(context, R.color.colorTextPrimary))
+                    tvColorName.setTextColor(ContextCompat.getColor(context, R.color.colorTextPrimary))
+                }
+            }
         }
 
         fun setItemClickListener(onClickListener: OnItemClickListener, color: Color, pos: Int) {
@@ -118,7 +125,7 @@ class AdapterColor(
                 if (sharedPref.getBoolean(Preferences.ColorActFR, true) && pos == 1) {
                     TapTargetSequence(activity)
                         .targets(
-                            TapTarget.forView(btnTap, "Color shades", "Long press here to copy the color code.")
+                            TapTarget.forView(viewColor, "Color shades", "Long press here to copy the color code.")
                                 .outerCircleColor(R.color.colorAccent)
                                 .outerCircleAlpha(0.90f)
                                 .targetCircleColor(R.color.white)
@@ -172,6 +179,8 @@ class AdapterColor(
     fun getItem(position: Int): Color {
         return colorList[position]
     }
+
+    fun getItems(): ArrayList<Color> = colorList
 
     /** Interface */
     interface OnItemClickListener {

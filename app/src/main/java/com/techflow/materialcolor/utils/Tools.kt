@@ -18,6 +18,7 @@ import android.net.ConnectivityManager
 import android.view.Menu
 import androidx.annotation.ColorInt
 import androidx.appcompat.widget.Toolbar
+import androidx.core.graphics.ColorUtils
 import com.techflow.materialcolor.activity.WelcomeActivity
 import kotlin.system.exitProcess
 

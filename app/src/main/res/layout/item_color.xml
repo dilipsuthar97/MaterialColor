@@ -15,6 +15,7 @@
             app:cardElevation="3dp">
 
         <com.balysv.materialripple.MaterialRippleLayout
+                android:id="@+id/btn_tap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:mrl_rippleColor="@color/ripple_color"
