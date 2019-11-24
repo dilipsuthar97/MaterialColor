@@ -21,8 +21,13 @@ import com.techflow.materialcolor.utils.Tools
 class GradientFragment : Fragment() {
 
     companion object {
+        private var gradientFragment: GradientFragment? = null
+
         fun getInstance(): GradientFragment {
-            return GradientFragment()
+            if (gradientFragment == null)
+                gradientFragment = GradientFragment()
+
+            return gradientFragment as GradientFragment
         }
     }
 

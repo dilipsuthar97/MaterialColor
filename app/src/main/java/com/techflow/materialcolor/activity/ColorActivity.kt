@@ -13,18 +13,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.adapter.AdapterColor
 import com.techflow.materialcolor.data.DataGenerator
+import com.techflow.materialcolor.database.AppDatabase
 import com.techflow.materialcolor.databinding.ActivityColorBinding
 import com.techflow.materialcolor.model.Color
 import com.techflow.materialcolor.utils.Tools
 import kotlinx.android.synthetic.main.activity_color.*
 
-class ColorActivity : BaseActivity() {
+class ColorActivity : BaseActivity(), AdapterColor.OnItemClickListener {
 
     private val TAG = "MaterialColor"
 
     private lateinit var bind: ActivityColorBinding
     private lateinit var listColor: ArrayList<Color>
-    private lateinit var mOnItemClickListener: AdapterColor.OnItemClickListener
+
+    private lateinit var mDb: AppDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,18 +64,6 @@ class ColorActivity : BaseActivity() {
 
     private fun initComponent(colorName: String) {
 
-        /** Listener */
-        mOnItemClickListener = object : AdapterColor.OnItemClickListener {
-
-            override fun onItemClick(view: View, color: Color, position: Int) {
-
-            }
-
-            override fun onItemLongClick(view: View, color: Color, position: Int) {
-                Tools.copyToClipboard(this@ColorActivity, color.colorCode, "HEX code ${color.colorCode}")
-            }
-        }
-
         listColor = when (colorName) {
             "Red" -> DataGenerator.getRedColorData(this)
             "Pink" -> DataGenerator.getPinkColorData(this)
@@ -105,7 +95,7 @@ class ColorActivity : BaseActivity() {
             }
         }*/
 
-        val adapter = AdapterColor(listColor, this, this, mOnItemClickListener)
+        val adapter = AdapterColor(listColor, this, this, this)
 
         // Recycler view
         with(bind.recyclerView) {
@@ -113,5 +103,14 @@ class ColorActivity : BaseActivity() {
             layoutManager = LinearLayoutManager(this@ColorActivity)
             this.adapter = adapter
         }
+    }
+
+    /** Listener */
+    override fun onItemClick(view: View, color: Color, position: Int) {
+        Tools.copyToClipboard(this@ColorActivity, color.colorCode, "HEX code ${color.colorCode}")
+    }
+
+    override fun onItemLongClick(view: View, color: Color, position: Int) {
+
     }
 }

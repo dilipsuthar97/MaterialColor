@@ -61,7 +61,16 @@ dependencies {
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0' // Image cropper
     implementation 'com.getkeepsafe.taptargetview:taptargetview:1.13.0' // Tap target view
     implementation 'com.afollestad.material-dialogs:core:3.1.1'         // Material dialog
+    implementation 'com.afollestad.material-dialogs:bottomsheets:3.1.1' // Material bottom sheet
     implementation 'com.mikhaellopez:circularimageview:3.2.0'           // Circle Image View
     implementation 'com.facebook.android:audience-network-sdk:5.+'      // Facebook audience
+
+    def room_version = "1.1.1"                                          // Room database
+    implementation "android.arch.persistence.room:runtime:$room_version"
+    kapt "android.arch.persistence.room:compiler:$room_version"
+
+    def arch_life_cycle_version = "1.1.1"                               // LiveData, ViewModel
+    implementation "android.arch.lifecycle:extensions:$arch_life_cycle_version"
+    kapt "android.arch.lifecycle:compiler:$arch_life_cycle_version"
 }
 apply plugin: 'com.google.gms.google-services'

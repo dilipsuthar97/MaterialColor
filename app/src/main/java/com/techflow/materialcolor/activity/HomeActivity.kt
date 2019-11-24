@@ -4,13 +4,23 @@ import android.os.Bundle
 import com.techflow.materialcolor.utils.Tools
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.preference.PreferenceManager
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.afollestad.materialdialogs.LayoutMode
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.bottomsheets.BottomSheet
+import com.afollestad.materialdialogs.customview.customView
+import com.afollestad.materialdialogs.customview.getCustomView
 import com.facebook.ads.*
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.InstallStateUpdatedListener
@@ -48,7 +58,7 @@ import com.techflow.materialcolor.utils.ThemeUtils
     See the License for the specific language governing permissions and
     limitations under the License.
  */
-class HomeActivity : BaseActivity() {
+class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     val TAG = HomeActivity::class.java.simpleName
     val BACK_STACK_ROOT_NAME = "root_fragment"
@@ -78,12 +88,13 @@ class HomeActivity : BaseActivity() {
     private lateinit var gradientFragment: GradientFragment
     private lateinit var colorPickerFragment: ColorPickerFragment
     private lateinit var settingFragment: SettingFragment
+    private lateinit var activeFragment: Fragment
 
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
-    private var adView: AdView? = null
+    private lateinit var bottomSheet: MaterialDialog
 
-    private lateinit var activeFragment: Fragment
+    private var adView: AdView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,14 +111,23 @@ class HomeActivity : BaseActivity() {
         initComponent()
         initIntro()
         initBottomNavigation()
+        initMenuSheet()
         initAd()
         initInAppUpdate()   // Init in-app update
+    }
+
+    override fun onStart() {
+        super.onStart()
+        this.getSharedPreferences(packageName, Context.MODE_PRIVATE)
+            .registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onDestroy() {
         if (adView != null)
             adView?.destroy()
         super.onDestroy()
+        this.getSharedPreferences(packageName, Context.MODE_PRIVATE)
+            .unregisterOnSharedPreferenceChangeListener(this)
     }
 
     override fun onBackPressed() {
@@ -141,12 +161,16 @@ class HomeActivity : BaseActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_custom_code) {
-            firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_PALETTE_CREATOR, null)
-            startActivity(Intent(this, CustomColorActivity::class.java))
+        if (item.itemId == R.id.action_menu) {
+            bottomSheet.show()
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        if (key!! == Preferences.THEME)
+            recreate()
     }
 
     private fun initToolbar() {
@@ -203,7 +227,7 @@ class HomeActivity : BaseActivity() {
                 R.id.nav_settings -> {
                     firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_TAB_SETTING, null)
                     displayFragment(settingFragment)
-                    supportActionBar?.title = "Settings"
+                    supportActionBar?.title = "Bookmarked Color"
                 }
             }
         }
@@ -298,8 +322,38 @@ class HomeActivity : BaseActivity() {
 
     }
 
+    private fun initMenuSheet() {
+        bottomSheet = MaterialDialog(this, BottomSheet(LayoutMode.WRAP_CONTENT))
+            .cornerRadius(16f)
+            .customView(R.layout.bottom_sheet_menu, scrollable = true)
 
-    /** @method in-app update functionality */
+        val view = bottomSheet.getCustomView()
+
+        (view.findViewById<MaterialButton>(R.id.btn_cancel)).setOnClickListener {
+            bottomSheet.cancel()
+        }
+
+        view.findViewById<View>(R.id.btn_settings).setOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
+        }
+
+        view.findViewById<View>(R.id.btn_custom_color_maker).setOnClickListener {
+            firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_PALETTE_CREATOR, null)
+            startActivity(Intent(this, CustomColorActivity::class.java))
+        }
+
+        view.findViewById<View>(R.id.btn_gradient_maker).setOnClickListener {
+
+        }
+
+        view.findViewById<View>(R.id.btn_material_design_tool).setOnClickListener {
+            Toast.makeText(this, "Coming soon...", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    /**
+     * @method in-app update functionality ---------------------------------------------------------
+     * */
     var updateStarted = false
     private fun initInAppUpdate() {
         val appUpdateManager = AppUpdateManagerFactory.create(this)
