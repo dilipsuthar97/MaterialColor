@@ -24,6 +24,7 @@ import com.techflow.materialcolor.utils.Tools
  */
 class HomeFragment : Fragment(), AdapterColor.OnItemClickListener {
 
+    // STATIC
     companion object {
         private var homeFragment: HomeFragment? = null
 
@@ -35,22 +36,25 @@ class HomeFragment : Fragment(), AdapterColor.OnItemClickListener {
         }
     }
 
-    private lateinit var bind: FragmentHomeBinding
-    private lateinit var adapter: AdapterColor
+    private lateinit var binding: FragmentHomeBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         retainInstance = true
-        bind = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
 
-        initComponent(bind.root)
-        return bind.root
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initComponent(view)
     }
 
     private fun initComponent(view: View) {
 
-        bind.recyclerView.setHasFixedSize(true)
-        bind.recyclerView.layoutManager = LinearLayoutManager(context)
-        bind.recyclerView.isNestedScrollingEnabled = false
+        binding.recyclerView.setHasFixedSize(true)
+        binding.recyclerView.layoutManager = LinearLayoutManager(context)
+        binding.recyclerView.isNestedScrollingEnabled = false
         val colorList = DataGenerator.getColorData(context!!)
 
         // Add AdView for each 5 steps >>>>>>>>>>
@@ -62,24 +66,9 @@ class HomeFragment : Fragment(), AdapterColor.OnItemClickListener {
             }
         }*/
 
-        adapter = AdapterColor(colorList, context!!, activity!!, this)
-
-        /**
-         * Swipe item touch helper
-         */
-        /*ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder
-            ): Boolean {
-                return false
-            }
-
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val color = adapter.getItem(viewHolder.adapterPosition)
-                Toast.makeText(context, color.colorName, Toast.LENGTH_SHORT).show()
-            }
-        }).attachToRecyclerView(bind.recyclerView)*/
-
-        bind.recyclerView.adapter = adapter
+        val adapter = AdapterColor(context!!, activity!!, this, null)
+        binding.recyclerView.adapter = adapter
+        adapter.setColors(colorList)
     }
 
     override fun onItemClick(view: View, color: Color, position: Int) {
@@ -95,5 +84,8 @@ class HomeFragment : Fragment(), AdapterColor.OnItemClickListener {
 
     override fun onItemLongClick(view: View, color: Color, position: Int) {
         Tools.copyToClipboard(context!!, color.colorCode, "HEX code ${color.colorCode}")
+    }
+
+    override fun onBookmarkButtonClick(view: View, color: Color, position: Int) {
     }
 }

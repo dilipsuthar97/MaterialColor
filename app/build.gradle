@@ -42,7 +42,8 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'com.google.android.material:material:1.0.0-rc01'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.palette:palette:1.0.0'                             // Color Extractor form image
+    implementation 'androidx.palette:palette:1.0.0'
+    // Color Extractor form image
     implementation 'com.android.billingclient:billing:1.2'                      // In app purchase
     implementation 'androidx.browser:browser:1.0.0'                             // Chrome custom tab
     implementation 'com.google.android.play:core:1.6.4'                         // Play store core

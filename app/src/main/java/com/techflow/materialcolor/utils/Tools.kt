@@ -20,6 +20,7 @@ import androidx.annotation.ColorInt
 import androidx.appcompat.widget.Toolbar
 import androidx.core.graphics.ColorUtils
 import com.techflow.materialcolor.activity.WelcomeActivity
+import com.techflow.materialcolor.helpers.displayToast
 import kotlin.system.exitProcess
 
 /**
@@ -105,7 +106,7 @@ object Tools {
         val clip = "clipboard"
         (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager)
             .setPrimaryClip(ClipData.newPlainText(clip, data))
-        Toast.makeText(context, "$msg copied to clipboard", Toast.LENGTH_SHORT).show()
+        context.displayToast("$msg copied to clipboard")
     }
 
     fun hasNetwork(ctx: Context): Boolean {

@@ -1,12 +1,11 @@
 package com.techflow.materialcolor.activity
 
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
+import android.widget.ImageButton
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,7 +14,10 @@ import com.techflow.materialcolor.adapter.AdapterColor
 import com.techflow.materialcolor.data.DataGenerator
 import com.techflow.materialcolor.database.AppDatabase
 import com.techflow.materialcolor.databinding.ActivityColorBinding
+import com.techflow.materialcolor.helpers.AppExecutorHelper
+import com.techflow.materialcolor.helpers.displayToast
 import com.techflow.materialcolor.model.Color
+import com.techflow.materialcolor.utils.AnimUtils
 import com.techflow.materialcolor.utils.Tools
 import kotlinx.android.synthetic.main.activity_color.*
 
@@ -26,11 +28,13 @@ class ColorActivity : BaseActivity(), AdapterColor.OnItemClickListener {
     private lateinit var bind: ActivityColorBinding
     private lateinit var listColor: ArrayList<Color>
 
-    private lateinit var mDb: AppDatabase
+    private var mDb: AppDatabase? = null
+    private lateinit var adapterColor: AdapterColor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bind = DataBindingUtil.setContentView(this, R.layout.activity_color)
+        mDb = AppDatabase.getInstance(this)
 
         val extras = intent.extras
         val colorName = extras!!.getString("COLOR_NAME")!!
@@ -54,8 +58,8 @@ class ColorActivity : BaseActivity(), AdapterColor.OnItemClickListener {
 
     /** Methods */
     private fun initToolbar(colorName: String, color: Int) {
-        setSupportActionBar(bind.includeToolbar as Toolbar)
-        include_toolbar.setBackgroundColor(color)
+        setSupportActionBar(bind.toolbar as Toolbar)
+        bind.toolbar.setBackgroundColor(color)
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = colorName
@@ -95,14 +99,16 @@ class ColorActivity : BaseActivity(), AdapterColor.OnItemClickListener {
             }
         }*/
 
-        val adapter = AdapterColor(listColor, this, this, this)
+        adapterColor = AdapterColor(this, this, this, mDb)
 
         // Recycler view
         with(bind.recyclerView) {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(this@ColorActivity)
-            this.adapter = adapter
+            adapter = adapterColor
         }
+
+        adapterColor.setColors(listColor)
     }
 
     /** Listener */
@@ -111,6 +117,38 @@ class ColorActivity : BaseActivity(), AdapterColor.OnItemClickListener {
     }
 
     override fun onItemLongClick(view: View, color: Color, position: Int) {
+    }
 
+    override fun onBookmarkButtonClick(view: View, color: Color, position: Int) {
+        AnimUtils.bounceAnim(view)
+
+        if (adapterColor.getBookmarkedValue(position)) {
+            AppExecutorHelper.getInstance()?.diskIO()?.execute {
+                mDb?.colorDao()?.removeColor(adapterColor.getColor(position).colorCode)
+
+                AppExecutorHelper.getInstance()?.mainThread()?.execute {
+                    this.displayToast("${color.colorCode} removed from bookmark")
+                    val btn = view as ImageButton
+                    btn.setImageResource(R.drawable.ic_bookmark_border)
+                    adapterColor.setBookmarkedValue(position, false)
+                }
+            }
+
+
+        }
+        else {
+            AppExecutorHelper.getInstance()?.diskIO()?.execute {
+                mDb?.colorDao()?.saveColor(adapterColor.getColor(position))
+
+               AppExecutorHelper.getInstance()?.mainThread()?.execute {
+                   this.displayToast("${color.colorCode} bookmarked")
+                   val btn = view as ImageButton
+                   btn.setImageResource(R.drawable.ic_bookmark)
+                   adapterColor.setBookmarkedValue(position, true)
+               }
+            }
+
+
+        }
     }
 }

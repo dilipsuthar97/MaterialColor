@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-->>>>>>>>>>>>>>> Light base colors <<<<<<<<<<<<<<<-->
-    <color name="colorAccent">#00cea5</color>
+    <color name="colorAccent">#00cea5</color> <!-- 00cea5 -->
     <color name="colorPrimary">#ffffff</color>
     <color name="colorPrimaryDark">#cfcfcf</color>
     <color name="colorTextPrimary">#000000</color>
@@ -9,7 +9,7 @@
     <color name="statusBarColor">#FFF</color>
     <color name="appBarColor">#FFF</color>
     <color name="cardDialogColor">#FFF</color>
-    <color name="tabUnselectedColor">#000</color>
+    <color name="tabUnselectedColor">@color/overlay_dark_80</color>
     <color name="tabBgColor">@color/overlay_dark_20</color>
 
     <!-->>>>>>>>>>>>>>> Dark base colors <<<<<<<<<<<<<<<-->
@@ -21,13 +21,13 @@
     <color name="statusBarColor_dark">#000</color>
     <color name="appBarColor_dark">#212121</color>
     <color name="cardDialogColor_dark">#303030</color>
-    <color name="tabUnselectedColor_dark">#FFF</color>
+    <color name="tabUnselectedColor_dark">@color/overlay_light_80</color>
     <color name="tabBgColor_dark">@color/overlay_light_20</color>
 
     <color name="black">#ff000000</color>
     <color name="white">#ffffffff</color>
     <color name="transparent">#00ffffff</color>
-    <color name="ripple_color">#4D00CEA5</color>
+    <color name="ripple_color">#3300CEA5</color> <!-- 4D00CEA5 -->
 
     <color name="overlay_dark_10">#1a000000</color>
     <color name="overlay_dark_20">#33000000</color>

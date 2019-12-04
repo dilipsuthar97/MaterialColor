@@ -4,7 +4,6 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -26,7 +25,6 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.techflow.materialcolor.MaterialColor
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivitySettingsBinding
-import com.techflow.materialcolor.fragment.SettingFragment
 import com.techflow.materialcolor.utils.*
 
 class SettingsActivity : BaseActivity(), View.OnClickListener {

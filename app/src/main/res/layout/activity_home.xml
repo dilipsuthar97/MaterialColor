@@ -40,7 +40,7 @@
                     app:unSelectedIconColor="?attr/tabUnselectedColor" />
 
             <com.irozon.justbar.BarItem
-                    android:id="@+id/nav_gradient"
+                    android:id="@+id/nav_gradients"
                     android:layout_width="0.0dip"
                     android:layout_height="0.0dip"
                     app:icon="@drawable/ic_bubble_chart"
@@ -62,7 +62,7 @@
                     app:unSelectedIconColor="?attr/tabUnselectedColor" />
 
             <com.irozon.justbar.BarItem
-                    android:id="@+id/nav_settings"
+                    android:id="@+id/nav_bookmarked_color"
                     android:layout_width="0.0dip"
                     android:layout_height="0.0dip"
                     app:icon="@drawable/ic_bookmark"
@@ -74,7 +74,7 @@
         </com.irozon.justbar.JustBar>
 
         <FrameLayout
-                android:id="@+id/fragment"
+                android:id="@+id/host_fragment"
                 android:layout_width="fill_parent"
                 android:layout_height="0.0dip"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"

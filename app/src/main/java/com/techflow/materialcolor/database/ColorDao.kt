@@ -1,9 +1,7 @@
 package com.techflow.materialcolor.database
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.lifecycle.LiveData
+import androidx.room.*
 import com.techflow.materialcolor.model.Color
 
 @Dao
@@ -13,7 +11,13 @@ interface ColorDao {
     fun saveColor(color: Color)
 
     @Query("SELECT * FROM bookmarked_color")
-    fun getAllColors(): List<Color>
+    fun getAllColors(): LiveData<List<Color>>
+
+    @Query("SELECT * FROM bookmarked_color WHERE color_code = :colorCode LIMIT 1")
+    fun checkIfColorBookmarked(colorCode: String): Color
+
+    @Query("DELETE FROM bookmarked_color WHERE color_code = :colorCode")
+    fun removeColor(colorCode: String)
 
     @Delete
     fun removeColor(color: Color)
