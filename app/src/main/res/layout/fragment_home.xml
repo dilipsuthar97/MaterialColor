@@ -14,6 +14,7 @@
                 android:layout_height="match_parent"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
+                android:layoutAnimation="@anim/anim_layout"
                 android:scrollbars="vertical"/>
 
     </FrameLayout>

@@ -31,8 +31,7 @@ class GradientFragment : Fragment() {
         }
     }
 
-    private lateinit var bind: FragmentGradientBinding
-    private lateinit var listGradient: ArrayList<Gradient>
+    private lateinit var binding: FragmentGradientBinding
     private lateinit var smoothScroller: RecyclerView.SmoothScroller
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,16 +41,20 @@ class GradientFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         retainInstance = true
-        bind = DataBindingUtil.inflate(inflater, R.layout.fragment_gradient, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_gradient, container, false)
 
-        initComponent(bind.root)
-        return bind.root
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initComponent(view)
     }
 
     private fun initComponent(view: View) {
-        bind.recyclerView.setHasFixedSize(true)
-        bind.recyclerView.layoutManager = LinearLayoutManager(context)
-        listGradient = DataGenerator.getGradientsData(context!!)
+        binding.recyclerView.setHasFixedSize(true)
+        binding.recyclerView.layoutManager = LinearLayoutManager(context)
+        val listGradient = DataGenerator.getGradientsData(context!!)
 
         // For smooth scrolling to a specific position & visible item to top of recycler view
         smoothScroller = object : LinearSmoothScroller(context) {
@@ -76,7 +79,7 @@ class GradientFragment : Fragment() {
         }*/
 
         val adapter = AdapterGradient(listGradient, context!!, activity!!)
-        bind.recyclerView.adapter = adapter
+        binding.recyclerView.adapter = adapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -89,11 +92,11 @@ class GradientFragment : Fragment() {
         when (item.itemId) {
             R.id.scroll_new -> {
                 smoothScroller.targetPosition = 0
-                bind.recyclerView.layoutManager?.startSmoothScroll(smoothScroller)
+                binding.recyclerView.layoutManager?.startSmoothScroll(smoothScroller)
             }
             R.id.scroll_old -> {
                 smoothScroller.targetPosition = 28
-                bind.recyclerView.layoutManager?.startSmoothScroll(smoothScroller)
+                binding.recyclerView.layoutManager?.startSmoothScroll(smoothScroller)
             }
         }
         return true

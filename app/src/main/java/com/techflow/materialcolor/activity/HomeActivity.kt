@@ -32,10 +32,9 @@ import com.techflow.materialcolor.MaterialColor.AdType
 import com.techflow.materialcolor.MaterialColor
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivityHomeBinding
-import com.techflow.materialcolor.fragment.ColorPickerFragment
-import com.techflow.materialcolor.fragment.GradientFragment
-import com.techflow.materialcolor.fragment.HomeFragment
-import com.techflow.materialcolor.fragment.SettingFragment
+import com.techflow.materialcolor.fragment.*
+import com.techflow.materialcolor.helpers.displaySnackbar
+import com.techflow.materialcolor.helpers.displayToast
 import com.techflow.materialcolor.utils.Preferences
 import com.techflow.materialcolor.utils.SharedPref
 import com.techflow.materialcolor.utils.ThemeUtils
@@ -87,7 +86,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
     private lateinit var homeFragment: HomeFragment
     private lateinit var gradientFragment: GradientFragment
     private lateinit var colorPickerFragment: ColorPickerFragment
-    private lateinit var settingFragment: SettingFragment
+    private lateinit var bookmarkedColorFragment: BookmarkedColorFragment
     private lateinit var activeFragment: Fragment
 
     private lateinit var firebaseAnalytics: FirebaseAnalytics
@@ -101,11 +100,6 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
         sharedPref = SharedPref.getInstance(this)
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
-
-        /*binding.rootLayout.systemUiVisibility =
-            (View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)*/
 
         initToolbar()
         initComponent()
@@ -182,20 +176,22 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         homeFragment = HomeFragment.getInstance()
         gradientFragment = GradientFragment.getInstance()
         colorPickerFragment = ColorPickerFragment.getInstance()
-        settingFragment = SettingFragment.getInstance()
+        bookmarkedColorFragment = BookmarkedColorFragment.getInstance()
 
         displayFragment(homeFragment)
     }
 
     private fun initIntro() {
         if (sharedPref.getBoolean(Preferences.isFirstRun, true)) {
-            Snackbar.make(binding.rootLayout, "Long press on card to copy code", Snackbar.LENGTH_INDEFINITE)
-                .setAction("NEXT") {
-                    Snackbar.make(binding.rootLayout, "Tap on card to see different shades", Snackbar.LENGTH_INDEFINITE)
-                        .setAction("CLOSE") {
-
-                        }.show()
-                }.show()
+            Snackbar.make(binding.rootLayout, "Long press on card to copy code", Snackbar.LENGTH_INDEFINITE).apply {
+                setAction("NEXT") {
+                    Snackbar.make(binding.rootLayout, "Tap on card to see different shades", Snackbar.LENGTH_INDEFINITE).apply {
+                        setAction("CLOSE") {}
+                        show()
+                    }
+                }
+                show()
+            }
 
             sharedPref.saveData(Preferences.isFirstRun, false)
         }
@@ -214,7 +210,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     displayFragment(homeFragment)
                     supportActionBar?.title = "MaterialColor"
                 }
-                R.id.nav_gradient -> {
+                R.id.nav_gradients -> {
                     firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_TAB_GRADIENT, null)
                     displayFragment(gradientFragment)
                     supportActionBar?.title = "Gradients"
@@ -224,9 +220,9 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     displayFragment(colorPickerFragment)
                     supportActionBar?.title = "Color Picker"
                 }
-                R.id.nav_settings -> {
+                R.id.nav_bookmarked_color -> {
                     firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_TAB_SETTING, null)
-                    displayFragment(settingFragment)
+                    displayFragment(bookmarkedColorFragment)
                     supportActionBar?.title = "Bookmarked Color"
                 }
             }
@@ -234,7 +230,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
     }
 
     private fun displayFragment(fragment: Fragment?) {
-        val backStackName = fragment?.javaClass?.name
+        //val backStackName = fragment?.javaClass?.name
         val fragmentManager = supportFragmentManager
         if (fragment != null) {
             activeFragment = fragment
@@ -244,15 +240,47 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             //transaction.add(R.id.fragment, fragment, fragment.tag)
             //transaction.replace(R.id.fragment, fragment, BACK_STACK_ROOT_NAME)
             //transaction.addToBackStack(BACK_STACK_ROOT_NAME)
-            transaction.replace(R.id.fragment, fragment)
+            transaction.replace(R.id.host_fragment, fragment)
             transaction.commit()
+        }
+    }
+
+    private fun initMenuSheet() {
+        bottomSheet = MaterialDialog(this, BottomSheet(LayoutMode.WRAP_CONTENT))
+            .cornerRadius(16f)
+            .customView(R.layout.bottom_sheet_menu, scrollable = true)
+
+        val view = bottomSheet.getCustomView()
+
+        (view.findViewById<MaterialButton>(R.id.btn_cancel)).setOnClickListener {
+            bottomSheet.cancel()
+        }
+
+        view.findViewById<View>(R.id.btn_settings).setOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
+            bottomSheet.cancel()
+        }
+
+        view.findViewById<View>(R.id.btn_custom_color_maker).setOnClickListener {
+            firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_PALETTE_CREATOR, null)
+            startActivity(Intent(this, CustomColorActivity::class.java))
+            bottomSheet.cancel()
+        }
+
+        view.findViewById<View>(R.id.btn_gradient_maker).setOnClickListener {
+            startActivity(Intent(this, CustomGradientActivity::class.java))
+            bottomSheet.cancel()
+        }
+
+        view.findViewById<View>(R.id.btn_material_design_tool).setOnClickListener {
+            this.displayToast("Coming soon...")
         }
     }
 
     private var exitTime: Long = 0
     private fun appCloser() {
         if (System.currentTimeMillis() - exitTime > 2000) {
-            Toast.makeText(this, "Press again to close app", Toast.LENGTH_SHORT).show()
+            this.displayToast("Press again to close app")
             exitTime = System.currentTimeMillis()
             return
         }
@@ -322,34 +350,6 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
     }
 
-    private fun initMenuSheet() {
-        bottomSheet = MaterialDialog(this, BottomSheet(LayoutMode.WRAP_CONTENT))
-            .cornerRadius(16f)
-            .customView(R.layout.bottom_sheet_menu, scrollable = true)
-
-        val view = bottomSheet.getCustomView()
-
-        (view.findViewById<MaterialButton>(R.id.btn_cancel)).setOnClickListener {
-            bottomSheet.cancel()
-        }
-
-        view.findViewById<View>(R.id.btn_settings).setOnClickListener {
-            startActivity(Intent(this, SettingsActivity::class.java))
-        }
-
-        view.findViewById<View>(R.id.btn_custom_color_maker).setOnClickListener {
-            firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_PALETTE_CREATOR, null)
-            startActivity(Intent(this, CustomColorActivity::class.java))
-        }
-
-        view.findViewById<View>(R.id.btn_gradient_maker).setOnClickListener {
-
-        }
-
-        view.findViewById<View>(R.id.btn_material_design_tool).setOnClickListener {
-            Toast.makeText(this, "Coming soon...", Toast.LENGTH_SHORT).show()
-        }
-    }
 
     /**
      * @method in-app update functionality ---------------------------------------------------------
@@ -364,12 +364,10 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             // Show update downloading...
             if (state.installStatus() == InstallStatus.DOWNLOADING && !updateStarted) {
 
-                Snackbar.make(binding.rootLayout,
+                binding.rootLayout.displaySnackbar(
                     "Downloading update...",
                     Snackbar.LENGTH_LONG
-                ).apply {
-                    show()
-                }
+                )
 
                 updateStarted = true
             }
@@ -390,12 +388,10 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             // If the downloading is failed
             if (state.installStatus() == InstallStatus.FAILED) {
 
-                Snackbar.make(binding.rootLayout,
+                binding.rootLayout.displaySnackbar(
                     "Update downloading failed!",
                     Snackbar.LENGTH_LONG
-                ).apply {
-                    show()
-                }
+                )
 
             }
 
@@ -410,7 +406,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                         // For a flexible update, use AppUpdateType.FLEXIBLE
                         && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE))) {
 
-                Toast.makeText(this, "Update available", Toast.LENGTH_SHORT).show()
+                this.displayToast("Update available")
 
                 // Start update flow dialog
                 appUpdateManager.startUpdateFlowForResult(

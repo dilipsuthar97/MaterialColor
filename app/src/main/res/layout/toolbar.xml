@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/toolbar"
@@ -5,7 +6,7 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@android:color/white"
         android:elevation="3dp"
-        app:titleTextAppearance="@style/TextAppearance.Large.Bold"
         android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
         app:contentInsetStartWithNavigation="0dp"
-        app:popupTheme="@style/ThemeOverlay.MaterialComponents" />
+        app:popupTheme="@style/ThemeOverlay.MaterialComponents"
+        app:titleTextAppearance="@style/TextAppearance.Large.Bold" />

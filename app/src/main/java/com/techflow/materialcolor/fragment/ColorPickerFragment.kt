@@ -2,7 +2,6 @@ package com.techflow.materialcolor.fragment
 
 import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
@@ -10,7 +9,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.palette.graphics.Palette
@@ -44,20 +42,24 @@ class ColorPickerFragment : Fragment() {
         }
     }
 
-    private lateinit var bind: FragmentColorPickerBinding
+    private lateinit var binding: FragmentColorPickerBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         retainInstance = true
-        bind = DataBindingUtil.inflate(inflater, R.layout.fragment_color_picker, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_color_picker, container, false)
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initComponent()
-        return bind.root
     }
 
     private fun initComponent() {
         showTutorial()
 
-        bind.btnImgChooser.setOnClickListener {
+        binding.btnImgChooser.setOnClickListener {
             // Load ad
             if (SharedPref.getInstance(context!!).getBoolean(Preferences.SHOW_AD, true))
                 HomeActivity.showAd(context!!)
@@ -96,7 +98,7 @@ class ColorPickerFragment : Fragment() {
             if (data != null) {
                 val result = CropImage.getActivityResult(data)
                 if (resultCode == -1) {
-                    bind.imgPhoto.setImageURI(result.uri)
+                    binding.imgPhoto.setImageURI(result.uri)
                     extractColorFromImage()
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE)
                     result.error
@@ -105,10 +107,10 @@ class ColorPickerFragment : Fragment() {
     }
 
     private fun extractColorFromImage() {
-        val bitmap = if (bind.imgPhoto.drawable is BitmapDrawable)
-            (bind.imgPhoto.drawable as BitmapDrawable).bitmap
+        val bitmap = if (binding.imgPhoto.drawable is BitmapDrawable)
+            (binding.imgPhoto.drawable as BitmapDrawable).bitmap
         else {
-            val drawable = bind.imgPhoto.drawable
+            val drawable = binding.imgPhoto.drawable
             Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
         }
 
@@ -146,11 +148,11 @@ class ColorPickerFragment : Fragment() {
                 }
             }
 
-            Tools.inVisibleViews(bind.imgDummy, type = Tools.GONE)
-            Tools.visibleViews(bind.lytColorPalette)
+            Tools.inVisibleViews(binding.imgDummy, type = Tools.GONE)
+            Tools.visibleViews(binding.lytColorPalette)
 
             val adapterColorFromImage = AdapterColorFromImage(palettes, context!!)
-            with(bind.recyclerView) {
+            with(binding.recyclerView) {
                 layoutManager = LinearLayoutManager(context)
                 setHasFixedSize(true)
                 adapter = adapterColorFromImage
@@ -163,7 +165,7 @@ class ColorPickerFragment : Fragment() {
             if (getBoolean(Preferences.ColorPickerFragFR, true)) {
                 TapTargetView.showFor(activity!!,
                     TapTarget.forView(
-                        bind.btnImgChooser,
+                        binding.btnImgChooser,
                         "Tap here!",
                         "Tap here to choose image and extract color from image.")
                         .outerCircleColor(R.color.colorAccent)
