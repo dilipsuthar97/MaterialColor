@@ -13,17 +13,17 @@ import com.techflow.materialcolor.utils.SharedPref
 import com.techflow.materialcolor.utils.ThemeUtils
 import com.techflow.materialcolor.utils.Tools
 /**
- * Created by DILIP SUTHAR on 16/02/19
+ * Created by Dilip Suthar on 16/02/19
  */
 class CustomColorActivity : BaseActivity() {
 
     private lateinit var bind: ActivityCustomColorBinding
 
     private lateinit var sharedPref: SharedPref
-    var red = 0
-    var green = 0
-    var blue = 0
-    var hexCode = "#000000"
+    private var red = 0
+    private var green = 0
+    private var blue = 0
+    private var hexCode = "#000000"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +43,9 @@ class CustomColorActivity : BaseActivity() {
         return true
     }
 
-    /** methods */
+    /**
+     * @func init toolbar config
+     */
     private fun initToolbar() {
         setSupportActionBar(bind.toolbar as Toolbar)
         supportActionBar?.title = "Palette creator"
@@ -52,6 +54,9 @@ class CustomColorActivity : BaseActivity() {
         Tools.changeNavigationIconColor(bind.toolbar as Toolbar, ThemeUtils.getThemeAttrColor(this, R.attr.colorTextPrimary))
     }
 
+    /**
+     * @func init all component's config
+     */
     private fun initComponent() {
         setResult(red, green, blue)
 
@@ -70,7 +75,7 @@ class CustomColorActivity : BaseActivity() {
             }
 
             override fun onStopTrackingTouch(p0: SeekBar?) {
-                sharedPref.saveData(Preferences.RED, p0!!.progress)
+                sharedPref.saveData(Preferences.RED, p0?.progress ?: 0)
             }
         })
 
@@ -84,7 +89,7 @@ class CustomColorActivity : BaseActivity() {
             }
 
             override fun onStopTrackingTouch(p0: SeekBar?) {
-                sharedPref.saveData(Preferences.GREEN, p0!!.progress)
+                sharedPref.saveData(Preferences.GREEN, p0?.progress ?: 0)
             }
         })
 
@@ -98,7 +103,7 @@ class CustomColorActivity : BaseActivity() {
             }
 
             override fun onStopTrackingTouch(p0: SeekBar?) {
-                sharedPref.saveData(Preferences.BLUE, p0!!.progress)
+                sharedPref.saveData(Preferences.BLUE, p0?.progress ?: 0)
             }
         })
 
@@ -113,9 +118,23 @@ class CustomColorActivity : BaseActivity() {
 
     }
 
+    /**
+     * @func convert color's rgb value into hex code
+     * @param r red color value
+     * @param g green color value
+     * @param b blue color value
+     *
+     * @return string value of hex code
+     */
     private fun rgbToHex(r: Int, g: Int, b: Int): String =
         "#${Integer.toHexString(r)}${Integer.toHexString(g)}${Integer.toHexString(b)}"
 
+    /**
+     * @func set color results into UI
+     * @param r red color value
+     * @param g green color value
+     * @param b blue color value
+     */
     private fun setResult(r: Int, g: Int, b: Int) {
         bind.tvRgbCode.text = "( $r, $g, $b )"
         hexCode = rgbToHex(r, g, b)

@@ -5,6 +5,12 @@ import com.techflow.materialcolor.R
 import com.techflow.materialcolor.model.Color
 import com.techflow.materialcolor.model.Gradient
 
+/**
+ * Data generator static class
+ * @param ctx context from activity
+ *
+ * @return return array list of <?>
+ */
 object DataGenerator {
     fun getColorData(ctx: Context): ArrayList<Color> {
         val items = ArrayList<Color>()

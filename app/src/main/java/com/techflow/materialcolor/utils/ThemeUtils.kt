@@ -9,17 +9,31 @@ import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import com.techflow.materialcolor.R
 
+/**
+ * Modified by Dilip Suthar 15/12/19
+ */
 object ThemeUtils {
 
     const val TAG: String = "ThemeUtils"
     const val LIGHT = "light"
     const val DARK = "dark"
 
+    /**
+     * @func get theme type
+     * @param context Context
+     *
+     * @return return string value for theme type
+     */
     fun getTheme(context: Context): String {
         val sharedPreferences = SharedPref.getInstance(context)
         return sharedPreferences.getString(Preferences.THEME, LIGHT)!!
     }
 
+    /**
+     * @func save theme type into shared preference
+     * @param context Context
+     * @param theme string value of theme type LIGHT or DARK
+     */
     fun setTheme(context: Context, theme: String) {
         val sharedPreferences = SharedPref.getInstance(context)
         when (theme) {
@@ -28,6 +42,13 @@ object ThemeUtils {
         }
     }
 
+    /**
+     * @func get attr value for given color
+     * @param context Context
+     * @param colorAttr res id of color attr
+     *
+     * @return return int value
+     */
     @ColorInt
     fun getThemeAttrColor(context: Context, @AttrRes colorAttr: Int): Int {
         val array = context.obtainStyledAttributes(null, intArrayOf(colorAttr))
@@ -38,6 +59,10 @@ object ThemeUtils {
         }
     }
 
+    /**
+     * @func set header color of app in recent app mode
+     * @param activity Activity
+     */
     fun setRecentAppsHeaderColor(activity: Activity) {
         val icon = BitmapFactory.decodeResource(activity.resources, R.mipmap.ic_launcher)
         val taskDescription = ActivityManager.TaskDescription(

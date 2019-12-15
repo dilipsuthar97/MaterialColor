@@ -50,6 +50,10 @@ class HomeFragment : Fragment(), AdapterColor.OnItemClickListener {
         initComponent(view)
     }
 
+    /**
+     * @func init all component's config
+     * @param view view
+     */
     private fun initComponent(view: View) {
 
         binding.recyclerView.setHasFixedSize(true)
@@ -71,6 +75,12 @@ class HomeFragment : Fragment(), AdapterColor.OnItemClickListener {
         adapter.setColors(colorList)
     }
 
+    /**
+     * @inherited on item click callback
+     * @param view view
+     * @param color color object
+     * @param position recycler view item position
+     */
     override fun onItemClick(view: View, color: Color, position: Int) {
         // Load interstitial ad
         if (SharedPref.getInstance(context!!).getBoolean(Preferences.SHOW_AD, true))
@@ -82,10 +92,22 @@ class HomeFragment : Fragment(), AdapterColor.OnItemClickListener {
         startActivity(i)
     }
 
+    /**
+     * @inherited on item long click callback
+     * @param view view
+     * @param color color object
+     * @param position recycler view item position
+     */
     override fun onItemLongClick(view: View, color: Color, position: Int) {
         Tools.copyToClipboard(context!!, color.colorCode, "HEX code ${color.colorCode}")
     }
 
+    /**
+     * @inherited on bookmark button click ballback
+     * @param view view
+     * @param color color object
+     * @param position recycler view item position
+     */
     override fun onBookmarkButtonClick(view: View, color: Color, position: Int) {
     }
 }

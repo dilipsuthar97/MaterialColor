@@ -76,8 +76,10 @@ class AdapterColor constructor(
         }
     }
 
-    /** View holder */
-    // Color view holder
+    /**
+     * Color view holder class
+     * @param view view
+     */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val viewColor: View = view.findViewById(R.id.view_color)
         private val tvColorName: TextView = view.findViewById(R.id.tv_color_name)
@@ -190,7 +192,10 @@ class AdapterColor constructor(
         }
     }
 
-    // Ad View Holder
+    /**
+     * Ad view holder class
+     * @param view view
+     */
     class AdViewHolder(view: View): RecyclerView.ViewHolder(view) {
         /*private val bannerContainer: LinearLayout = view.findViewById(R.id.banner_container)
 
@@ -222,29 +227,60 @@ class AdapterColor constructor(
         }*/
     }
 
-    /** Methods */
+    /**
+     * @func get color object
+     * @param position position of item
+     *
+     * @return return color object for given position
+     */
     fun getColor(position: Int): Color = colorList[position]
 
+    /**
+     * @func get color list
+     *
+     * @return return list of colors
+     */
     fun getColors(): List<Color> = colorList
 
+    /**
+     * @func set color object in list at given position
+     * @param color color object
+     * @param position position to set color object in list
+     */
     fun setColor(color: Color, position: Int) {
         colorList.add(position, color)
         notifyDataSetChanged()
     }
 
+    /**
+     * @func set colors to list
+     * @param colors list of colors
+     */
     fun setColors(colors: List<Color>) {
         colorList = ArrayList(colors)
         notifyDataSetChanged()
     }
 
+    /**
+     * @func get value of bookmarked var from color object
+     * @param position position of color object from list
+     */
     fun getBookmarkedValue(position: Int): Boolean = colorList[position].bookmarked
 
+    /**
+     * @func set value of bookmarked var in color object
+     * @param position position of color object from list
+     * @param value value to set
+     */
     fun setBookmarkedValue(position: Int, value: Boolean) {
         colorList[position].bookmarked = value
         //notifyItemChanged(position)
     }
 
-    /** Interface */
+    /**
+     * Interface
+     * on item click listener callbacks
+     */
     interface OnItemClickListener {
         fun onItemClick(view: View, color: Color, position: Int)
         fun onItemLongClick(view: View, color: Color, position: Int)

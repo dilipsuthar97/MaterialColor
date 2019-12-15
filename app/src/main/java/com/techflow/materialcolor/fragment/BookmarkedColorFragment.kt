@@ -58,6 +58,9 @@ class BookmarkedColorFragment : Fragment(), AdapterColor.OnItemClickListener {
         initViewModel()
     }
 
+    /**
+     * @func init view model and their subscribers
+     */
     private fun initViewModel() {
         val factory = BookmarkedColorViewModelFactory(mDb!!)
         val viewModel = ViewModelProviders
@@ -67,24 +70,42 @@ class BookmarkedColorFragment : Fragment(), AdapterColor.OnItemClickListener {
         viewModel.getBookmarkedColors()?.observe(this, Observer {
             if (it == null || it.isEmpty()) {
                 Tools.visibleViews(binding.layoutNoItems)
-                Tools.inVisibleViews(binding.recyclerView, type = Tools.GONE)
+                Tools.inVisibleViews(binding.recyclerView, type = Tools.InvisibilityType.GONE)
             } else {
                 Tools.visibleViews(binding.recyclerView)
-                Tools.inVisibleViews(binding.layoutNoItems, type = Tools.GONE)
+                Tools.inVisibleViews(binding.layoutNoItems, type = Tools.InvisibilityType.GONE)
             }
 
             adapter.setColors(it)
         })
     }
 
+    /**
+     * @inherited on item click callback
+     * @param view view
+     * @param color color object
+     * @param position recycler view item position
+     */
     override fun onItemClick(view: View, color: Color, position: Int) {
         Tools.copyToClipboard(context!!, color.colorCode, "HEX code ${color.colorCode}")
     }
 
+    /**
+     * @inherited on item long click callback
+     * @param view view
+     * @param color color object
+     * @param position recycler view item position
+     */
     override fun onItemLongClick(view: View, color: Color, position: Int) {
 
     }
 
+    /**
+     * @inherited on bookmark button click ballback
+     * @param view view
+     * @param color color object
+     * @param position recycler view item position
+     */
     override fun onBookmarkButtonClick(view: View, color: Color, position: Int) {
         AnimUtils.bounceAnim(view)
 

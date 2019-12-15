@@ -21,6 +21,9 @@ import com.techflow.materialcolor.utils.AnimUtils
 import com.techflow.materialcolor.utils.Tools
 import kotlinx.android.synthetic.main.activity_color.*
 
+/**
+ * @author Dilip Suthar
+ */
 class ColorActivity : BaseActivity(), AdapterColor.OnItemClickListener {
 
     private val TAG = "MaterialColor"
@@ -56,7 +59,11 @@ class ColorActivity : BaseActivity(), AdapterColor.OnItemClickListener {
         return true
     }
 
-    /** Methods */
+    /**
+     * @func init toolbar config
+     * @param colorName name of the color
+     * @param color int value of color
+     */
     private fun initToolbar(colorName: String, color: Int) {
         setSupportActionBar(bind.toolbar as Toolbar)
         bind.toolbar.setBackgroundColor(color)
@@ -66,6 +73,10 @@ class ColorActivity : BaseActivity(), AdapterColor.OnItemClickListener {
         Tools.setSystemBarColorById(this, color)
     }
 
+    /**
+     * @func init all component's config
+     * @param colorName name of the color
+     */
     private fun initComponent(colorName: String) {
 
         listColor = when (colorName) {
@@ -111,14 +122,31 @@ class ColorActivity : BaseActivity(), AdapterColor.OnItemClickListener {
         adapterColor.setColors(listColor)
     }
 
-    /** Listener */
+    /**
+     * @inherited on item click callback
+     * @param view view
+     * @param color color object
+     * @param position recycler view item position
+     */
     override fun onItemClick(view: View, color: Color, position: Int) {
         Tools.copyToClipboard(this@ColorActivity, color.colorCode, "HEX code ${color.colorCode}")
     }
 
+    /**
+     * @inherited on item long click callback
+     * @param view view
+     * @param color color object
+     * @param position recycler view item position
+     */
     override fun onItemLongClick(view: View, color: Color, position: Int) {
     }
 
+    /**
+     * @inherited on bookmark button click ballback
+     * @param view view
+     * @param color color object
+     * @param position recycler view item position
+     */
     override fun onBookmarkButtonClick(view: View, color: Color, position: Int) {
         AnimUtils.bounceAnim(view)
 
@@ -134,7 +162,6 @@ class ColorActivity : BaseActivity(), AdapterColor.OnItemClickListener {
                 }
             }
 
-
         }
         else {
             AppExecutorHelper.getInstance()?.diskIO()?.execute {
@@ -147,7 +174,6 @@ class ColorActivity : BaseActivity(), AdapterColor.OnItemClickListener {
                    adapterColor.setBookmarkedValue(position, true)
                }
             }
-
 
         }
     }

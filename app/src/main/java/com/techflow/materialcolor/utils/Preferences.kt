@@ -1,13 +1,22 @@
 package com.techflow.materialcolor.utils
 
 /**
- * Created by DILIP SUTHAR on 16/02/19
+ * Modified by Dilip Suthar on 15/12/19
  */
 object Preferences {
     const val isFirstRun = "is_first_run"
     const val RED = "red"
     const val GREEN = "green"
     const val BLUE = "blue"
+
+    const val PRIMARY_GRADIENT_RED = "primary_gradient_red"
+    const val PRIMARY_GRADIENT_GREEN = "primary_gradient_green"
+    const val PRIMARY_GRADIENT_BLUE = "primary_gradient_blue"
+
+    const val SECONDARY_GRADIENT_RED = "secondary_gradient_red"
+    const val SECONDARY_GRADIENT_GREEN = "secondary_gradient_green"
+    const val SECONDARY_GRADIENT_BLUE = "secondary_gradient_blue"
+
     const val SHOW_AD = "show_ad"
     const val THEME = "theme"
 

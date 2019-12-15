@@ -42,7 +42,10 @@ class AdapterColorFromImage(
 
     override fun getItemCount(): Int = if (listColor.isEmpty()) 0 else listColor.size
 
-    /** View holder */
+    /**
+     * Color view holder class
+     * @param view view
+     */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val lytColor: View = view.findViewById(R.id.lyt_color)
         val tvColorCode: TextView = view.findViewById(R.id.tv_color_code)

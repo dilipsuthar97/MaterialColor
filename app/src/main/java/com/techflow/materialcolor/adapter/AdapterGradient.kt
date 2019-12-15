@@ -91,8 +91,10 @@ class AdapterGradient(
         }
     }
 
-    /** View holder */
-    // Gradient view holder
+    /**
+     * Gradient view holder class
+     * @param view view
+     */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val colorLyt: View = view.findViewById(R.id.color_lyt)
         val tvPrimaryColor: TextView = view.findViewById(R.id.tv_primary_color)
@@ -149,7 +151,10 @@ class AdapterGradient(
         }
     }
 
-    // Ad View Holder
+    /**
+     * Ad view holder class
+     * @param view view
+     */
     class AdViewHolder(view: View): RecyclerView.ViewHolder(view) {
         /*private val bannerContainer: LinearLayout = view.findViewById(R.id.banner_container)
 
@@ -181,7 +186,10 @@ class AdapterGradient(
         }*/
     }
 
-    // Section view holder
+    /**
+     * Section view holder class
+     * @param view view
+     */
     class SectionViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val title: TextView = view.findViewById(R.id.tv_section_title)
     }

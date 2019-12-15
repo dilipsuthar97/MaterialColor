@@ -7,8 +7,11 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.techflow.materialcolor.model.Color
 
+/**
+ * App database class
+ */
 @Database(entities = [Color::class], version = 1, exportSchema = false)
-public abstract class AppDatabase : RoomDatabase() {
+abstract class AppDatabase : RoomDatabase() {
 
     companion object {
         private val TAG = AppDatabase.javaClass.simpleName
@@ -32,6 +35,11 @@ public abstract class AppDatabase : RoomDatabase() {
 
     }
 
+    /**
+     * @func color data access object (DAO)
+     *
+     * @return return colorDao callbacks (interface)
+     */
     abstract fun colorDao(): ColorDao?
 
 }

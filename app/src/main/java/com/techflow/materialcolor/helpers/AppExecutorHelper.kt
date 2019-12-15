@@ -5,10 +5,11 @@ import android.os.Looper
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 /**
- * Created by Dilip on 03/12/19
+ * Modified by Dilip Suthar on 15/12/19
  */
 class AppExecutorHelper constructor(private val diskIO: Executor, private val multiThreadIO: Executor, private val mainThread: Executor) {
 
+    // Static
     companion object {
         private var mInstance: AppExecutorHelper? = null
 
@@ -17,7 +18,7 @@ class AppExecutorHelper constructor(private val diskIO: Executor, private val mu
                 synchronized(this) {
                     mInstance = AppExecutorHelper(
                         Executors.newSingleThreadExecutor(),
-                        Executors.newFixedThreadPool(50),
+                        Executors.newFixedThreadPool(30),
                         MainThreadExecutor()
                     )
                 }

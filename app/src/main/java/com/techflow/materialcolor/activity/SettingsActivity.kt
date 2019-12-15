@@ -53,7 +53,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
         if (Tools.hasNetwork(this)) {
             setupBillingClient()
             Tools.visibleViews(bind.progressBar)
-            Tools.inVisibleViews(bind.btnRemoveAds, type = Tools.GONE)
+            Tools.inVisibleViews(bind.btnRemoveAds, type = Tools.InvisibilityType.GONE)
         }
         if (!SharedPref.getInstance(this).getBoolean(Preferences.SHOW_AD, true)) {
             bind.btnRemoveAds.isEnabled = false
@@ -91,7 +91,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
                 firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_REMOVE_ADS, null)
                 if (Tools.hasNetwork(this)) {
                     Tools.visibleViews(bind.progressBar)
-                    Tools.inVisibleViews(bind.btnRemoveAds, type = Tools.GONE)
+                    Tools.inVisibleViews(bind.btnRemoveAds, type = Tools.InvisibilityType.GONE)
                     if (::billingClient.isInitialized)
                         startPurchase()
                 } else
@@ -164,7 +164,9 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
         return super.onOptionsItemSelected(item)
     }
 
-    /** Methods */
+    /**
+     * @func init toolbar config
+     */
     private fun initToolbar() {
         setSupportActionBar(bind.toolbar as Toolbar)
         val actionBar = supportActionBar!!
@@ -174,6 +176,9 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
         Tools.changeNavigationIconColor(bind.toolbar as Toolbar, ThemeUtils.getThemeAttrColor(this, R.attr.colorTextPrimary))
     }
 
+    /**
+     * @func open about us dialog
+     */
     private fun showAboutDialog() {
         val view = View.inflate(this, R.layout.dialog_about, null)
         val dialog = MaterialDialog(this).show {
@@ -188,8 +193,8 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    /** It will open URL link into chrome custom tab
-     *
+    /**
+     * @func It will open URL link into chrome custom tab
      * @param url a url link in a string format
      */
     private fun openWebView(url: String) {
@@ -207,6 +212,9 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
         intent.launchUrl(this, Uri.parse(url))
     }
 
+    /**
+     * @func show app intro for first use
+     */
     private fun showTutorial() {
         val sharedPref = SharedPref.getInstance(this)
 
@@ -228,7 +236,12 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    /** Billing methods */
+    /*
+     * Billing Methods -----------------------------------------------------------------------------
+     */
+    /**
+     * @func setup in-app purchase
+     */
     private fun setupBillingClient() {
         Log.d(TAG, "setupBillingClient: called")
 
@@ -247,7 +260,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
                                 "and after reinstall the app you have to check your purchase by tapping Pay button." +
                                 "\n\nThanks for purchase :)")
                         positiveButton(text = "RESTART APP") {
-                            Tools.restartApp(context!!)
+                            Tools.restartApp(context)
                             Toast.makeText(context, "Restarting app", Toast.LENGTH_SHORT).show()
                         }
                     }
@@ -279,13 +292,13 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
         billingClient.startConnection(object : BillingClientStateListener {
 
             override fun onBillingServiceDisconnected() {
-                Tools.inVisibleViews(bind.btnRemoveAds, type = Tools.GONE)
+                Tools.inVisibleViews(bind.btnRemoveAds, type = Tools.InvisibilityType.GONE)
                 Tools.visibleViews(bind.progressBar)
             }
 
             override fun onBillingSetupFinished(responseCode: Int) {
                 if (responseCode == 0) {
-                    Tools.inVisibleViews(bind.progressBar, type = Tools.GONE)
+                    Tools.inVisibleViews(bind.progressBar, type = Tools.InvisibilityType.GONE)
                     Tools.visibleViews(bind.btnRemoveAds)
 
                     skuDetailParam = SkuDetailsParams
@@ -308,6 +321,9 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
         })
     }
 
+    /**
+     * @func open in-app purchase dialog flow for purchase
+     */
     private fun startPurchase() {
         Log.d(TAG, "startPurchase: called")
 
