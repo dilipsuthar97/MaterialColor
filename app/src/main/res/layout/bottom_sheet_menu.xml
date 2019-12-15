@@ -6,46 +6,31 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-    <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_cancel"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="@string/title_cancel"
-            android:textAllCaps="false"
-            android:textColor="?attr/colorTextSecondary"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
-            android:id="@+id/textView7"
+            android:id="@+id/label_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:text="Menu"
+            android:text="More"
             android:textColor="?attr/colorTextPrimary"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/btn_cancel"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/btn_cancel" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
             android:id="@+id/btn_settings"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginEnd="8dp"
-            android:background="?attr/selectableItemBackground"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_settings"
             android:tint="?attr/colorAccent"
+            app:layout_constraintBottom_toBottomOf="@+id/label_more"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/label_more" />
 
     <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -54,7 +39,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_cancel">
+            app:layout_constraintTop_toBottomOf="@+id/label_more">
 
         <LinearLayout
                 android:id="@+id/btn_custom_color_maker"
@@ -63,15 +48,16 @@
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
+                android:gravity="center_vertical"
                 android:paddingStart="8dp"
                 android:paddingEnd="0dp"
-                android:gravity="center_vertical"
                 tools:layout_editor_absoluteX="5dp">
 
             <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_custom_color_maker"
+                    android:src="@drawable/ic_palette"
+                    android:padding="12dp"
                     android:tint="@color/orange_500" />
 
             <View
@@ -93,9 +79,9 @@
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
+                android:gravity="center_vertical"
                 android:paddingStart="8dp"
                 android:paddingEnd="0dp"
-                android:gravity="center_vertical"
                 tools:layout_editor_absoluteX="5dp">
 
             <ImageView
@@ -123,9 +109,9 @@
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
+                android:gravity="center_vertical"
                 android:paddingStart="8dp"
                 android:paddingEnd="0dp"
-                android:gravity="center_vertical"
                 tools:layout_editor_absoluteX="5dp">
 
             <ImageView

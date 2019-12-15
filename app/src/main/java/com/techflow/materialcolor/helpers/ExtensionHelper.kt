@@ -8,19 +8,21 @@ import androidx.core.graphics.ColorUtils
 import com.google.android.material.snackbar.Snackbar
 
 /**
- * compare the given boolean value with user's check predicate
- *
+ * @func compare the given boolean value with user's check predicate
  * @param this The boolean value to check predicate
  */
 fun Int.isDark(): Boolean = ColorUtils.calculateLuminance(this) <= 0.5
 
 /**
- * It compare boolean value with another boolean value
- *
+ * @func It compare boolean value with another boolean value
  * @param value The secondary boolean value to check equality
  */
 infix fun Boolean.eq(value: Boolean): Boolean = this == value
 
+/**
+ * @func display toast
+ * @param message res id of string value to display message
+ */
 fun Context.displayToast(@StringRes message: Int) {
     Toast.makeText(
         this,
@@ -29,6 +31,10 @@ fun Context.displayToast(@StringRes message: Int) {
     ).show()
 }
 
+/**
+ * @func display toast
+ * @param message string value to display message
+ */
 fun Context.displayToast(message: String) {
     Toast.makeText(
         this,
@@ -37,6 +43,11 @@ fun Context.displayToast(message: String) {
     ).show()
 }
 
+/**
+ * @func display snackbar
+ * @param message string value to display message
+ * @param duration int duration value for snackbar
+ */
 fun View.displaySnackbar(message: String, duration: Int) {
     Snackbar.make(
         this,

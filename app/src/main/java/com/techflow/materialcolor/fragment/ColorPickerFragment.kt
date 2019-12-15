@@ -56,6 +56,9 @@ class ColorPickerFragment : Fragment() {
         initComponent()
     }
 
+    /**
+     * @func init all component's config
+     */
     private fun initComponent() {
         showTutorial()
 
@@ -73,6 +76,9 @@ class ColorPickerFragment : Fragment() {
         }
     }
 
+    /**
+     * @func show permission denied dialog
+     */
     private fun showPermissionDeniedDialog() {
         MaterialDialog(context!!).show {
             cornerRadius(16f)
@@ -85,6 +91,9 @@ class ColorPickerFragment : Fragment() {
         }
     }
 
+    /**
+     * @func open image chooser activity
+     */
     private fun openImagePicker() {
         CropImage.activity()
             .setGuidelines(CropImageView.Guidelines.ON_TOUCH)
@@ -106,6 +115,9 @@ class ColorPickerFragment : Fragment() {
         }
     }
 
+    /**
+     * @func extract colors from choosen image
+     */
     private fun extractColorFromImage() {
         val bitmap = if (binding.imgPhoto.drawable is BitmapDrawable)
             (binding.imgPhoto.drawable as BitmapDrawable).bitmap
@@ -148,7 +160,7 @@ class ColorPickerFragment : Fragment() {
                 }
             }
 
-            Tools.inVisibleViews(binding.imgDummy, type = Tools.GONE)
+            Tools.inVisibleViews(binding.imgDummy, type = Tools.InvisibilityType.GONE)
             Tools.visibleViews(binding.lytColorPalette)
 
             val adapterColorFromImage = AdapterColorFromImage(palettes, context!!)
@@ -160,6 +172,9 @@ class ColorPickerFragment : Fragment() {
         }
     }
 
+    /**
+     * @func show app intro for first use
+     */
     private fun showTutorial() {
         with(SharedPref.getInstance(context!!)) {
             if (getBoolean(Preferences.ColorPickerFragFR, true)) {
@@ -193,6 +208,12 @@ class ColorPickerFragment : Fragment() {
         }
     }
 
+    /**
+     * @func convert color's int value into hex code
+     * @param color int value of color
+     *
+     * @return return string value of hex code
+     */
     private fun getHexCode(color: Int): String {
         return "#${Integer.toHexString(color).toUpperCase(Locale.getDefault()).substring(2)}"  // Without alpha
         //return "#${Integer.toHexString(color).toUpperCase()}"  // With alpha

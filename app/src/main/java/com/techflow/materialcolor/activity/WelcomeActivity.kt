@@ -6,7 +6,7 @@ import android.os.Handler
 import android.widget.TextView
 import com.techflow.materialcolor.R
 /**
- * Created by DILIP SUTHAR on 16/02/19
+ * Created by Dilip Suthar on 16/02/19
  */
 
 /**
@@ -38,6 +38,9 @@ class WelcomeActivity : BaseActivity() {
 
     }
 
+    /**
+     * @func init all component's config
+     */
     private fun initComponent() {
         Handler().postDelayed({
             startActivity(Intent(this, HomeActivity::class.java))

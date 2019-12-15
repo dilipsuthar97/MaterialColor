@@ -24,12 +24,14 @@ import com.techflow.materialcolor.helpers.displayToast
 import kotlin.system.exitProcess
 
 /**
- * Created by Dilip on 16/02/19
+ * Modified by Dilip Suthar on 15/12/19
  */
 object Tools {
 
-    const val GONE = 0
-    const val INVISIBLE = 1
+    enum class InvisibilityType {
+        GONE,
+        INVISIBLE
+    }
 
     fun setSystemBarColor(act: Activity) {
         if (Build.VERSION.SDK_INT >= 22) {
@@ -89,9 +91,9 @@ object Tools {
         }
     }
 
-    fun inVisibleViews(vararg views: View, type: Int) {
+    fun inVisibleViews(vararg views: View, type: InvisibilityType) {
 
-        if (type == INVISIBLE) {
+        if (type == InvisibilityType.INVISIBLE) {
             for (v in views) {
                 v.visibility = View.INVISIBLE
             }

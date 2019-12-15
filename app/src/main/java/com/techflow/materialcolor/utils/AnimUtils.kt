@@ -7,6 +7,10 @@ import android.view.animation.OvershootInterpolator
 
 object AnimUtils {
 
+    /**
+     * @func bounce animation for view
+     * @param view view for animation
+     */
     fun bounceAnim(view: View) {
         val scaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, *floatArrayOf(0.5f, 1.0f))
         val scaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, *floatArrayOf(0.5f, 1.0f))

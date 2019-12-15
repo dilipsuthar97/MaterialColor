@@ -7,6 +7,9 @@ import com.techflow.materialcolor.R
 import com.techflow.materialcolor.utils.ThemeUtils
 import com.techflow.materialcolor.utils.Tools
 
+/**
+ * @author Dilip Suthar
+ */
 abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         when(ThemeUtils.getTheme(this)) {
@@ -24,7 +27,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     }
 
-    /** @method customize status bar bg & icon color */
+    /** @func customize status bar bg & icon color */
     private fun customizeStatusBar() {
         when(ThemeUtils.getTheme(this)) {
             ThemeUtils.LIGHT -> Tools.setSystemBarLight(this)

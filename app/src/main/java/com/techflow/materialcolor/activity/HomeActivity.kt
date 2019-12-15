@@ -39,7 +39,8 @@ import com.techflow.materialcolor.utils.Preferences
 import com.techflow.materialcolor.utils.SharedPref
 import com.techflow.materialcolor.utils.ThemeUtils
 /**
- * Modified by DILIP SUTHAR on 30/06/2019
+ * @author Dilip Suthar
+ * Modified by Dilip Suthar on 15/12/2019
  */
 
 /**
@@ -65,7 +66,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
     // STATIC
     companion object {
-        // Audience
+        // Audience network
         private lateinit var interstitialAd: InterstitialAd
 
         fun showAd(context: Context) {
@@ -114,6 +115,11 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         super.onStart()
         this.getSharedPreferences(packageName, Context.MODE_PRIVATE)
             .registerOnSharedPreferenceChangeListener(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        bottomSheet.cancel()
     }
 
     override fun onDestroy() {
@@ -167,11 +173,17 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             recreate()
     }
 
+    /**
+     * @func init toolbar config
+     */
     private fun initToolbar() {
         setSupportActionBar(binding.include as Toolbar)
         supportActionBar?.title = resources.getString(R.string.app_name)
     }
 
+    /**
+     * @func init all component's config
+     */
     private fun initComponent() {
         homeFragment = HomeFragment.getInstance()
         gradientFragment = GradientFragment.getInstance()
@@ -181,6 +193,9 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         displayFragment(homeFragment)
     }
 
+    /**
+     * @func init app intro for first use
+     */
     private fun initIntro() {
         if (sharedPref.getBoolean(Preferences.isFirstRun, true)) {
             Snackbar.make(binding.rootLayout, "Long press on card to copy code", Snackbar.LENGTH_INDEFINITE).apply {
@@ -197,6 +212,9 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         }
     }
 
+    /**
+     * @func init bottom navigation config
+     */
     private fun initBottomNavigation() {
         binding.justBar.setOnBarItemClickListener { barItem, position ->
 
@@ -229,6 +247,10 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         }
     }
 
+    /**
+     * @func change fragment in frame layout
+     * @param fragment fragment value
+     */
     private fun displayFragment(fragment: Fragment?) {
         //val backStackName = fragment?.javaClass?.name
         val fragmentManager = supportFragmentManager
@@ -245,6 +267,9 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         }
     }
 
+    /**
+     * @func init bottom sheet menu config
+     */
     private fun initMenuSheet() {
         bottomSheet = MaterialDialog(this, BottomSheet(LayoutMode.WRAP_CONTENT))
             .cornerRadius(16f)
@@ -252,24 +277,17 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
         val view = bottomSheet.getCustomView()
 
-        (view.findViewById<MaterialButton>(R.id.btn_cancel)).setOnClickListener {
-            bottomSheet.cancel()
-        }
-
         view.findViewById<View>(R.id.btn_settings).setOnClickListener {
             startActivity(Intent(this, SettingsActivity::class.java))
-            bottomSheet.cancel()
         }
 
         view.findViewById<View>(R.id.btn_custom_color_maker).setOnClickListener {
             firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_PALETTE_CREATOR, null)
             startActivity(Intent(this, CustomColorActivity::class.java))
-            bottomSheet.cancel()
         }
 
         view.findViewById<View>(R.id.btn_gradient_maker).setOnClickListener {
             startActivity(Intent(this, CustomGradientActivity::class.java))
-            bottomSheet.cancel()
         }
 
         view.findViewById<View>(R.id.btn_material_design_tool).setOnClickListener {
@@ -278,6 +296,10 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
     }
 
     private var exitTime: Long = 0
+
+    /**
+     * @func app closer functionality
+     */
     private fun appCloser() {
         if (System.currentTimeMillis() - exitTime > 2000) {
             this.displayToast("Press again to close app")
@@ -287,6 +309,9 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         finish()
     }
 
+    /**
+     * @func init audience network config for ad
+     */
     private fun initAd() {
         // Interstitial Ad
         interstitialAd = InterstitialAd(this, MaterialColor.getAdId(AdType.INTERSTITIAL))
@@ -352,8 +377,8 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
 
     /**
-     * @method in-app update functionality ---------------------------------------------------------
-     * */
+     * @func in-app update functionality ---------------------------------------------------------
+     */
     var updateStarted = false
     private fun initInAppUpdate() {
         val appUpdateManager = AppUpdateManagerFactory.create(this)

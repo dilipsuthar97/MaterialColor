@@ -51,6 +51,9 @@ class GradientFragment : Fragment() {
         initComponent(view)
     }
 
+    /**
+     * @func init all component's config
+     */
     private fun initComponent(view: View) {
         binding.recyclerView.setHasFixedSize(true)
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
