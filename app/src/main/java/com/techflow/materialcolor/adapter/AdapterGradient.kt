@@ -117,14 +117,15 @@ class AdapterGradient(
 
         fun showTutorial(pos: Int, ctx: Context, act: Activity) {
             val sharedPref = SharedPref.getInstance(ctx)
-            val msg = "From tapping here you can copy this code."
+            val msg1 = "Tap here to copy primary color of gradient"
+            val msg2 = "Tap here to copy secondary color of gradient"
 
             if (sharedPref.getBoolean(Preferences.GradientFragFR, true) && pos == 1) {
                 TapTargetSequence(act)
                     .targets(
-                        TapTarget.forView(tvPrimaryColor, "Primary Color HexCode", msg)
+                        TapTarget.forView(tvPrimaryColor, "Primary Color HexCode", msg1)
                             .outerCircleColor(R.color.colorAccent)
-                            .outerCircleAlpha(0.90f)
+                            .outerCircleAlpha(0.95f)
                             .targetCircleColor(R.color.white)
                             .titleTextSize(20)
                             .titleTextColor(R.color.white)
@@ -133,9 +134,9 @@ class AdapterGradient(
                             .cancelable(false)
                             .targetRadius(50),
 
-                        TapTarget.forView(tvSecondaryColor, "Secondary Color HexCode", msg)
+                        TapTarget.forView(tvSecondaryColor, "Secondary Color HexCode", msg2)
                             .outerCircleColor(R.color.colorAccent)
-                            .outerCircleAlpha(0.90f)
+                            .outerCircleAlpha(0.95f)
                             .targetCircleColor(R.color.white)
                             .titleTextSize(20)
                             .titleTextColor(R.color.white)

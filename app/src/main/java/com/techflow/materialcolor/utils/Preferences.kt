@@ -4,7 +4,6 @@ package com.techflow.materialcolor.utils
  * Modified by Dilip Suthar on 15/12/19
  */
 object Preferences {
-    const val isFirstRun = "is_first_run"
     const val RED = "red"
     const val GREEN = "green"
     const val BLUE = "blue"
@@ -20,9 +19,15 @@ object Preferences {
     const val SHOW_AD = "show_ad"
     const val THEME = "theme"
 
+    const val BOTTOM_SHEET_CONFIG = "bottom_sheet_config"
+
+    /**
+     * First run constants
+     */
+    const val isFirstRun = "is_first_run"
     const val HomeFragFR = "home_frag"              // FR = FirstRun
     const val GradientFragFR = "gradient_frag"
     const val ColorPickerFragFR = "color_picker_frag"
-    const val SettingFragFR = "setting_frag"
+    const val SettingActFR = "setting_frag"
     const val ColorActFR = "color_act"
 }

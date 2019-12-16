@@ -119,7 +119,8 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
     override fun onPause() {
         super.onPause()
-        bottomSheet.cancel()
+        if (!sharedPref.getBoolean(Preferences.BOTTOM_SHEET_CONFIG, false))
+            bottomSheet.cancel()
     }
 
     override fun onDestroy() {
@@ -177,7 +178,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
      * @func init toolbar config
      */
     private fun initToolbar() {
-        setSupportActionBar(binding.include as Toolbar)
+        setSupportActionBar(binding.toolbar as Toolbar)
         supportActionBar?.title = resources.getString(R.string.app_name)
     }
 
@@ -282,16 +283,17 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         }
 
         view.findViewById<View>(R.id.btn_custom_color_maker).setOnClickListener {
-            firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_PALETTE_CREATOR, null)
+            firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_CUSTOM_COLOR_MAKER, null)
             startActivity(Intent(this, CustomColorActivity::class.java))
         }
 
         view.findViewById<View>(R.id.btn_gradient_maker).setOnClickListener {
+            firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_CUSTOM_GRADIENT_MAKER, null)
             startActivity(Intent(this, CustomGradientActivity::class.java))
         }
 
         view.findViewById<View>(R.id.btn_material_design_tool).setOnClickListener {
-            this.displayToast("Coming soon...")
+            startActivity(Intent(this, DesignToolActivity::class.java))
         }
     }
 

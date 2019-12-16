@@ -11,7 +11,7 @@
 
         <include
                 android:id="@+id/toolbar"
-                layout="@layout/toolbar_home"/>
+                layout="@layout/toolbar_default"/>
 
         <ScrollView
                 android:scrollbars="none"
@@ -25,6 +25,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
+                <!-- Remove ads -->
                 <androidx.cardview.widget.CardView
                         android:id="@+id/lyt_remove_ads"
                         android:layout_width="match_parent"
@@ -99,6 +100,19 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.cardview.widget.CardView>
 
+                <!-- Settings -->
+                <TextView
+                        android:id="@+id/label_settings"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="15dp"
+                        android:text="Settings"
+                        android:textColor="?attr/colorTextSecondary"
+                        android:textSize="22sp"
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/lyt_remove_ads" />
                 <androidx.cardview.widget.CardView
                         android:id="@+id/lyt_theme"
                         android:layout_width="match_parent"
@@ -111,48 +125,110 @@
                         app:cardElevation="3dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/lyt_remove_ads">
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                        app:layout_constraintTop_toBottomOf="@+id/label_settings">
+
+                    <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                            <TextView
+                                    android:id="@+id/label_theme_title"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginTop="16dp"
+                                    android:text="Dark theme"
+                                    android:textColor="?attr/colorTextPrimary"
+                                    android:textSize="16sp"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                    android:id="@+id/label_theme_desc"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginBottom="16dp"
+                                    android:textColor="?attr/colorTextSecondary"
+                                    android:text="Get that whiteness out of my sight!"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/label_theme_title" />
+
+                            <Switch
+                                    android:id="@+id/switch_change_theme"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="16dp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                            <TextView
+                                    android:id="@+id/label_bottom_sheet_title"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginTop="16dp"
+                                    android:text="Bottom sheet"
+                                    android:textColor="?attr/colorTextPrimary"
+                                    android:textSize="16sp"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                    android:id="@+id/label_bottom_sheet_desc"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginBottom="16dp"
+                                    android:textColor="?attr/colorTextSecondary"
+                                    android:text="Auto cancel bottom sheet"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/label_bottom_sheet_title" />
+
+                            <Switch
+                                    android:id="@+id/switch_bottom_sheet_config"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="16dp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0.5dp"
+                                android:background="?android:attr/listDivider" />
+
                         <TextView
-                                android:id="@+id/tv_theme_title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:layout_marginTop="16dp"
-                                android:text="Theme"
-                                android:textColor="?attr/colorTextPrimary"
+                                android:id="@+id/label_reset_tutorial"
+                                android:background="?attr/selectableItemBackground"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:layout_width="match_parent"
+                                android:layout_height="45dp"
+                                android:paddingStart="16dp"
+                                android:gravity="center_vertical"
+                                android:text="Reset tutorial"
                                 android:textSize="16sp"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                                android:id="@+id/tv_theme_desc"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:layout_marginBottom="16dp"
-                                android:textColor="?attr/colorTextSecondary"
-                                android:text="Get that whiteness out of my sight!"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/tv_theme_title" />
-
-                        <Switch
-                                android:id="@+id/switch_change_theme"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="16dp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                                android:textColor="?attr/colorTextPrimary" />
+                    </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
+                <!-- Support -->
                 <TextView
-                        android:id="@+id/textView"
+                        android:id="@+id/label_support"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingLeft="15dp"
@@ -163,7 +239,6 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/lyt_theme" />
-
                 <androidx.cardview.widget.CardView
                         android:id="@+id/cardView"
                         android:layout_width="match_parent"
@@ -176,7 +251,7 @@
                         app:cardElevation="3dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView">
+                        app:layout_constraintTop_toBottomOf="@+id/label_support">
 
                     <LinearLayout
                             android:layout_width="match_parent"
@@ -456,6 +531,7 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
+                <!-- Legal -->
                 <TextView
                         android:id="@+id/textView2"
                         android:layout_width="match_parent"
@@ -469,7 +545,6 @@
                         app:layout_constraintHorizontal_bias="1"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/cardView" />
-
                 <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

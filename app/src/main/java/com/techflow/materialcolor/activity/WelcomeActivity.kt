@@ -34,7 +34,7 @@ class WelcomeActivity : BaseActivity() {
         findViewById<TextView>(R.id.tv_bottom_msg).text = (StringBuilder()
             .append("Made with ")
             .append(String(Character.toChars(0x2764)))
-            .append(" by ${resources.getString(R.string.brand_name)}"))
+            .append(" by ${resources.getString(R.string.author_name)}"))
 
     }
 
