@@ -8,7 +8,7 @@ import androidx.core.graphics.ColorUtils
 import com.google.android.material.snackbar.Snackbar
 
 /**
- * @func compare the given boolean value with user's check predicate
+ * @func check if color's luminance value is dark or light
  * @param this The boolean value to check predicate
  */
 fun Int.isDark(): Boolean = ColorUtils.calculateLuminance(this) <= 0.5
@@ -35,11 +35,11 @@ fun Context.displayToast(@StringRes message: Int) {
  * @func display toast
  * @param message string value to display message
  */
-fun Context.displayToast(message: String) {
+fun Context.displayToast(message: String, duration: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(
         this,
         message,
-        Toast.LENGTH_SHORT
+        duration
     ).show()
 }
 

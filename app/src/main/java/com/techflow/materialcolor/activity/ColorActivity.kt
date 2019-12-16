@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageButton
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.techflow.materialcolor.R
@@ -16,6 +17,7 @@ import com.techflow.materialcolor.database.AppDatabase
 import com.techflow.materialcolor.databinding.ActivityColorBinding
 import com.techflow.materialcolor.helpers.AppExecutorHelper
 import com.techflow.materialcolor.helpers.displayToast
+import com.techflow.materialcolor.helpers.isDark
 import com.techflow.materialcolor.model.Color
 import com.techflow.materialcolor.utils.AnimUtils
 import com.techflow.materialcolor.utils.Tools
@@ -69,8 +71,22 @@ class ColorActivity : BaseActivity(), AdapterColor.OnItemClickListener {
         bind.toolbar.setBackgroundColor(color)
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (bind.toolbar as Toolbar).setNavigationIcon(R.drawable.ic_arrow_back)
         supportActionBar?.title = colorName
         Tools.setSystemBarColorById(this, color)
+
+        if (color.isDark()) {
+            (bind.toolbar as Toolbar).setTitleTextColor(ContextCompat.getColor(this, R.color.colorTextPrimary_dark))
+            Tools.changeNavigationIconColor(
+                bind.toolbar as Toolbar,
+                ContextCompat.getColor(this, R.color.colorTextPrimary_dark))
+        } else {
+            (bind.toolbar as Toolbar).setTitleTextColor(ContextCompat.getColor(this, R.color.colorTextPrimary))
+            Tools.changeNavigationIconColor(
+                bind.toolbar as Toolbar,
+                ContextCompat.getColor(this, R.color.colorTextPrimary))
+            Tools.setSystemBarLight(this)
+        }
     }
 
     /**

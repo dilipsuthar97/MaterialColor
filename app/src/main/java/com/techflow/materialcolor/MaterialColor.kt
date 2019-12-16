@@ -20,7 +20,8 @@ class MaterialColor : Application() {
         const val FIREBASE_EVENT_TAB_COLOR_PICKER = "tab_color_picker"
         const val FIREBASE_EVENT_TAB_SETTING = "tab_setting"
         const val FIREBASE_EVENT_REMOVE_ADS = "remove_ads"
-        const val FIREBASE_EVENT_PALETTE_CREATOR = "palette_creator"
+        const val FIREBASE_EVENT_CUSTOM_COLOR_MAKER = "custom_color_maker"
+        const val FIREBASE_EVENT_CUSTOM_GRADIENT_MAKER = "custom_gradient_maker"
         const val FIREBASE_EVENT_ABOUT_ME = "about_me"
         const val FIREBASE_EVENT_READ_POLICY = "read_policy"
 

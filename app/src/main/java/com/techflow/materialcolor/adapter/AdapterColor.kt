@@ -154,9 +154,9 @@ class AdapterColor constructor(
                 if (sharedPref.getBoolean(Preferences.HomeFragFR, true) && pos == 1) {
                     TapTargetSequence(activity)
                         .targets(
-                            TapTarget.forView(tvColorName, "Material Color", "From here you can see the different shades for this color.")
+                            TapTarget.forView(tvColorName, "Material Color", "By tapping here you can see the different shades for this color.")
                                 .outerCircleColor(R.color.colorAccent)
-                                .outerCircleAlpha(0.90f)
+                                .outerCircleAlpha(0.95f)
                                 .targetCircleColor(R.color.white)
                                 .titleTextSize(20)
                                 .titleTextColor(R.color.white)
@@ -174,9 +174,9 @@ class AdapterColor constructor(
                 if (sharedPref.getBoolean(Preferences.ColorActFR, true) && pos == 1) {
                     TapTargetSequence(activity)
                         .targets(
-                            TapTarget.forView(viewColor, "Color shades", "Long press here to copy the color code.")
+                            TapTarget.forView(viewColor, "Color shades", "Tap here to copy the color code.")
                                 .outerCircleColor(R.color.colorAccent)
-                                .outerCircleAlpha(0.90f)
+                                .outerCircleAlpha(0.95f)
                                 .targetCircleColor(R.color.white)
                                 .titleTextSize(20)
                                 .titleTextColor(R.color.white)

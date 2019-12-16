@@ -17,6 +17,7 @@ import androidx.databinding.DataBindingUtil
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.android.billingclient.api.*
+import com.android.billingclient.api.BillingClient.BillingResponseCode
 import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetView
 import com.google.android.material.button.MaterialButton
@@ -25,9 +26,13 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.techflow.materialcolor.MaterialColor
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivitySettingsBinding
+import com.techflow.materialcolor.helpers.displayToast
 import com.techflow.materialcolor.utils.*
 
-class SettingsActivity : BaseActivity(), View.OnClickListener {
+/**
+ * @author Dilip Suthar
+ */
+class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedListener, BillingClientStateListener {
     private val TAG = SettingsActivity::class.java.simpleName
 
     private lateinit var bind: ActivitySettingsBinding
@@ -37,7 +42,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
     // Billing
     private var skuList: ArrayList<String> = ArrayList()
     private lateinit var billingClient: BillingClient
-    private lateinit var skuDetailParam: SkuDetailsParams
+    private lateinit var skuDetailsParam: SkuDetailsParams
     private lateinit var skuDetails: SkuDetails
     private lateinit var billingFlowParams: BillingFlowParams
 
@@ -69,16 +74,26 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
         bind.btnAboutMaterialColor.setOnClickListener(this)
         bind.btnMaterialTool.setOnClickListener(this)
         bind.btnPolicy.setOnClickListener(this)
+        bind.labelResetTutorial.setOnClickListener(this)
 
         // Theme setting
-        if (ThemeUtils.getTheme(this) == ThemeUtils.DARK)
-            bind.switchChangeTheme.isChecked = true
+        bind.switchChangeTheme.isChecked = ThemeUtils.getTheme(this) == ThemeUtils.DARK
 
-        // Theme switch listener
         bind.switchChangeTheme.setOnCheckedChangeListener { compoundButton, isChecked ->
             if (isChecked) ThemeUtils.setTheme(this, ThemeUtils.DARK)
             else ThemeUtils.setTheme(this, ThemeUtils.LIGHT)
             recreate()
+        }
+
+        // Bottom sheet config setting
+        bind.switchBottomSheetConfig.isChecked =
+            SharedPref.getInstance(this).getBoolean(Preferences.BOTTOM_SHEET_CONFIG, false)
+
+        bind.switchBottomSheetConfig.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked)
+                SharedPref.getInstance(this).saveData(Preferences.BOTTOM_SHEET_CONFIG, true)
+            else
+                SharedPref.getInstance(this).saveData(Preferences.BOTTOM_SHEET_CONFIG, false)
         }
     }
 
@@ -102,7 +117,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
                 startActivity(intent)
             }
             R.id.btn_share -> {
-                val msg = "MaterialColor is an amazing color tool app, you should try it.\nDownload it from below link."
+                val msg = "MaterialColor is an amazing color tool app, you should try it.\nDownload it from Play Store using below link."
 
                 val shareIntent = ShareCompat.IntentBuilder.from(this)
                     .setText("$msg\n\n$appUrl")
@@ -155,6 +170,10 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
                 firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_READ_POLICY, null)
                 openWebView("https://github.com/dilipsuthar1997/PrivacyPolicy/blob/master/MaterialColor%20Privacy%20Policy.md")
             }
+            R.id.label_reset_tutorial -> {
+                resetTutorial(SharedPref.getInstance(this))
+                this.displayToast("Tutorial reset successful :)")
+            }
         }
     }
 
@@ -204,8 +223,8 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
             .setShowTitle(true)
             .enableUrlBarHiding()
             .addDefaultShareMenuItem()
-            .setStartAnimations(this, android.R.anim.fade_in, android.R.anim.fade_out)
-            .setExitAnimations(this, android.R.anim.fade_in, android.R.anim.fade_out)
+            .setStartAnimations(this, R.anim.anim_fragment_enter, R.anim.anim_fragment_exit)
+            .setExitAnimations(this, R.anim.anim_fragment_enter, R.anim.anim_fragment_exit)
             .setCloseButtonIcon(BitmapFactory.decodeResource(resources, R.drawable.ic_arrow_back))
             .build()
 
@@ -218,11 +237,11 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
     private fun showTutorial() {
         val sharedPref = SharedPref.getInstance(this)
 
-        if (sharedPref.getBoolean(Preferences.SettingFragFR, true)) {
+        if (sharedPref.getBoolean(Preferences.SettingActFR, true)) {
             TapTargetView.showFor(this,
                 TapTarget.forView(bind.btnRate, "Rate us", "Rate us on Google PlayStore.")
                     .outerCircleColor(R.color.colorAccent)
-                    .outerCircleAlpha(0.90f)
+                    .outerCircleAlpha(0.95F)
                     .targetCircleColor(R.color.white)
                     .titleTextSize(20)
                     .titleTextColor(R.color.white)
@@ -232,7 +251,18 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
                     .targetRadius(50)
             )
 
-            sharedPref.saveData(Preferences.SettingFragFR, false)
+            sharedPref.saveData(Preferences.SettingActFR, false)
+        }
+    }
+
+    private fun resetTutorial(sharedPref: SharedPref) {
+        with(sharedPref) {
+            saveData(Preferences.isFirstRun, true)
+            saveData(Preferences.HomeFragFR, true)
+            saveData(Preferences.GradientFragFR, true)
+            saveData(Preferences.ColorPickerFragFR, true)
+            saveData(Preferences.SettingActFR, true)
+            saveData(Preferences.ColorActFR, true)
         }
     }
 
@@ -245,80 +275,14 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
     private fun setupBillingClient() {
         Log.d(TAG, "setupBillingClient: called")
 
-        skuList.add("")   // TODO: Add in-app purchase product ID
+        skuList.clear()
+        skuList.add("sku_remove_ads")   // TODO: Add in-app purchase product ID
 
-        // purchase listener
-        billingClient = BillingClient.newBuilder(this).setListener { responseCode, purchases ->
-            when (responseCode) {
-                0 -> {
+        // Purchase update listener
+        billingClient = BillingClient.newBuilder(this).setListener(this).enablePendingPurchases().build()
 
-                    MaterialDialog(this).show {
-                        cornerRadius(16f)
-                        title(text = "Ad removed success")
-                        message(text = "You don't see ads anymore. All ads are removed permanently." +
-                                "\nDon't worry when you uninstall the app your purchase has been saved" +
-                                "and after reinstall the app you have to check your purchase by tapping Pay button." +
-                                "\n\nThanks for purchase :)")
-                        positiveButton(text = "RESTART APP") {
-                            Tools.restartApp(context)
-                            Toast.makeText(context, "Restarting app", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-
-                    // Disable ad showing
-                    SharedPref.getInstance(this).saveData(Preferences.SHOW_AD, false)
-
-                }
-                1 -> Toast.makeText(this, "Transaction canceled.", Toast.LENGTH_SHORT).show()
-                2 -> Toast.makeText(this, "You not owned yet.", Toast.LENGTH_SHORT).show()
-                7 -> {
-
-                    // Disable ad showing
-                    SharedPref.getInstance(this).saveData(Preferences.SHOW_AD, false)
-
-                    bind.btnRemoveAds.isEnabled = false
-                    Snackbar.make(bind.root, "You already purchased this. you don't see ads anymore, Restart app.", Snackbar.LENGTH_INDEFINITE)
-                        .setAction("RESTART") {
-                            Tools.restartApp(this)
-                            Toast.makeText(this, "Restarting app", Toast.LENGTH_SHORT).show()
-                        }
-                        .show()
-
-                }
-            }
-
-        }.build()
-
-        billingClient.startConnection(object : BillingClientStateListener {
-
-            override fun onBillingServiceDisconnected() {
-                Tools.inVisibleViews(bind.btnRemoveAds, type = Tools.InvisibilityType.GONE)
-                Tools.visibleViews(bind.progressBar)
-            }
-
-            override fun onBillingSetupFinished(responseCode: Int) {
-                if (responseCode == 0) {
-                    Tools.inVisibleViews(bind.progressBar, type = Tools.InvisibilityType.GONE)
-                    Tools.visibleViews(bind.btnRemoveAds)
-
-                    skuDetailParam = SkuDetailsParams
-                        .newBuilder()
-                        .setSkusList(skuList)
-                        .setType(BillingClient.SkuType.INAPP)
-                        .build()
-
-                    billingClient.querySkuDetailsAsync(skuDetailParam) { _, skuDetailsList ->
-                        if (skuDetailsList.isNotEmpty()) {
-                            skuDetails = skuDetailsList[0] as SkuDetails
-                            if (skuDetails.price != null) {
-                                bind.btnRemoveAds.text = "Check & Pay ${skuDetails.price}"   // Set product price to button text
-                            }
-                        }
-                    }
-                }
-            }
-
-        })
+        // Billing client state listener
+        billingClient.startConnection(this)
     }
 
     /**
@@ -331,6 +295,103 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
             billingFlowParams = BillingFlowParams.newBuilder().setSkuDetails(skuDetails).build()
             billingClient.launchBillingFlow(this, billingFlowParams)
         }
-        setupBillingClient()
+        //setupBillingClient()
+    }
+
+    /**
+     * @inherited from *PurchasesUpdatedListener ->listen in-app billing purchase changes
+     * @param billingResult BillingResult object
+     * @param purchases Mutable list of Purchase object
+     */
+    override fun onPurchasesUpdated(billingResult: BillingResult?, purchases: MutableList<Purchase>?) {
+        Tools.inVisibleViews(bind.progressBar, type = Tools.InvisibilityType.GONE)
+        Tools.visibleViews(bind.btnRemoveAds)
+
+        when (billingResult?.responseCode) {
+            BillingResponseCode.SERVICE_TIMEOUT -> this.displayToast("Service time out :(")
+            BillingResponseCode.SERVICE_DISCONNECTED -> this.displayToast("Billing service is disconnected :(")
+            BillingResponseCode.OK -> {
+
+                MaterialDialog(this).show {
+                    cornerRadius(16f)
+                    title(text = "Ad removed success")
+                    message(text = "You don't see ads anymore. All ads are removed permanently." +
+                            "\nDon't worry when you uninstall the app your purchase has been saved" +
+                            "and after reinstall the app you have to check your purchase by tapping Pay button." +
+                            "\n\nThanks for purchase :)")
+                    positiveButton(text = "RESTART APP") {
+                        Tools.restartApp(this@SettingsActivity)
+                        this@SettingsActivity.displayToast("Restarting app")
+                    }
+                }
+
+                // Disable ad showing
+                SharedPref.getInstance(this).saveData(Preferences.SHOW_AD, false)
+
+            }
+            BillingResponseCode.USER_CANCELED -> this.displayToast("Transaction canceled :|")
+            BillingResponseCode.SERVICE_UNAVAILABLE -> this.displayToast("Service unavailable :(")
+            BillingResponseCode.BILLING_UNAVAILABLE -> this.displayToast("Billing unavailable :(")
+            BillingResponseCode.ITEM_UNAVAILABLE -> this.displayToast("Item unavailable :(")
+            BillingResponseCode.DEVELOPER_ERROR -> this.displayToast("Developer error :(")
+            BillingResponseCode.ERROR -> this.displayToast("Error :(")
+            BillingResponseCode.ITEM_ALREADY_OWNED -> {
+
+                // Disable ad showing
+                SharedPref.getInstance(this).saveData(Preferences.SHOW_AD, false)
+
+                bind.btnRemoveAds.isEnabled = false
+                Snackbar.make(bind.root, "You already purchased this. you don't see ads anymore, Restart app.", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("RESTART") {
+                        Tools.restartApp(this)
+                        this.displayToast("Restarting app")
+                    }
+                    .show()
+
+            }
+            BillingResponseCode.ITEM_NOT_OWNED -> this.displayToast("You not owned yet :(")
+        }
+    }
+
+    /**
+     * @inherited from *BillingClientStateListener -> listen Billing client state
+     */
+    override fun onBillingServiceDisconnected() {
+        Tools.inVisibleViews(bind.btnRemoveAds, type = Tools.InvisibilityType.GONE)
+        Tools.visibleViews(bind.progressBar)
+    }
+
+    /**
+     * @inherited from *BillingClientStateListener -> listen Billing client state
+     * @param billingResult BillingResult object
+     */
+    override fun onBillingSetupFinished(billingResult: BillingResult?) {
+        if (billingResult?.responseCode == BillingResponseCode.OK) {
+
+            Tools.inVisibleViews(bind.progressBar, type = Tools.InvisibilityType.GONE)
+            Tools.visibleViews(bind.btnRemoveAds)
+
+            skuDetailsParam = SkuDetailsParams
+                .newBuilder()
+                .setSkusList(skuList)
+                .setType(BillingClient.SkuType.INAPP)
+                .build()
+
+            billingClient.querySkuDetailsAsync(skuDetailsParam) { billingResult, skuDetailsList ->
+
+                if (billingResult.responseCode == BillingResponseCode.OK && skuDetailsList.isNotEmpty()) {
+
+                    for (skuDetails in skuDetailsList) {
+                        this@SettingsActivity.skuDetails = skuDetails
+                        val sku = skuDetails.sku
+                        val price = skuDetails.price
+
+                        if ("sku_remove_ads" == sku) {
+                            bind.btnRemoveAds.text = "Check & Pay $price"   // Set product price to button text
+                        }
+                    }
+                }
+            }
+        }
     }
 }
