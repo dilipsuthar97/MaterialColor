@@ -65,13 +65,16 @@ class ColorPickerFragment : Fragment() {
         binding.btnImgChooser.setOnClickListener {
             // Load ad
             if (SharedPref.getInstance(context!!).getBoolean(Preferences.SHOW_AD, true))
-                HomeActivity.showAd(context!!)
+                HomeActivity.showInterstitialAd(context!!)
 
             AnimUtils.bounceAnim(it)
             when {
-                PermissionHelper.isPermissionsGranted(context!!, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)) -> openImagePicker()
-                ActivityCompat.shouldShowRequestPermissionRationale(activity!!, Manifest.permission.READ_EXTERNAL_STORAGE) -> showPermissionDeniedDialog()
-                else -> PermissionHelper.requestPermissions(activity!!, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE))
+                PermissionHelper.isPermissionsGranted(context!!, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)) ->
+                    openImagePicker()
+                ActivityCompat.shouldShowRequestPermissionRationale(activity!!, Manifest.permission.READ_EXTERNAL_STORAGE) ->
+                    showPermissionDeniedDialog()
+                else ->
+                    PermissionHelper.requestPermissions(activity!!, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE))
             }
         }
     }

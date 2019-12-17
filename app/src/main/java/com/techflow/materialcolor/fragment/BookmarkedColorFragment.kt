@@ -97,7 +97,6 @@ class BookmarkedColorFragment : Fragment(), AdapterColor.OnItemClickListener {
      * @param position recycler view item position
      */
     override fun onItemLongClick(view: View, color: Color, position: Int) {
-
     }
 
     /**

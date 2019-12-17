@@ -53,4 +53,17 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <!-- tooltip custom style -->
+    <style name="ToolTipAltStyle" parent="ToolTipLayoutDefaultStyle">
+        <item name="ttlm_padding">16dp</item>
+        <item name="ttlm_backgroundColor">@color/colorAccent</item>
+        <item name="ttlm_cornerRadius">6dp</item>
+        <item name="ttlm_arrowRatio">1.2</item>
+        <item name="ttlm_textStyle">@style/ToolTipAltTextStyle</item>
+    </style>
+
+    <style name="ToolTipAltTextStyle" parent="ToolTipTextStyle">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
 </resources>

@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.core.graphics.ColorUtils
+import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.snackbar.Snackbar
 
 /**

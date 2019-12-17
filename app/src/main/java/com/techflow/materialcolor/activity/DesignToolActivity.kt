@@ -18,7 +18,12 @@ import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivityDesignToolBinding
 import com.techflow.materialcolor.helpers.displayToast
 import com.techflow.materialcolor.helpers.isDark
+import com.techflow.materialcolor.utils.Preferences
+import com.techflow.materialcolor.utils.SharedPref
 import com.techflow.materialcolor.utils.Tools
+import it.sephiroth.android.library.xtooltip.ClosePolicy
+import it.sephiroth.android.library.xtooltip.Tooltip
+import kotlinx.android.synthetic.main.activity_settings.*
 
 /**
  * @author Dilip Suthar
@@ -40,6 +45,27 @@ class DesignToolActivity : AppCompatActivity() {
         initNavigationDrawer()
         initComponent()
         subscribeObserver()
+        if (SharedPref.getInstance(this).getBoolean(Preferences.DesignToolActFR, true))
+            showTooltip()
+
+        // Show warning dialog before use
+        val sharedPref = SharedPref.getInstance(this)
+        if (sharedPref.getBoolean("design_tool_warning", true)) {
+            MaterialDialog(this).show {
+                cornerRadius(16f)
+                title(text = "Attention")
+                message(text = "This is just a demo preview. " +
+                        "\nFeature is still in development for improving and adding more design tool functionality.")
+                positiveButton(text = "OK") {
+
+                }
+
+                negativeButton(text = "Don't show again") {
+                    SharedPref.getInstance(this@DesignToolActivity)
+                        .saveData("design_tool_warning", false)
+                }
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -191,5 +217,55 @@ class DesignToolActivity : AppCompatActivity() {
                 binding.fab.setColorFilter(ContextCompat.getColor(this, R.color.colorTextPrimary))
 
         })
+    }
+
+    /**
+     * @func show tooltip instruction
+     */
+    private fun showTooltip() {
+        var tooltip: Tooltip? = null
+
+        tooltip?.dismiss()
+
+        tooltip = Tooltip.Builder(applicationContext)
+            .anchor(binding.btnPrimaryColor, 0, 0, false)
+            .text("Select Primary material color")
+            .styleId(R.style.ToolTipAltStyle)
+            .arrow(true)
+            .maxWidth(resources.displayMetrics.widthPixels / 2)
+            .typeface(null)
+            .styleId(null)
+            .floatingAnimation(Tooltip.Animation.DEFAULT)
+            .closePolicy(ClosePolicy.TOUCH_ANYWHERE_NO_CONSUME)
+            .overlay(false)
+            .create()
+
+        binding.btnPrimaryColor.post {
+
+            tooltip?.doOnHidden {
+
+                tooltip = null
+                tooltip = Tooltip.Builder(applicationContext)
+                    .anchor(binding.btnSecondaryColor, 0, 0, false)
+                    .text("Select Secondary material color")
+                    .styleId(R.style.ToolTipAltStyle)
+                    .arrow(true)
+                    .maxWidth(resources.displayMetrics.widthPixels / 2)
+                    .typeface(null)
+                    .styleId(null)
+                    .floatingAnimation(Tooltip.Animation.DEFAULT)
+                    .closePolicy(ClosePolicy.TOUCH_ANYWHERE_NO_CONSUME)
+                    .overlay(false)
+                    .create()
+
+                tooltip?.doOnHidden {
+                    SharedPref.getInstance(this)
+                        .saveData(Preferences.DesignToolActFR, false)
+                }
+                    ?.show(binding.btnSecondaryColor, Tooltip.Gravity.TOP, true)
+
+            }
+                ?.show(binding.btnPrimaryColor, Tooltip.Gravity.TOP, true)
+        }
     }
 }

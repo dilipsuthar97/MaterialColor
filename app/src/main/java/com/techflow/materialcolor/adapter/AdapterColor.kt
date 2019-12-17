@@ -28,11 +28,6 @@ class AdapterColor constructor(
     private val mDb: AppDatabase? = null
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    /*// Secondary constructor
-    constructor(context: Context, activity: Activity, onClickListener: OnItemClickListener): this(
-        context, activity, onClickListener, null
-    )*/
-
     private lateinit var colorList: ArrayList<Color>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

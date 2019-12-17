@@ -84,7 +84,7 @@ class HomeFragment : Fragment(), AdapterColor.OnItemClickListener {
     override fun onItemClick(view: View, color: Color, position: Int) {
         // Load interstitial ad
         if (SharedPref.getInstance(context!!).getBoolean(Preferences.SHOW_AD, true))
-            HomeActivity.showAd(context!!)
+            HomeActivity.showInterstitialAd(context!!)
 
         val i = Intent(activity, ColorActivity::class.java)
         i.putExtra("COLOR_NAME", color.colorName)
