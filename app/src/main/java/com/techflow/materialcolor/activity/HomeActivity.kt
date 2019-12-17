@@ -5,12 +5,9 @@ import com.techflow.materialcolor.utils.Tools
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.preference.PreferenceManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageButton
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -20,7 +17,6 @@ import com.afollestad.materialdialogs.bottomsheets.BottomSheet
 import com.afollestad.materialdialogs.customview.customView
 import com.afollestad.materialdialogs.customview.getCustomView
 import com.facebook.ads.*
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.InstallStateUpdatedListener
@@ -69,7 +65,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         // Audience network
         private lateinit var interstitialAd: InterstitialAd
 
-        fun showAd(context: Context) {
+        fun showInterstitialAd(context: Context) {
             if (interstitialAd.isAdLoaded) {
                 if (interstitialAd.isAdInvalidated)
                     return
@@ -150,9 +146,8 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             displayFragment(homeFragment)
             activeFragment = homeFragment
 
-        } else {
+        } else
             appCloser()
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -221,7 +216,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
             // Load ad
             if (SharedPref.getInstance(this).getBoolean(Preferences.SHOW_AD, true))
-                showAd(this)
+                showInterstitialAd(this)
 
             when(barItem.id) {
                 R.id.nav_home -> {
@@ -240,7 +235,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     supportActionBar?.title = "Color Picker"
                 }
                 R.id.nav_bookmarked_color -> {
-                    firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_TAB_SETTING, null)
+                    firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_TAB_BOOKMARKED_COLOR, null)
                     displayFragment(bookmarkedColorFragment)
                     supportActionBar?.title = "Bookmarked Color"
                 }
@@ -260,9 +255,9 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
             val transaction = fragmentManager.beginTransaction()
             transaction.setCustomAnimations(R.anim.anim_fragment_enter, R.anim.anim_fragment_exit)
-            //transaction.add(R.id.fragment, fragment, fragment.tag)
-            //transaction.replace(R.id.fragment, fragment, BACK_STACK_ROOT_NAME)
-            //transaction.addToBackStack(BACK_STACK_ROOT_NAME)
+            /*transaction.add(R.id.fragment, fragment, fragment.tag)
+            transaction.replace(R.id.fragment, fragment, BACK_STACK_ROOT_NAME)
+            transaction.addToBackStack(BACK_STACK_ROOT_NAME)*/
             transaction.replace(R.id.host_fragment, fragment)
             transaction.commit()
         }
@@ -297,11 +292,10 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         }
     }
 
-    private var exitTime: Long = 0
-
     /**
      * @func app closer functionality
      */
+    private var exitTime: Long = 0
     private fun appCloser() {
         if (System.currentTimeMillis() - exitTime > 2000) {
             this.displayToast("Press again to close app")
@@ -384,7 +378,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
     var updateStarted = false
     private fun initInAppUpdate() {
         val appUpdateManager = AppUpdateManagerFactory.create(this)
-        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+            val appUpdateInfoTask = appUpdateManager.appUpdateInfo
 
         val listener = InstallStateUpdatedListener { state ->
 

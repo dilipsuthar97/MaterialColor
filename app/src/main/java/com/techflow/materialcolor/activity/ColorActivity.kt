@@ -47,10 +47,6 @@ class ColorActivity : BaseActivity(), AdapterColor.OnItemClickListener {
         Log.d(TAG, "colorname: $colorName")
         Log.d(TAG, "color: $color")
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            window.decorView.systemUiVisibility = 0
-        }
-
         initToolbar(colorName, color)
         initComponent(colorName)
 
@@ -80,6 +76,7 @@ class ColorActivity : BaseActivity(), AdapterColor.OnItemClickListener {
             Tools.changeNavigationIconColor(
                 bind.toolbar as Toolbar,
                 ContextCompat.getColor(this, R.color.colorTextPrimary_dark))
+            Tools.clearSystemBarLight(this)
         } else {
             (bind.toolbar as Toolbar).setTitleTextColor(ContextCompat.getColor(this, R.color.colorTextPrimary))
             Tools.changeNavigationIconColor(

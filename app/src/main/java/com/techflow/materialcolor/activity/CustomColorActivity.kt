@@ -6,12 +6,16 @@ import android.view.MenuItem
 import android.widget.SeekBar
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
+import com.balysv.materialripple.MaterialRippleLayout
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivityCustomColorBinding
 import com.techflow.materialcolor.utils.Preferences
 import com.techflow.materialcolor.utils.SharedPref
 import com.techflow.materialcolor.utils.ThemeUtils
 import com.techflow.materialcolor.utils.Tools
+import it.sephiroth.android.library.xtooltip.ClosePolicy
+import it.sephiroth.android.library.xtooltip.Tooltip
+
 /**
  * Created by Dilip Suthar on 16/02/19
  */
@@ -36,6 +40,8 @@ class CustomColorActivity : BaseActivity() {
 
         initToolbar()
         initComponent()
+        if (SharedPref.getInstance(this).getBoolean(Preferences.CustomColorActFR, true))
+            showTooltip()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -145,5 +151,54 @@ class CustomColorActivity : BaseActivity() {
         bind.tvBlue.text = b.toString()
 
         bind.viewColor.setBackgroundColor(Color.rgb(r, g, b))
+    }
+
+    /**
+     * @func show tooltip instruction
+     */
+    private fun showTooltip() {
+        var tooltip: Tooltip? = null
+
+        tooltip?.dismiss()
+
+        tooltip = Tooltip.Builder(this)
+            .anchor(bind.lytHex, 0, 0, false)
+            .text("tap here to copy HEX code")
+            .styleId(R.style.ToolTipAltStyle)
+            .arrow(true)
+            .maxWidth(resources.displayMetrics.widthPixels / 2)
+            .typeface(null)
+            .styleId(null)
+            .floatingAnimation(Tooltip.Animation.DEFAULT)
+            .closePolicy(ClosePolicy.TOUCH_ANYWHERE_NO_CONSUME)
+            .overlay(false)
+            .create()
+
+        bind.lytHex.post {
+            tooltip?.doOnHidden {
+
+                tooltip = null
+                tooltip = Tooltip.Builder(this)
+                    .anchor(bind.lytRgb, 0, 0, false)
+                    .text("tap here to copy RGB code")
+                    .styleId(R.style.ToolTipAltStyle)
+                    .arrow(true)
+                    .maxWidth(resources.displayMetrics.widthPixels / 2)
+                    .typeface(null)
+                    .styleId(null)
+                    .floatingAnimation(Tooltip.Animation.DEFAULT)
+                    .closePolicy(ClosePolicy.TOUCH_ANYWHERE_NO_CONSUME)
+                    .overlay(false)
+                    .create()
+
+                tooltip?.doOnHidden {
+                    SharedPref.getInstance(this)
+                        .saveData(Preferences.CustomColorActFR, false)
+                }
+                    ?.show(bind.lytRgb, Tooltip.Gravity.TOP, true)
+
+            }
+                ?.show(bind.lytHex, Tooltip.Gravity.TOP, true)
+        }
     }
 }

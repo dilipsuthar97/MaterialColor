@@ -27,7 +27,7 @@ import kotlin.system.exitProcess
  * Modified by Dilip Suthar on 15/12/19
  */
 object Tools {
-
+    // TODO: Ad code blocks
     enum class InvisibilityType {
         GONE,
         INVISIBLE

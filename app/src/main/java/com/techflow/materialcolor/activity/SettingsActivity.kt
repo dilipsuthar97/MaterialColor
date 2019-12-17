@@ -255,6 +255,9 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
         }
     }
 
+    /**
+     * @func reset first use tutorial preview
+     */
     private fun resetTutorial(sharedPref: SharedPref) {
         with(sharedPref) {
             saveData(Preferences.isFirstRun, true)
@@ -263,6 +266,9 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
             saveData(Preferences.ColorPickerFragFR, true)
             saveData(Preferences.SettingActFR, true)
             saveData(Preferences.ColorActFR, true)
+            saveData(Preferences.CustomColorActFR, true)
+            saveData(Preferences.CustomGradientActFR, true)
+            saveData(Preferences.DesignToolActFR, true)
         }
     }
 
@@ -341,12 +347,16 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
                 SharedPref.getInstance(this).saveData(Preferences.SHOW_AD, false)
 
                 bind.btnRemoveAds.isEnabled = false
-                Snackbar.make(bind.root, "You already purchased this. you don't see ads anymore, Restart app.", Snackbar.LENGTH_INDEFINITE)
-                    .setAction("RESTART") {
-                        Tools.restartApp(this)
-                        this.displayToast("Restarting app")
+
+                MaterialDialog(this).show {
+                    cornerRadius(16f)
+                    title(text = "Item already owned")
+                    message(text = "You already purchased this.\nyou don't see ads anymore, Restart app now..")
+                    positiveButton(text = "RESTART") {
+                        this@SettingsActivity.displayToast("Restarting app")
+                        Tools.restartApp(this@SettingsActivity)
                     }
-                    .show()
+                }
 
             }
             BillingResponseCode.ITEM_NOT_OWNED -> this.displayToast("You not owned yet :(")

@@ -1,7 +1,7 @@
 package com.techflow.materialcolor.utils
 
 /**
- * Modified by Dilip Suthar on 15/12/19
+ * Modified by Dilip Suthar on 17/12/19
  */
 object Preferences {
     const val RED = "red"
@@ -30,4 +30,7 @@ object Preferences {
     const val ColorPickerFragFR = "color_picker_frag"
     const val SettingActFR = "setting_frag"
     const val ColorActFR = "color_act"
+    const val CustomColorActFR = "custom_color_act"
+    const val CustomGradientActFR = "custom_gradient_act"
+    const val DesignToolActFR = "design_tool_act"
 }

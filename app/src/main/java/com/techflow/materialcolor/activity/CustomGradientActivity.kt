@@ -5,12 +5,16 @@ import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.SeekBar
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
+import com.balysv.materialripple.MaterialRippleLayout
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivityCustomGradientBinding
 import com.techflow.materialcolor.utils.*
+import it.sephiroth.android.library.xtooltip.ClosePolicy
+import it.sephiroth.android.library.xtooltip.Tooltip
 
 /**
  * @author Dilip Suthar
@@ -46,6 +50,8 @@ class CustomGradientActivity : BaseActivity() {
 
         initToolbar()
         initComponent()
+        if (SharedPref.getInstance(this).getBoolean(Preferences.CustomGradientActFR, true))
+            showTooltip()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -213,8 +219,10 @@ class CustomGradientActivity : BaseActivity() {
         Log.d(TAG, "HexCode_Primary: ${rgbToHex(gradient.primaryColor.red, gradient.primaryColor.green, gradient.primaryColor.blue)}")
         Log.d(TAG, "HexCode_Secondary: ${rgbToHex(gradient.secondaryColor.red, gradient.secondaryColor.green, gradient.secondaryColor.blue)}")
 
-        binding.tvPrimaryColor.text = rgbToHex(gradient.primaryColor.red, gradient.primaryColor.green, gradient.primaryColor.blue)
-        binding.tvSecondaryColor.text = rgbToHex(gradient.secondaryColor.red, gradient.secondaryColor.green, gradient.secondaryColor.blue)
+        binding.tvPrimaryColor.text =
+            rgbToHex(gradient.primaryColor.red, gradient.primaryColor.green, gradient.primaryColor.blue)
+        binding.tvSecondaryColor.text =
+            rgbToHex(gradient.secondaryColor.red, gradient.secondaryColor.green, gradient.secondaryColor.blue)
 
         binding.tvRedPrimary.text = gradient.primaryColor.red.toString()
         binding.tvGreenPrimary.text = gradient.primaryColor.green.toString()
@@ -254,6 +262,55 @@ class CustomGradientActivity : BaseActivity() {
     private fun rgbToHex(r: Int, g: Int, b: Int): String =
         "#${Integer.toHexString(r)}${Integer.toHexString(g)}${Integer.toHexString(b)}"
 
+    /**
+     * @func show tooltip instruction
+     */
+    private fun showTooltip() {
+        var tooltip: Tooltip? = null
+
+        tooltip?.dismiss()
+
+        tooltip = Tooltip.Builder(applicationContext)
+            .anchor(binding.btnPrimaryColor, 0, 0, false)
+            .text("tap here to copy Primary color")
+            .styleId(R.style.ToolTipAltStyle)
+            .arrow(true)
+            .maxWidth(resources.displayMetrics.widthPixels / 2)
+            .typeface(null)
+            .styleId(null)
+            .floatingAnimation(Tooltip.Animation.DEFAULT)
+            .closePolicy(ClosePolicy.TOUCH_ANYWHERE_NO_CONSUME)
+            .overlay(false)
+            .create()
+
+        binding.btnPrimaryColor.post {
+
+            tooltip?.doOnHidden {
+
+                tooltip = null
+                tooltip = Tooltip.Builder(applicationContext)
+                    .anchor(binding.btnSecondaryColor, 0, 0, false)
+                    .text("tap here to copy Secondary code")
+                    .styleId(R.style.ToolTipAltStyle)
+                    .arrow(true)
+                    .maxWidth(resources.displayMetrics.widthPixels / 2)
+                    .typeface(null)
+                    .styleId(null)
+                    .floatingAnimation(Tooltip.Animation.DEFAULT)
+                    .closePolicy(ClosePolicy.TOUCH_ANYWHERE_NO_CONSUME)
+                    .overlay(false)
+                    .create()
+
+                tooltip?.doOnHidden {
+                    SharedPref.getInstance(this)
+                        .saveData(Preferences.CustomGradientActFR, false)
+                }
+                    ?.show(binding.btnSecondaryColor, Tooltip.Gravity.TOP, true)
+
+            }
+                ?.show(binding.btnPrimaryColor, Tooltip.Gravity.TOP, true)
+        }
+    }
 }
 
 /**
