@@ -24,7 +24,7 @@ import com.techflow.materialcolor.helpers.displayToast
 import kotlin.system.exitProcess
 
 /**
- * Modified by Dilip Suthar on 15/12/19
+ * Modified by Dilip Suthar on 21/12/19
  */
 object Tools {
     // TODO: Ad code blocks
@@ -101,6 +101,18 @@ object Tools {
             for (v in views) {
                 v.visibility = View.GONE
             }
+        }
+    }
+
+    fun enableViews(vararg views: View) {
+        for (v in views) {
+            v.isEnabled = true
+        }
+    }
+
+    fun disableViews(vararg views: View) {
+        for (v in views) {
+            v.isEnabled = false
         }
     }
 

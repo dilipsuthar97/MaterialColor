@@ -2,17 +2,13 @@ package com.techflow.materialcolor.activity
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
-import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.app.ShareCompat
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
@@ -21,12 +17,12 @@ import com.android.billingclient.api.BillingClient.BillingResponseCode
 import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetView
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.techflow.materialcolor.MaterialColor
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivitySettingsBinding
 import com.techflow.materialcolor.helpers.displayToast
+import com.techflow.materialcolor.helpers.openWebView
 import com.techflow.materialcolor.utils.*
 
 /**
@@ -80,6 +76,8 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
         bind.switchChangeTheme.isChecked = ThemeUtils.getTheme(this) == ThemeUtils.DARK
 
         bind.switchChangeTheme.setOnCheckedChangeListener { compoundButton, isChecked ->
+            firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_DARK_MODE, null)
+
             if (isChecked) ThemeUtils.setTheme(this, ThemeUtils.DARK)
             else ThemeUtils.setTheme(this, ThemeUtils.LIGHT)
             recreate()
@@ -110,7 +108,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
                     if (::billingClient.isInitialized)
                         startPurchase()
                 } else
-                    Toast.makeText(this, "No active network", Toast.LENGTH_SHORT).show()
+                    displayToast("No active network")
             }
             R.id.btn_rate -> {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(appUrl))
@@ -146,18 +144,23 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
                 } else if (title.isEmpty()) bind.etFeedbackTitle.error = "Required field"
                 else if (msg.isEmpty()) bind.etFeedbackMsg.error = "Required field"
                 else {
-                    val i = Intent(Intent.ACTION_SEND)
-                    i.type = "message/html"
-                    i.putExtra(Intent.EXTRA_EMAIL, arrayOf("techflow.developer97@gmail.com"))
-                    i.putExtra(Intent.EXTRA_SUBJECT, "Feedback: MaterialColor - $title")
-                    i.putExtra(Intent.EXTRA_TEXT, "Title: $title\nFeedback: $msg")
-                    try {
-                        startActivity(Intent.createChooser(i, "Send Feedback"))
-                    } catch (e: ActivityNotFoundException) {
-                        Toast.makeText(this, "There is no email client installed.", Toast.LENGTH_SHORT).show()
+                    val i = Intent().apply {
+                        action = Intent.ACTION_SEND
+                        type = "message/rfc822"
+                        putExtra(Intent.EXTRA_EMAIL, arrayOf("techflow.developer97@gmail.com"))
+                        putExtra(Intent.EXTRA_SUBJECT, "Feedback: MaterialColor - $title")
+                        putExtra(Intent.EXTRA_TEXT, "Title: $title\nFeedback: $msg")
                     }
 
-                    Toast.makeText(this, "Submitting...", Toast.LENGTH_SHORT).show()
+                    if (i.resolveActivity(packageManager) != null) {
+                        try {
+                            startActivity(Intent.createChooser(i, "Send Feedback"))
+                        } catch (e: ActivityNotFoundException) {
+                            displayToast("There is no email client installed.")
+                        }
+                    }
+
+                    displayToast("Submitting...")
                 }
             }
             R.id.btn_about -> {
@@ -172,7 +175,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
             }
             R.id.label_reset_tutorial -> {
                 resetTutorial(SharedPref.getInstance(this))
-                this.displayToast("Tutorial reset successful :)")
+                displayToast("Tutorial reset successful :)")
             }
         }
     }
@@ -192,6 +195,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
         actionBar.title = "Settings"
         actionBar.setDisplayHomeAsUpEnabled(true)
         actionBar.setHomeButtonEnabled(true)
+        (bind.toolbar as Toolbar).setNavigationIcon(R.drawable.ic_arrow_back)
         Tools.changeNavigationIconColor(bind.toolbar as Toolbar, ThemeUtils.getThemeAttrColor(this, R.attr.colorTextPrimary))
     }
 
@@ -210,25 +214,6 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
             openWebView("https://about.me/dilip.suthar")
             dialog.dismiss()
         }
-    }
-
-    /**
-     * @func It will open URL link into chrome custom tab
-     * @param url a url link in a string format
-     */
-    private fun openWebView(url: String) {
-        val intent = CustomTabsIntent.Builder()
-            .addDefaultShareMenuItem()
-            .setToolbarColor(ContextCompat.getColor(this, R.color.colorAccent))
-            .setShowTitle(true)
-            .enableUrlBarHiding()
-            .addDefaultShareMenuItem()
-            .setStartAnimations(this, R.anim.anim_fragment_enter, R.anim.anim_fragment_exit)
-            .setExitAnimations(this, R.anim.anim_fragment_enter, R.anim.anim_fragment_exit)
-            .setCloseButtonIcon(BitmapFactory.decodeResource(resources, R.drawable.ic_arrow_back))
-            .build()
-
-        intent.launchUrl(this, Uri.parse(url))
     }
 
     /**
@@ -279,29 +264,29 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
      * @func setup in-app purchase
      */
     private fun setupBillingClient() {
-        Log.d(TAG, "setupBillingClient: called")
+        /*Log.d(TAG, "setupBillingClient: called")
 
         skuList.clear()
-        skuList.add("sku_remove_ads")   // TODO: Add in-app purchase product ID
+        skuList.add("")   // TODO: Add in-app purchase product ID
 
         // Purchase update listener
         billingClient = BillingClient.newBuilder(this).setListener(this).enablePendingPurchases().build()
 
         // Billing client state listener
-        billingClient.startConnection(this)
+        billingClient.startConnection(this)*/
     }
 
     /**
      * @func open in-app purchase dialog flow for purchase
      */
     private fun startPurchase() {
-        Log.d(TAG, "startPurchase: called")
+        /*Log.d(TAG, "startPurchase: called")
 
         if (billingClient.isReady) {
             billingFlowParams = BillingFlowParams.newBuilder().setSkuDetails(skuDetails).build()
             billingClient.launchBillingFlow(this, billingFlowParams)
         }
-        //setupBillingClient()
+        //setupBillingClient()*/
     }
 
     /**
@@ -310,7 +295,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
      * @param purchases Mutable list of Purchase object
      */
     override fun onPurchasesUpdated(billingResult: BillingResult?, purchases: MutableList<Purchase>?) {
-        Tools.inVisibleViews(bind.progressBar, type = Tools.InvisibilityType.GONE)
+        /*Tools.inVisibleViews(bind.progressBar, type = Tools.InvisibilityType.GONE)
         Tools.visibleViews(bind.btnRemoveAds)
 
         when (billingResult?.responseCode) {
@@ -327,7 +312,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
                             "\n\nThanks for purchase :)")
                     positiveButton(text = "RESTART APP") {
                         Tools.restartApp(this@SettingsActivity)
-                        this@SettingsActivity.displayToast("Restarting app")
+                        displayToast("Restarting app")
                     }
                 }
 
@@ -335,12 +320,12 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
                 SharedPref.getInstance(this).saveData(Preferences.SHOW_AD, false)
 
             }
-            BillingResponseCode.USER_CANCELED -> this.displayToast("Transaction canceled :|")
-            BillingResponseCode.SERVICE_UNAVAILABLE -> this.displayToast("Service unavailable :(")
-            BillingResponseCode.BILLING_UNAVAILABLE -> this.displayToast("Billing unavailable :(")
-            BillingResponseCode.ITEM_UNAVAILABLE -> this.displayToast("Item unavailable :(")
-            BillingResponseCode.DEVELOPER_ERROR -> this.displayToast("Developer error :(")
-            BillingResponseCode.ERROR -> this.displayToast("Error :(")
+            BillingResponseCode.USER_CANCELED -> displayToast("Transaction canceled :|")
+            BillingResponseCode.SERVICE_UNAVAILABLE -> displayToast("Service unavailable :(")
+            BillingResponseCode.BILLING_UNAVAILABLE -> displayToast("Billing unavailable :(")
+            BillingResponseCode.ITEM_UNAVAILABLE -> displayToast("Item unavailable :(")
+            BillingResponseCode.DEVELOPER_ERROR -> displayToast("Developer error :(")
+            BillingResponseCode.ERROR -> displayToast("Error :(")
             BillingResponseCode.ITEM_ALREADY_OWNED -> {
 
                 // Disable ad showing
@@ -353,22 +338,22 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
                     title(text = "Item already owned")
                     message(text = "You already purchased this.\nyou don't see ads anymore, Restart app now..")
                     positiveButton(text = "RESTART") {
-                        this@SettingsActivity.displayToast("Restarting app")
+                        displayToast("Restarting app")
                         Tools.restartApp(this@SettingsActivity)
                     }
                 }
 
             }
-            BillingResponseCode.ITEM_NOT_OWNED -> this.displayToast("You not owned yet :(")
-        }
+            BillingResponseCode.ITEM_NOT_OWNED -> displayToast("You not owned yet :(")
+        }*/
     }
 
     /**
      * @inherited from *BillingClientStateListener -> listen Billing client state
      */
     override fun onBillingServiceDisconnected() {
-        Tools.inVisibleViews(bind.btnRemoveAds, type = Tools.InvisibilityType.GONE)
-        Tools.visibleViews(bind.progressBar)
+        /*Tools.inVisibleViews(bind.btnRemoveAds, type = Tools.InvisibilityType.GONE)
+        Tools.visibleViews(bind.progressBar)*/
     }
 
     /**
@@ -376,7 +361,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
      * @param billingResult BillingResult object
      */
     override fun onBillingSetupFinished(billingResult: BillingResult?) {
-        if (billingResult?.responseCode == BillingResponseCode.OK) {
+        /*if (billingResult?.responseCode == BillingResponseCode.OK) {
 
             Tools.inVisibleViews(bind.progressBar, type = Tools.InvisibilityType.GONE)
             Tools.visibleViews(bind.btnRemoveAds)
@@ -402,6 +387,6 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
                     }
                 }
             }
-        }
+        }*/
     }
 }

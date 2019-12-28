@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.techflow.materialcolor.R
@@ -16,6 +17,7 @@ import com.techflow.materialcolor.database.AppDatabase
 import com.techflow.materialcolor.databinding.FragmentBookmarkedColorBinding
 import com.techflow.materialcolor.helpers.AppExecutorHelper
 import com.techflow.materialcolor.helpers.displayToast
+import com.techflow.materialcolor.helpers.isTablet
 import com.techflow.materialcolor.model.Color
 import com.techflow.materialcolor.utils.AnimUtils
 import com.techflow.materialcolor.utils.Tools
@@ -50,7 +52,8 @@ class BookmarkedColorFragment : Fragment(), AdapterColor.OnItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.recyclerView.layoutManager = LinearLayoutManager(context)
+        binding.recyclerView.layoutManager =
+            if (context?.isTablet()!!) GridLayoutManager(context, 2) else LinearLayoutManager(context)
         binding.recyclerView.setHasFixedSize(true)
         adapter = AdapterColor(context!!, activity!!, this, mDb)
         binding.recyclerView.adapter = adapter

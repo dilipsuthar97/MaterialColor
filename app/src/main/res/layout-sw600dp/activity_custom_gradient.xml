@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".activity.CustomGradientActivity">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:background="?attr/colorPrimary">
+
+        <include
+                android:id="@+id/toolbar"
+                layout="@layout/toolbar_default"/>
+
+        <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                app:cardBackgroundColor="?attr/cardDialogColor"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="5dp">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/view_gradient_drawable"
+                        android:layout_width="450dp"
+                        android:layout_height="450dp"
+                        tools:background="@color/red_500">
+
+                    <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/btn_primary_color"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginBottom="16dp"
+                            app:cardBackgroundColor="?attr/cardDialogColor"
+                            app:cardCornerRadius="5dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent">
+
+                        <TextView
+                                android:id="@+id/tv_primary_color"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginBottom="5dp"
+                                android:textColor="?attr/colorTextPrimary"
+                                android:textSize="14sp"
+                                tools:text="#FFFFFF" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/btn_secondary_color"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="16dp"
+                            app:cardBackgroundColor="?attr/cardDialogColor"
+                            app:cardCornerRadius="5dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent">
+
+                        <TextView
+                                android:id="@+id/tv_secondary_color"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginBottom="5dp"
+                                android:textColor="?attr/colorTextPrimary"
+                                android:textSize="14sp"
+                                tools:text="#FFFFFF" />
+                    </com.google.android.material.card.MaterialCardView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- Primary colors seekbars -->
+                <LinearLayout
+                        android:layout_gravity="center"
+                        android:orientation="vertical"
+                        android:padding="20dp"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content">
+
+                    <LinearLayout
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:layout_width="fill_parent"
+                            android:layout_height="40dp">
+
+                        <TextView
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                                android:gravity="center"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:minWidth="@dimen/spacing_mxlarge"
+                                android:text="R"/>
+
+                        <androidx.appcompat.widget.AppCompatSeekBar
+                                android:id="@+id/seekbar_red_primary"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:progressTint="@color/red_600"
+                                android:max="255"
+                                android:progress="127"
+                                android:layout_weight="1"/>
+
+                        <TextView
+                                android:textAppearance="@style/TextAppearance.Medium.Bold"
+                                android:gravity="center"
+                                android:id="@+id/tv_red_primary"
+                                android:textColor="?attr/colorTextPrimary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:minWidth="@dimen/spacing_xmlarge"
+                                tools:text="127"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:layout_width="fill_parent"
+                            android:layout_height="40dp">
+
+                        <TextView
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                                android:gravity="center"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:minWidth="@dimen/spacing_mxlarge"
+                                android:text="G"/>
+
+                        <androidx.appcompat.widget.AppCompatSeekBar
+                                android:id="@+id/seekbar_green_primary"
+                                android:layout_width="0.0dip"
+                                android:progressTint="@color/green_600"
+                                android:layout_height="wrap_content"
+                                android:max="255"
+                                android:progress="127"
+                                android:layout_weight="1.0"/>
+
+                        <TextView
+                                android:textAppearance="@style/TextAppearance.Medium.Bold"
+                                android:gravity="center"
+                                android:id="@+id/tv_green_primary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="?attr/colorTextPrimary"
+                                android:minWidth="@dimen/spacing_xmlarge"
+                                tools:text="127"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:layout_width="fill_parent"
+                            android:layout_height="40dp">
+
+                        <TextView
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                                android:gravity="center"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:minWidth="@dimen/spacing_mxlarge"
+                                android:text="B"/>
+
+                        <androidx.appcompat.widget.AppCompatSeekBar
+                                android:id="@+id/seekbar_blue_primary"
+                                android:layout_width="0.0dip"
+                                android:progressTint="@color/blue_600"
+                                android:layout_height="wrap_content"
+                                android:max="255"
+                                android:progress="127"
+                                android:layout_weight="1.0"/>
+
+                        <TextView
+                                android:textAppearance="@style/TextAppearance.Medium.Bold"
+                                android:gravity="center"
+                                android:id="@+id/tv_blue_primary"
+                                android:textColor="?attr/colorTextPrimary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:minWidth="@dimen/spacing_xmlarge"
+                                tools:text="127"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                        android:background="?android:attr/listDivider"
+                        android:layout_width="fill_parent"
+                        android:layout_height="0.5dip"/>
+
+                <!-- Secondary colors seekbar -->
+                <LinearLayout
+                        android:layout_gravity="center"
+                        android:orientation="vertical"
+                        android:padding="20dp"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content">
+
+                    <LinearLayout
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:layout_width="fill_parent"
+                            android:layout_height="40dp">
+
+                        <TextView
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                                android:gravity="center"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:minWidth="@dimen/spacing_mxlarge"
+                                android:text="R"/>
+
+                        <androidx.appcompat.widget.AppCompatSeekBar
+                                android:id="@+id/seekbar_red_secondary"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:progressTint="@color/red_600"
+                                android:max="255"
+                                android:progress="127"
+                                android:layout_weight="1"/>
+
+                        <TextView
+                                android:textAppearance="@style/TextAppearance.Medium.Bold"
+                                android:gravity="center"
+                                android:id="@+id/tv_red_secondary"
+                                android:textColor="?attr/colorTextPrimary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:minWidth="@dimen/spacing_xmlarge"
+                                tools:text="127"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:layout_width="fill_parent"
+                            android:layout_height="40dp">
+
+                        <TextView
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                                android:gravity="center"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:minWidth="@dimen/spacing_mxlarge"
+                                android:text="G"/>
+
+                        <androidx.appcompat.widget.AppCompatSeekBar
+                                android:id="@+id/seekbar_green_secondary"
+                                android:layout_width="0.0dip"
+                                android:progressTint="@color/green_600"
+                                android:layout_height="wrap_content"
+                                android:max="255"
+                                android:progress="127"
+                                android:layout_weight="1.0"/>
+
+                        <TextView
+                                android:textAppearance="@style/TextAppearance.Medium.Bold"
+                                android:gravity="center"
+                                android:id="@+id/tv_green_secondary"
+                                android:textColor="?attr/colorTextPrimary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:minWidth="@dimen/spacing_xmlarge"
+                                tools:text="127"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:layout_width="fill_parent"
+                            android:layout_height="40dp">
+
+                        <TextView
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                                android:gravity="center"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:minWidth="@dimen/spacing_mxlarge"
+                                android:text="B"/>
+
+                        <androidx.appcompat.widget.AppCompatSeekBar
+                                android:id="@+id/seekbar_blue_secondary"
+                                android:layout_width="0.0dip"
+                                android:progressTint="@color/blue_600"
+                                android:layout_height="wrap_content"
+                                android:max="255"
+                                android:progress="127"
+                                android:layout_weight="1.0"/>
+
+                        <TextView
+                                android:textAppearance="@style/TextAppearance.Medium.Bold"
+                                android:gravity="center"
+                                android:id="@+id/tv_blue_secondary"
+                                android:textColor="?attr/colorTextPrimary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:minWidth="@dimen/spacing_xmlarge"
+                                tools:text="127"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+
+</layout>

@@ -9,6 +9,7 @@ import android.widget.ImageButton
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.adapter.AdapterColor
@@ -18,6 +19,7 @@ import com.techflow.materialcolor.databinding.ActivityColorBinding
 import com.techflow.materialcolor.helpers.AppExecutorHelper
 import com.techflow.materialcolor.helpers.displayToast
 import com.techflow.materialcolor.helpers.isDark
+import com.techflow.materialcolor.helpers.isTablet
 import com.techflow.materialcolor.model.Color
 import com.techflow.materialcolor.utils.AnimUtils
 import com.techflow.materialcolor.utils.Tools
@@ -128,7 +130,8 @@ class ColorActivity : BaseActivity(), AdapterColor.OnItemClickListener {
         // Recycler view
         with(bind.recyclerView) {
             setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(this@ColorActivity)
+            layoutManager =
+                if (context?.isTablet()!!) GridLayoutManager(applicationContext, 2) else LinearLayoutManager(applicationContext)
             adapter = adapterColor
         }
 

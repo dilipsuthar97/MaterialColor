@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
@@ -12,6 +13,7 @@ import com.techflow.materialcolor.R
 import com.techflow.materialcolor.adapter.AdapterGradient
 import com.techflow.materialcolor.data.DataGenerator
 import com.techflow.materialcolor.databinding.FragmentGradientBinding
+import com.techflow.materialcolor.helpers.isTablet
 import com.techflow.materialcolor.model.Gradient
 import com.techflow.materialcolor.utils.ThemeUtils
 import com.techflow.materialcolor.utils.Tools
@@ -56,7 +58,8 @@ class GradientFragment : Fragment() {
      */
     private fun initComponent(view: View) {
         binding.recyclerView.setHasFixedSize(true)
-        binding.recyclerView.layoutManager = LinearLayoutManager(context)
+        binding.recyclerView.layoutManager =
+            if (context?.isTablet()!!) GridLayoutManager(context, 2) else LinearLayoutManager(context)
         val listGradient = DataGenerator.getGradientsData(context!!)
 
         // For smooth scrolling to a specific position & visible item to top of recycler view

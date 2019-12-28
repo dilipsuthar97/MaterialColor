@@ -195,15 +195,6 @@ class ColorPickerFragment : Fragment() {
                         .descriptionTextColor(R.color.white)
                         .cancelable(false)
                         .targetRadius(90)
-                    /*object : TapTargetView.Listener() {
-                        override fun onTargetClick(view: TapTargetView?) {
-                            when {
-                                checkPermission() -> openImagePicker()
-                                ActivityCompat.shouldShowRequestPermissionRationale(activity!!, android.Manifest.permission.READ_EXTERNAL_STORAGE) -> showPermissionDeniedDialog()
-                                else -> requestPermission()
-                            }
-                        }
-                    }*/
                 )
 
                 saveData(Preferences.ColorPickerFragFR, false)
