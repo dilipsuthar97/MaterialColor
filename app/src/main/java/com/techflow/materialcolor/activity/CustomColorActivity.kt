@@ -57,6 +57,7 @@ class CustomColorActivity : BaseActivity() {
         supportActionBar?.title = "Palette creator"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
+        (bind.toolbar as Toolbar).setNavigationIcon(R.drawable.ic_arrow_back)
         Tools.changeNavigationIconColor(bind.toolbar as Toolbar, ThemeUtils.getThemeAttrColor(this, R.attr.colorTextPrimary))
     }
 

@@ -75,14 +75,22 @@ class SharedPref constructor(context: Context){
     fun actionShowInterstitialAd(): Boolean {
         var count = getInt("clicks_count", 1)
         var isReset = false
-        if (count < 9)
-            count++
-        else {
+
+        if (count >= 9) {
             count = 1
+            saveData("clicks_count", count)
             isReset = true
         }
 
-        saveData("clicks_count", count)
         return isReset
+    }
+
+    /**
+     * @func it'll increment the count value of full screen ad showing
+     */
+    fun increaseInterstitialAdCounter() {
+        var count = getInt("clicks_count", 1)
+        count += 1
+        saveData("clicks_count", count)
     }
 }

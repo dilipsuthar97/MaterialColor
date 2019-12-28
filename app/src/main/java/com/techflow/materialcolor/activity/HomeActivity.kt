@@ -5,9 +5,12 @@ import com.techflow.materialcolor.utils.Tools
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageButton
+import android.widget.LinearLayout
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -17,6 +20,7 @@ import com.afollestad.materialdialogs.bottomsheets.BottomSheet
 import com.afollestad.materialdialogs.customview.customView
 import com.afollestad.materialdialogs.customview.getCustomView
 import com.facebook.ads.*
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.InstallStateUpdatedListener
@@ -31,6 +35,7 @@ import com.techflow.materialcolor.databinding.ActivityHomeBinding
 import com.techflow.materialcolor.fragment.*
 import com.techflow.materialcolor.helpers.displaySnackbar
 import com.techflow.materialcolor.helpers.displayToast
+import com.techflow.materialcolor.helpers.isTablet
 import com.techflow.materialcolor.utils.Preferences
 import com.techflow.materialcolor.utils.SharedPref
 import com.techflow.materialcolor.utils.ThemeUtils
@@ -55,8 +60,8 @@ import com.techflow.materialcolor.utils.ThemeUtils
     limitations under the License.
  */
 class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
+    private val TAG = HomeActivity::class.java.simpleName
 
-    val TAG = HomeActivity::class.java.simpleName
     val BACK_STACK_ROOT_NAME = "root_fragment"
     val REQUEST_CODE_UPDATE = 201
 
@@ -66,13 +71,15 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         private lateinit var interstitialAd: InterstitialAd
 
         fun showInterstitialAd(context: Context) {
-            if (interstitialAd.isAdLoaded) {
-                if (interstitialAd.isAdInvalidated)
-                    return
-                else if (SharedPref.getInstance(context).actionShowInterstitialAd())
+
+            if (SharedPref.getInstance(context).actionShowInterstitialAd()) {
+                Log.d("HomeActivity", "serving ads")
+                if (interstitialAd.isAdLoaded)
                     interstitialAd.show()
-            } else if (Tools.hasNetwork(context))
-                interstitialAd.loadAd()
+                else if (Tools.hasNetwork(context))
+                    interstitialAd.loadAd()
+            } else
+                SharedPref.getInstance(context).increaseInterstitialAdCounter()
         }
     }
 
@@ -97,6 +104,12 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
         sharedPref = SharedPref.getInstance(this)
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
+
+        // TODO: remove during production
+        if (this.isTablet())
+            Log.d(TAG, "Tablet")
+        else
+            Log.d(TAG, "Phone")
 
         initToolbar()
         initComponent()
@@ -273,22 +286,28 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
         val view = bottomSheet.getCustomView()
 
-        view.findViewById<View>(R.id.btn_settings).setOnClickListener {
+        view.findViewById<ImageButton>(R.id.btn_settings).setOnClickListener {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
 
-        view.findViewById<View>(R.id.btn_custom_color_maker).setOnClickListener {
+        view.findViewById<LinearLayout>(R.id.btn_custom_color_maker).setOnClickListener {
             firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_CUSTOM_COLOR_MAKER, null)
             startActivity(Intent(this, CustomColorActivity::class.java))
         }
 
-        view.findViewById<View>(R.id.btn_gradient_maker).setOnClickListener {
+        view.findViewById<LinearLayout>(R.id.btn_gradient_maker).setOnClickListener {
             firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_CUSTOM_GRADIENT_MAKER, null)
             startActivity(Intent(this, CustomGradientActivity::class.java))
         }
 
-        view.findViewById<View>(R.id.btn_material_design_tool).setOnClickListener {
+        view.findViewById<LinearLayout>(R.id.btn_material_design_tool).setOnClickListener {
+            firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_MATERIAL_DESIGN_TOOL, null)
             startActivity(Intent(this, DesignToolActivity::class.java))
+        }
+
+        view.findViewById<MaterialButton>(R.id.btn_support_development).setOnClickListener {
+            firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_SUPPORT_DEVELOPMENT, null)
+            startActivity(Intent(this, SupportDevelopmentActivity::class.java))
         }
     }
 
@@ -309,6 +328,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
      * @func init audience network config for ad
      */
     private fun initAd() {
+        Log.d(TAG, "initAd: called")
         // Interstitial Ad
         interstitialAd = InterstitialAd(this, MaterialColor.getAdId(AdType.INTERSTITIAL))
         if (Tools.hasNetwork(this))
@@ -325,12 +345,13 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             }
 
             override fun onAdLoaded(p0: Ad?) {
-
+                Log.d(TAG, "onAdLoaded: called")
             }
 
             override fun onError(p0: Ad?, p1: AdError?) {
-                if (Tools.hasNetwork(this@HomeActivity))
-                    interstitialAd.loadAd()
+                Log.d(TAG, "onError: called: ${p1?.errorMessage}")
+                /*if (Tools.hasNetwork(this@HomeActivity))
+                    interstitialAd.loadAd()*/
             }
 
             override fun onAdClicked(p0: Ad?) {

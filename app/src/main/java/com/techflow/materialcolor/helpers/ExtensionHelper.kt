@@ -1,12 +1,18 @@
 package com.techflow.materialcolor.helpers
 
 import android.content.Context
+import android.content.res.Configuration
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.snackbar.Snackbar
+import com.techflow.materialcolor.R
 
 /**
  * @func check if color's luminance value is dark or light
@@ -57,4 +63,30 @@ fun View.displaySnackbar(message: String, duration: Int) {
     ).apply {
         show()
     }
+}
+
+/**
+ * @func It will open URL link into chrome custom tab
+ * @param url a url link in a string format
+ */
+fun Context.openWebView(url: String) {
+    val intent = CustomTabsIntent.Builder()
+        .addDefaultShareMenuItem()
+        .setToolbarColor(ContextCompat.getColor(this, R.color.colorAccent))
+        .setShowTitle(true)
+        .enableUrlBarHiding()
+        .addDefaultShareMenuItem()
+        .setStartAnimations(this, R.anim.anim_fragment_enter, R.anim.anim_fragment_exit)
+        .setExitAnimations(this, R.anim.anim_fragment_enter, R.anim.anim_fragment_exit)
+        .setCloseButtonIcon(BitmapFactory.decodeResource(resources, R.drawable.ic_arrow_back))
+        .build()
+
+    intent.launchUrl(this, Uri.parse(url))
+}
+
+/**
+ * @func check weather the device is tablet or phone
+ */
+fun Context.isTablet(): Boolean {
+    return (this.resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE
 }

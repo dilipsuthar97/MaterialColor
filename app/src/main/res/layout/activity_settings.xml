@@ -389,7 +389,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="5dp"
-                                        android:hint="Feedback about app, bugs"
+                                        android:hint="Feedback bugs, suggestions"
                                         app:hintEnabled="true">
 
                                     <com.google.android.material.textfield.TextInputEditText

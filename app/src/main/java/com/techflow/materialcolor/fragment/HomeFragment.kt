@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.techflow.materialcolor.R
@@ -15,6 +16,7 @@ import com.techflow.materialcolor.activity.HomeActivity
 import com.techflow.materialcolor.adapter.AdapterColor
 import com.techflow.materialcolor.data.DataGenerator
 import com.techflow.materialcolor.databinding.FragmentHomeBinding
+import com.techflow.materialcolor.helpers.isTablet
 import com.techflow.materialcolor.model.Color
 import com.techflow.materialcolor.utils.Preferences
 import com.techflow.materialcolor.utils.SharedPref
@@ -57,7 +59,8 @@ class HomeFragment : Fragment(), AdapterColor.OnItemClickListener {
     private fun initComponent(view: View) {
 
         binding.recyclerView.setHasFixedSize(true)
-        binding.recyclerView.layoutManager = LinearLayoutManager(context)
+        binding.recyclerView.layoutManager =
+            if (context?.isTablet()!!) GridLayoutManager(context, 2) else LinearLayoutManager(context)
         binding.recyclerView.isNestedScrollingEnabled = false
         val colorList = DataGenerator.getColorData(context!!)
 

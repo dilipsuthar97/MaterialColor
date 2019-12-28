@@ -69,6 +69,7 @@ class CustomGradientActivity : BaseActivity() {
         setSupportActionBar(binding.toolbar as Toolbar)
         supportActionBar?.title = "Gradient Maker"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (binding.toolbar as Toolbar).setNavigationIcon(R.drawable.ic_arrow_back)
         Tools.changeNavigationIconColor(
             binding.toolbar as Toolbar,
             ThemeUtils.getThemeAttrColor(this, R.attr.colorTextPrimary))
