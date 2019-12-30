@@ -18,9 +18,8 @@ The app Material Color Palette allows developers and programmers to get their re
 </p>
 
 ## Support Development
-Buy me a Coffee
 <a href="https://www.buymeacoffee.com/dilipsuthar97">
-    <img src="https://cdn.buymeacoffee.com/buttons/bmc-new-btn-logo.svg" alt="Buy me a coffee ☕">
+    <img src="https://raw.githubusercontent.com/ravjanisz/imagecrypt/master/docs/assets/bmc.png" alt="Buy me a coffee ☕">
 </a>
 
 ## License
