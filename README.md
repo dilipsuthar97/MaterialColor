@@ -3,8 +3,8 @@
 </a>
 
 # MaterialColor ![Version](https://img.shields.io/badge/version-3.2.1-blue?logo=verizon)
-[![GitHub watchers](https://img.shields.io/github/watchers/Naereen/StrapDown.js.svg?style=social&label=Watch&maxAge=2592000)](https://github.com/dilipsuthar1997/MaterialColor/watchers)
-[![GitHub followers](https://img.shields.io/github/followers/Naereen.svg?style=social&label=Follow&maxAge=2592000)](https://github.com/dilipsuthar1997?tab=followers)
+[![GitHub watchers](https://img.shields.io/github/watchers/dilipsuthar97/StrapDown.js.svg?style=social&label=Watch&maxAge=2592000)](https://github.com/dilipsuthar1997/MaterialColor/watchers)
+[![GitHub followers](https://img.shields.io/github/followers/dilipsuthar97.svg?style=social&label=Follow&maxAge=2592000)](https://github.com/dilipsuthar1997?tab=followers)
 The app Material Color Palette allows developers and programmers to get their required color code on the go.  MaterialColor Palette is an all in one toolbox for developers especially web-developers.
 
 ![Status](https://img.shields.io/badge/status-online-brightgreen.svg)
