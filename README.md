@@ -1,7 +1,9 @@
 # MaterialColor
 The app Material Color Palette allows developers and programmers to get their required color code on the go.  MaterialColor Palette is an all in one toolbox for developers especially web-developers.
 
-![feature_graphic](https://github.com/dilipsuthar1997/MaterialColor/blob/master/screenshots/feature_graphics.png)
+<a href="https://play.google.com/store/apps/details?id=com.techflow.materialcolor">
+    <img src="https://github.com/dilipsuthar1997/MaterialColor/blob/master/screenshots/feature_graphics.png">
+</a>
 
 ## ScreenShots
 <p align="center">
