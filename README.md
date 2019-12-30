@@ -42,3 +42,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
+
+## Legal
+If you're going to use this code, please disclose the source (me)! Thank You!
+Copyright © 2019 Dilip Suthar (dilipsuthar97)
