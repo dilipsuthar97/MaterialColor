@@ -3,11 +3,16 @@
 </a>
 
 # MaterialColor ![Version](https://img.shields.io/badge/version-3.2.1-blue?logo=verizon)
+[![GitHub watchers](https://img.shields.io/github/watchers/Naereen/StrapDown.js.svg?style=social&label=Watch&maxAge=2592000)](https://github.com/dilipsuthar1997/MaterialColor/watchers)
+[![GitHub followers](https://img.shields.io/github/followers/Naereen.svg?style=social&label=Follow&maxAge=2592000)](https://github.com/dilipsuthar1997?tab=followers)
 The app Material Color Palette allows developers and programmers to get their required color code on the go.  MaterialColor Palette is an all in one toolbox for developers especially web-developers.
 
 ![Status](https://img.shields.io/badge/status-online-brightgreen.svg)
 [![License](https://img.shields.io/badge/license-Apache-teal?logo=apache)](https://github.com/dilipsuthar1997/MaterialColor/blob/master/LICENSE.txt)
 [![Coffee](https://img.shields.io/badge/support-buy%20me%20a%20coffee!-orange?logo=buymeacoffee)](https://www.buymeacoffee.com/dilipsuthar97)
+
+[![forthebadge](https://forthebadge.com/images/badges/built-for-android.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
 
 ## ScreenShots
 <p align="center">
@@ -25,6 +30,9 @@ The app Material Color Palette allows developers and programmers to get their re
 <a href="https://www.buymeacoffee.com/dilipsuthar97">
     <img src="https://raw.githubusercontent.com/ravjanisz/imagecrypt/master/docs/assets/bmc.png" alt="Buy me a coffee ☕">
 </a>
+
+## Social
+![Tweeting](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)(https://twitter.com/dilipsuthar97)
 
 ## License
 ```
