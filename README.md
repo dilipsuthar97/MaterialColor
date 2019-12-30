@@ -4,8 +4,10 @@ The app Material Color Palette allows developers and programmers to get their re
 ![feature_graphic](https://github.com/dilipsuthar1997/MaterialColor/blob/master/screenshots/feature_graphics.png)
 
 ## ScreenShots
-Home Material color list
-![home_material_color](https://github.com/dilipsuthar1997/MaterialColor/blob/master/screenshots/Screenshot_2019-12-23-14-44-47-380_com.techflow.materialcolor.jpg)
+<p align="center">
+    <img src="https://github.com/dilipsuthar1997/MaterialColor/blob/master/screenshots/Screenshot_2019-12-23-14-44-47-380_com.techflow.materialcolor.jpg" width="200" height="400" alt="ss_1">
+    <img src="https://github.com/dilipsuthar1997/MaterialColor/blob/master/screenshots/Screenshot_2019-12-23-14-44-56-727_com.techflow.materialcolor.jpg" width="200" height="400" alt="ss_2">
+</p>
 
 ## License
 ```
