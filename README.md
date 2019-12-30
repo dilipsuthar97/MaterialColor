@@ -2,7 +2,7 @@
     <img src="https://github.com/dilipsuthar1997/MaterialColor/blob/master/screenshots/feature_graphics.png" alt="feature_graphic">
 </a>
 
-# MaterialColor
+# MaterialColor ![Version](https://img.shields.io/badge/version-3.2.1-blue?logo=verizon)
 The app Material Color Palette allows developers and programmers to get their required color code on the go.  MaterialColor Palette is an all in one toolbox for developers especially web-developers.
 
 ## ScreenShots
