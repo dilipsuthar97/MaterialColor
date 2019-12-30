@@ -5,6 +5,10 @@
 # MaterialColor ![Version](https://img.shields.io/badge/version-3.2.1-blue?logo=verizon)
 The app Material Color Palette allows developers and programmers to get their required color code on the go.  MaterialColor Palette is an all in one toolbox for developers especially web-developers.
 
+![Status](https://img.shields.io/badge/status-online-brightgreen.svg)
+[![License](https://img.shields.io/badge/license-Apache-teal?logo=apache)](https://github.com/dilipsuthar1997/MaterialColor/blob/master/LICENSE.txt)
+[![Coffee](https://img.shields.io/badge/support-buy%20me%20a%20coffee!-orange?logo=buymeacoffee)](https://www.buymeacoffee.com/dilipsuthar97)
+
 ## ScreenShots
 <p align="center">
     <img src="https://github.com/dilipsuthar1997/MaterialColor/blob/master/screenshots/Screenshot_2019-12-23-14-44-47-380_com.techflow.materialcolor.jpg" width="200" height="400" alt="ss_1">
