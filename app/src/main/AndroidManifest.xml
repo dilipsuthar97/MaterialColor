@@ -16,7 +16,8 @@
             android:roundIcon="@mipmap/ic_launcher"
             android:supportsRtl="true"
             android:theme="@style/MaterialColor.Base.Light">
-        <activity android:name=".activity.SupportDevelopmentActivity"></activity>
+        <activity android:name=".activity.FlatUIColorsActivity"/>
+        <activity android:name=".activity.SupportDevelopmentActivity" />
         <activity android:name=".activity.DesignToolActivity" />
         <activity android:name=".activity.CustomGradientActivity" />
         <activity android:name=".activity.SettingsActivity" />

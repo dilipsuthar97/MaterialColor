@@ -52,7 +52,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
 
         // Setup billing client for in-app purchase
         if (Tools.hasNetwork(this)) {
-            setupBillingClient()
+            if (!MaterialColor.isDebug(this)) setupBillingClient()
             Tools.visibleViews(bind.progressBar)
             Tools.inVisibleViews(bind.btnRemoveAds, type = Tools.InvisibilityType.GONE)
         }
@@ -211,7 +211,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
 
         view.findViewById<MaterialButton>(R.id.btn_about_me).setOnClickListener {
             firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_ABOUT_ME, null)
-            openWebView("https://about.me/dilip.suthar")
+            openWebView("https://dilipsuthar97.github.io/")
             dialog.dismiss()
         }
     }
@@ -264,7 +264,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
      * @func setup in-app purchase
      */
     private fun setupBillingClient() {
-        /*Log.d(TAG, "setupBillingClient: called")
+        Log.d(TAG, "setupBillingClient: called")
 
         skuList.clear()
         skuList.add("")   // TODO: Add in-app purchase product ID
@@ -273,20 +273,20 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
         billingClient = BillingClient.newBuilder(this).setListener(this).enablePendingPurchases().build()
 
         // Billing client state listener
-        billingClient.startConnection(this)*/
+        billingClient.startConnection(this)
     }
 
     /**
      * @func open in-app purchase dialog flow for purchase
      */
     private fun startPurchase() {
-        /*Log.d(TAG, "startPurchase: called")
+        Log.d(TAG, "startPurchase: called")
 
         if (billingClient.isReady) {
             billingFlowParams = BillingFlowParams.newBuilder().setSkuDetails(skuDetails).build()
             billingClient.launchBillingFlow(this, billingFlowParams)
         }
-        //setupBillingClient()*/
+        //setupBillingClient()
     }
 
     /**
@@ -295,7 +295,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
      * @param purchases Mutable list of Purchase object
      */
     override fun onPurchasesUpdated(billingResult: BillingResult?, purchases: MutableList<Purchase>?) {
-        /*Tools.inVisibleViews(bind.progressBar, type = Tools.InvisibilityType.GONE)
+        Tools.inVisibleViews(bind.progressBar, type = Tools.InvisibilityType.GONE)
         Tools.visibleViews(bind.btnRemoveAds)
 
         when (billingResult?.responseCode) {
@@ -345,15 +345,15 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
 
             }
             BillingResponseCode.ITEM_NOT_OWNED -> displayToast("You not owned yet :(")
-        }*/
+        }
     }
 
     /**
      * @inherited from *BillingClientStateListener -> listen Billing client state
      */
     override fun onBillingServiceDisconnected() {
-        /*Tools.inVisibleViews(bind.btnRemoveAds, type = Tools.InvisibilityType.GONE)
-        Tools.visibleViews(bind.progressBar)*/
+        Tools.inVisibleViews(bind.btnRemoveAds, type = Tools.InvisibilityType.GONE)
+        Tools.visibleViews(bind.progressBar)
     }
 
     /**
@@ -361,7 +361,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
      * @param billingResult BillingResult object
      */
     override fun onBillingSetupFinished(billingResult: BillingResult?) {
-        /*if (billingResult?.responseCode == BillingResponseCode.OK) {
+        if (billingResult?.responseCode == BillingResponseCode.OK) {
 
             Tools.inVisibleViews(bind.progressBar, type = Tools.InvisibilityType.GONE)
             Tools.visibleViews(bind.btnRemoveAds)
@@ -381,12 +381,12 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
                         val sku = skuDetails.sku
                         val price = skuDetails.price
 
-                        if ("sku_remove_ads" == sku) {
+                        if ("" == sku) {
                             bind.btnRemoveAds.text = "Check & Pay $price"   // Set product price to button text
                         }
                     }
                 }
             }
-        }*/
+        }
     }
 }

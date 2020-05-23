@@ -5,6 +5,7 @@ import com.techflow.materialcolor.utils.Tools
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.ApplicationInfo
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -39,13 +40,15 @@ import com.techflow.materialcolor.helpers.isTablet
 import com.techflow.materialcolor.utils.Preferences
 import com.techflow.materialcolor.utils.SharedPref
 import com.techflow.materialcolor.utils.ThemeUtils
+import timber.log.Timber
+
 /**
  * @author Dilip Suthar
  * Modified by Dilip Suthar on 15/12/2019
  */
 
 /**
- *  Copyright 2019 Dilip Suthar
+ *  Copyright 2020 Dilip Suthar
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -73,7 +76,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         fun showInterstitialAd(context: Context) {
 
             if (SharedPref.getInstance(context).actionShowInterstitialAd()) {
-                Log.d("HomeActivity", "serving ads")
+                Timber.d(HomeActivity::class.java.simpleName, "serving ads")
                 if (interstitialAd.isAdLoaded)
                     interstitialAd.show()
                 else if (Tools.hasNetwork(context))
@@ -105,18 +108,12 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         sharedPref = SharedPref.getInstance(this)
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
-        // TODO: remove during production
-        if (this.isTablet())
-            Log.d(TAG, "Tablet")
-        else
-            Log.d(TAG, "Phone")
-
         initToolbar()
         initComponent()
         initIntro()
         initBottomNavigation()
         initMenuSheet()
-        initAd()
+        if (!MaterialColor.isDebug(this)) initAd()
         initInAppUpdate()   // Init in-app update
     }
 
@@ -396,7 +393,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
     /**
      * @func in-app update functionality ---------------------------------------------------------
      */
-    var updateStarted = false
+    private var updateStarted = false
     private fun initInAppUpdate() {
         val appUpdateManager = AppUpdateManagerFactory.create(this)
             val appUpdateInfoTask = appUpdateManager.appUpdateInfo

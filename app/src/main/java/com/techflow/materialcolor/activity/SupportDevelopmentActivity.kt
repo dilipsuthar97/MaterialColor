@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import com.afollestad.materialdialogs.MaterialDialog
 import com.android.billingclient.api.*
+import com.techflow.materialcolor.MaterialColor
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivitySupportDevelopmentBinding
 import com.techflow.materialcolor.helpers.displayToast
@@ -35,7 +36,7 @@ class SupportDevelopmentActivity : BaseActivity(), PurchasesUpdatedListener, Bil
 
         startLoader()
         if (Tools.hasNetwork(this)) {
-            setupBillingClient()
+            if (!MaterialColor.isDebug(this)) setupBillingClient()
 
         } else displayToast("Make sure you have active internet")
 
@@ -126,20 +127,20 @@ class SupportDevelopmentActivity : BaseActivity(), PurchasesUpdatedListener, Bil
     private val skuList = arrayListOf("", "", "", "", "")
 
     private fun setupBillingClient() {
-        /*Log.d(TAG, "setupBillingClient: called")
+        Log.d(TAG, "setupBillingClient: called")
 
         // Purchase update listener
         billingClient = BillingClient.newBuilder(this).setListener(this).enablePendingPurchases().build()
 
         // Billing client state listener
-        billingClient.startConnection(this)*/
+        billingClient.startConnection(this)
     }
 
     /**
      * @func open in-app purchase dialog flow for purchase
      */
     private fun startPurchase(skuDetails: SkuDetails) {
-        /*Log.d(TAG, "startPurchase: called")
+        Log.d(TAG, "startPurchase: called")
 
         startLoader()
 
@@ -149,14 +150,14 @@ class SupportDevelopmentActivity : BaseActivity(), PurchasesUpdatedListener, Bil
                 billingClient.launchBillingFlow(this, billingFlowParams)
             }
         } else
-            displayToast("Make sure you have active internet")*/
+            displayToast("Make sure you have active internet")
     }
 
     /**
      * @func one-time product specific feature
      */
     private fun allowMultiplePurchases(purchases: MutableList<Purchase>?) {
-        /*val purchase = purchases?.first()
+        val purchase = purchases?.first()
         val consumeParams = ConsumeParams.newBuilder()
             .setPurchaseToken(purchase?.purchaseToken)
             .setDeveloperPayload(purchase?.developerPayload)
@@ -165,7 +166,7 @@ class SupportDevelopmentActivity : BaseActivity(), PurchasesUpdatedListener, Bil
         billingClient.consumeAsync(consumeParams) { billingResult, outToken ->
             if (billingResult?.responseCode == BillingClient.BillingResponseCode.OK)
                 Log.d(TAG, "allowMultiplePurchases: Token: $outToken")
-        }*/
+        }
     }
 
     /**
@@ -174,7 +175,7 @@ class SupportDevelopmentActivity : BaseActivity(), PurchasesUpdatedListener, Bil
      * @param purchases Mutable list of Purchase object
      */
     override fun onPurchasesUpdated(billingResult: BillingResult?, purchases: MutableList<Purchase>?) {
-        /*endLoader()
+        endLoader()
         allowMultiplePurchases(purchases)
 
         when (billingResult?.responseCode) {
@@ -198,14 +199,14 @@ class SupportDevelopmentActivity : BaseActivity(), PurchasesUpdatedListener, Bil
                 displayToast("You already owned this")
             }
             BillingClient.BillingResponseCode.ITEM_NOT_OWNED -> displayToast("You not owned yet :(")
-        }*/
+        }
     }
 
     /**
      * @inherited from *BillingClientStateListener -> listen Billing client state
      */
     override fun onBillingServiceDisconnected() {
-        /*startLoader()*/
+        startLoader()
     }
 
     /**
@@ -213,7 +214,7 @@ class SupportDevelopmentActivity : BaseActivity(), PurchasesUpdatedListener, Bil
      * @param billingResult BillingResult object
      */
     override fun onBillingSetupFinished(billingResult: BillingResult?) {
-        /*if (billingResult?.responseCode == BillingClient.BillingResponseCode.OK) {
+        if (billingResult?.responseCode == BillingClient.BillingResponseCode.OK) {
 
             val skuDetailsParam = SkuDetailsParams
                 .newBuilder()
@@ -239,7 +240,7 @@ class SupportDevelopmentActivity : BaseActivity(), PurchasesUpdatedListener, Bil
                     endLoader()
                 }
             }
-        }*/
+        }
     }
 
 }

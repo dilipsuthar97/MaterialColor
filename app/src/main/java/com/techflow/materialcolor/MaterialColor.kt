@@ -1,9 +1,16 @@
 package com.techflow.materialcolor
 
 import android.app.Application
+import android.content.Context
+import android.content.pm.ApplicationInfo
+import android.util.Log
+import com.techflow.materialcolor.helpers.displayToast
+import com.techflow.materialcolor.helpers.isTablet
 import com.techflow.materialcolor.utils.ThemeUtils
 
+
 class MaterialColor : Application() {
+    private val TAG = MaterialColor::class.java.simpleName
 
     enum class AdType {
         BANNER,
@@ -38,6 +45,14 @@ class MaterialColor : Application() {
                 AdType.INTERSTITIAL -> BuildConfig.AUDIENCE_INTERSTITIAL_ID
             }
         }
+
+        fun isDebug(ctx: Context): Boolean {
+            try {
+                return (ctx.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) !== 0
+            } catch (ignored: Exception) {
+            }
+            return false
+        }
     }
 
     override fun onCreate() {
@@ -47,6 +62,14 @@ class MaterialColor : Application() {
         }
         super.onCreate()
         instance = this
+
+        if (isDebug(this)) displayToast("You'r in debug mode")
+
+        // TODO: remove during production
+        if (this.isTablet())
+            Log.d(TAG, "Tablet")
+        else
+            Log.d(TAG, "Phone")
     }
 
 }
