@@ -861,4 +861,50 @@
         <item>#C32BAC</item>
     </string-array>
 
+    <string-array name="flat_ui_colors">
+        <item>#1abc9c</item>
+        <item>#2ecc71</item>
+        <item>#3498db</item>
+        <item>#9b59b6</item>
+        <item>#34495e</item>
+        <item>#16a085</item>
+        <item>#27ae60</item>
+        <item>#2980b9</item>
+        <item>#8e44ad</item>
+        <item>#2c3e50</item>
+        <item>#f1c40f</item>
+        <item>#e67e22</item>
+        <item>#e74c3c</item>
+        <item>#ecf0f1</item>
+        <item>#95a5a6</item>
+        <item>#f39c12</item>
+        <item>#d35400</item>
+        <item>#c0392b</item>
+        <item>#bdc3c7</item>
+        <item>#7f8c8d</item>
+    </string-array>
+
+    <string-array name="flat_ui_colors_name">
+        <item>Turquoise</item>
+        <item>Emerland</item>
+        <item>Peterriver</item>
+        <item>Amethyst</item>
+        <item>Wetasphalt</item>
+        <item>Greensea</item>
+        <item>Nephritis</item>
+        <item>Belizehole</item>
+        <item>Wisteria</item>
+        <item>Midnightblue</item>
+        <item>Sunflower</item>
+        <item>Carrot</item>
+        <item>Alizarin</item>
+        <item>Clouds</item>
+        <item>Concrete</item>
+        <item>Orange</item>
+        <item>Pumpkin</item>
+        <item>Pomegranate</item>
+        <item>Silver</item>
+        <item>Asbestos</item>
+    </string-array>
+
 </resources>

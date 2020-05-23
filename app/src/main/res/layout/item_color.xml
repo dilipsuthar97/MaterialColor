@@ -39,6 +39,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:paddingStart="15dp"
+                        android:paddingEnd="0dp"
                         android:text="Colorname"
                         android:textColor="?attr/colorTextPrimary"
                         android:textSize="18sp" />
@@ -49,6 +50,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
                         android:paddingStart="15dp"
+                        android:paddingEnd="0dp"
                         android:text="ColorCode"
                         android:textColor="?attr/colorTextSecondary"
                         android:textSize="14sp" />

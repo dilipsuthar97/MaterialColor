@@ -150,7 +150,7 @@ class AdapterColor constructor(
                     TapTargetSequence(activity)
                         .targets(
                             TapTarget.forView(tvColorName, "Material Color", "By tapping here you can see the different shades for this color.")
-                                .outerCircleColor(R.color.colorAccent)
+                                .outerCircleColor(R.color.colorPrimary)
                                 .outerCircleAlpha(0.95f)
                                 .targetCircleColor(R.color.white)
                                 .titleTextSize(20)
@@ -170,7 +170,7 @@ class AdapterColor constructor(
                     TapTargetSequence(activity)
                         .targets(
                             TapTarget.forView(viewColor, "Color shades", "Tap here to copy the color code.")
-                                .outerCircleColor(R.color.colorAccent)
+                                .outerCircleColor(R.color.colorPrimary)
                                 .outerCircleAlpha(0.95f)
                                 .targetCircleColor(R.color.white)
                                 .titleTextSize(20)

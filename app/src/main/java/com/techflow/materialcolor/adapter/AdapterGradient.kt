@@ -124,7 +124,7 @@ class AdapterGradient(
                 TapTargetSequence(act)
                     .targets(
                         TapTarget.forView(tvPrimaryColor, "Primary Color HexCode", msg1)
-                            .outerCircleColor(R.color.colorAccent)
+                            .outerCircleColor(R.color.colorPrimary)
                             .outerCircleAlpha(0.95f)
                             .targetCircleColor(R.color.white)
                             .titleTextSize(20)
@@ -135,7 +135,7 @@ class AdapterGradient(
                             .targetRadius(50),
 
                         TapTarget.forView(tvSecondaryColor, "Secondary Color HexCode", msg2)
-                            .outerCircleColor(R.color.colorAccent)
+                            .outerCircleColor(R.color.colorPrimary)
                             .outerCircleAlpha(0.95f)
                             .targetCircleColor(R.color.white)
                             .titleTextSize(20)

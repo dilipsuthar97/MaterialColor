@@ -225,7 +225,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
         if (sharedPref.getBoolean(Preferences.SettingActFR, true)) {
             TapTargetView.showFor(this,
                 TapTarget.forView(bind.btnRate, "Rate us", "Rate us on Google PlayStore.")
-                    .outerCircleColor(R.color.colorAccent)
+                    .outerCircleColor(R.color.colorPrimary)
                     .outerCircleAlpha(0.95F)
                     .targetCircleColor(R.color.white)
                     .titleTextSize(20)
