@@ -5,7 +5,7 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:orientation="vertical"
-            android:background="?attr/colorPrimary"
+            android:background="?attr/colorSecondary"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
 

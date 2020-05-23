@@ -186,7 +186,7 @@ class ColorPickerFragment : Fragment() {
                         binding.btnImgChooser,
                         "Tap here!",
                         "Tap here to choose image and extract colors from image.")
-                        .outerCircleColor(R.color.colorAccent)
+                        .outerCircleColor(R.color.colorPrimary)
                         .outerCircleAlpha(0.95f)
                         .targetCircleColor(R.color.white)
                         .titleTextSize(20)

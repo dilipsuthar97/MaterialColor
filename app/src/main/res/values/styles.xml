@@ -4,8 +4,8 @@
     <!-- Light Theme -->
     <style name="MaterialColor.Base.Light" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorSecondaryDark">@color/colorSecondaryDark</item>
         <item name="colorTextPrimary">@color/colorTextPrimary</item>
         <item name="colorTextSecondary">@color/colorTextSecondary</item>
         <item name="statusBarColor">@color/statusBarColor</item>
@@ -16,16 +16,17 @@
 
         <item name="android:fontFamily">@font/google_sans_regular</item>
         <item name="android:navigationBarColor">@color/appBarColor</item>   <!-- Navigation btn color -->
+        <item name="colorControlActivated">@color/colorPrimary</item>   <!-- Active widget color -->
         <item name="colorControlHighlight">@color/ripple_color</item>   <!-- Ripple color -->
 
-        <item name="md_color_button_text">@color/colorAccent</item>
+        <item name="md_color_button_text">@color/colorPrimary</item>
     </style>
 
     <!-- Dark Theme -->
     <style name="MaterialColor.Base.Dark" parent="Theme.MaterialComponents.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary_dark</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark_dark</item>
-        <item name="colorAccent">@color/colorAccent_dark</item>
+        <item name="colorSecondary">@color/colorSecondary_dark</item>
+        <item name="colorSecondaryDark">@color/colorSecondaryDark_dark</item>
         <item name="colorTextPrimary">@color/colorTextPrimary_dark</item>
         <item name="colorTextSecondary">@color/colorTextSecondary_dark</item>
         <item name="statusBarColor">@color/statusBarColor_dark</item>
@@ -36,9 +37,10 @@
 
         <item name="android:fontFamily">@font/google_sans_regular</item>
         <item name="android:navigationBarColor">@color/appBarColor_dark</item>
+        <item name="colorControlActivated">@color/colorPrimary_dark</item>
         <item name="colorControlHighlight">@color/ripple_color</item>
 
-        <item name="md_color_button_text">@color/colorAccent</item>
+        <item name="md_color_button_text">@color/colorPrimary_dark</item>
     </style>
     
     <style name="TextAppearance.Subhead.Bold" parent="@style/TextAppearance.AppCompat.Subhead">
@@ -56,7 +58,7 @@
     <!-- tooltip custom style -->
     <style name="ToolTipAltStyle" parent="ToolTipLayoutDefaultStyle">
         <item name="ttlm_padding">16dp</item>
-        <item name="ttlm_backgroundColor">@color/colorAccent</item>
+        <item name="ttlm_backgroundColor">@color/colorPrimary</item>
         <item name="ttlm_cornerRadius">6dp</item>
         <item name="ttlm_arrowRatio">1.2</item>
         <item name="ttlm_textStyle">@style/ToolTipAltTextStyle</item>

@@ -72,7 +72,7 @@ fun View.displaySnackbar(message: String, duration: Int) {
 fun Context.openWebView(url: String) {
     val intent = CustomTabsIntent.Builder()
         .addDefaultShareMenuItem()
-        .setToolbarColor(ContextCompat.getColor(this, R.color.colorAccent))
+        .setToolbarColor(ContextCompat.getColor(this, R.color.colorPrimary))
         .setShowTitle(true)
         .enableUrlBarHiding()
         .addDefaultShareMenuItem()

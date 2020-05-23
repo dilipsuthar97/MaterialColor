@@ -75,14 +75,16 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
         fun showInterstitialAd(context: Context) {
 
-            if (SharedPref.getInstance(context).actionShowInterstitialAd()) {
-                Timber.d(HomeActivity::class.java.simpleName, "serving ads")
-                if (interstitialAd.isAdLoaded)
-                    interstitialAd.show()
-                else if (Tools.hasNetwork(context))
-                    interstitialAd.loadAd()
-            } else
-                SharedPref.getInstance(context).increaseInterstitialAdCounter()
+            if (!MaterialColor.isDebug(MaterialColor.getInstance())) {
+                if (SharedPref.getInstance(context).actionShowInterstitialAd()) {
+                    Timber.d(HomeActivity::class.java.simpleName, "serving ads")
+                    if (interstitialAd.isAdLoaded)
+                        interstitialAd.show()
+                    else if (Tools.hasNetwork(context))
+                        interstitialAd.loadAd()
+                } else
+                    SharedPref.getInstance(context).increaseInterstitialAdCounter()
+            }
         }
     }
 

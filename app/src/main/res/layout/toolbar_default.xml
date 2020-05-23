@@ -4,7 +4,7 @@
         android:id="@+id/toolbar"
         android:layout_width="fill_parent"
         android:layout_height="?actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:background="?attr/colorSecondary"
         android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.MaterialComponents"
         app:contentInsetStartWithNavigation="0dp"

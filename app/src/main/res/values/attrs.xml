@@ -2,8 +2,8 @@
 <resources>
     <declare-styleable name="MaterialColorAppTheme">
         <attr name="colorPrimary" format="color"/>
-        <attr name="colorPrimaryDark" format="color"/>
-        <attr name="colorAccent" format="color"/>
+        <attr name="colorSecondary" format="color"/>
+        <attr name="colorSecondaryDark" format="color"/>
         <attr name="colorTextPrimary" format="color"/>
         <attr name="colorTextSecondary" format="color"/>
 

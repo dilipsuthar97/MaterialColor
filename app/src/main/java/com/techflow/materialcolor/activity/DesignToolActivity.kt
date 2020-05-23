@@ -1,6 +1,7 @@
 package com.techflow.materialcolor.activity
 
 import android.content.res.ColorStateList
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -181,6 +182,8 @@ class DesignToolActivity : AppCompatActivity() {
 
             binding.toolbar.setBackgroundColor(it)
             Tools.setSystemBarColorById(this, it)
+            binding.btnPrimaryColor.setTextColor(it)
+            binding.btnPrimaryColor.strokeColor = ColorStateList.valueOf(it)
 
             if (it.isDark()) {
 
@@ -208,8 +211,8 @@ class DesignToolActivity : AppCompatActivity() {
 
             headerView.setBackgroundColor(it)
             binding.fab.supportBackgroundTintList = ColorStateList.valueOf(it)
-            binding.btnPrimaryColor.setTextColor(it)
             binding.btnSecondaryColor.setTextColor(it)
+            binding.btnSecondaryColor.strokeColor = ColorStateList.valueOf(it)
 
             if (it.isDark())
                 binding.fab.setColorFilter(ContextCompat.getColor(this, R.color.colorTextPrimary_dark))
@@ -234,7 +237,6 @@ class DesignToolActivity : AppCompatActivity() {
             .arrow(true)
             .maxWidth(resources.displayMetrics.widthPixels / 2)
             .typeface(null)
-            .styleId(null)
             .floatingAnimation(Tooltip.Animation.DEFAULT)
             .closePolicy(ClosePolicy.TOUCH_ANYWHERE_NO_CONSUME)
             .overlay(false)
@@ -252,7 +254,6 @@ class DesignToolActivity : AppCompatActivity() {
                     .arrow(true)
                     .maxWidth(resources.displayMetrics.widthPixels / 2)
                     .typeface(null)
-                    .styleId(null)
                     .floatingAnimation(Tooltip.Animation.DEFAULT)
                     .closePolicy(ClosePolicy.TOUCH_ANYWHERE_NO_CONSUME)
                     .overlay(false)

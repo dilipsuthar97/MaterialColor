@@ -38,7 +38,7 @@ object Tools {
             val window = act.window
             window.addFlags(Int.MIN_VALUE)
             window.clearFlags(0)
-            window.statusBarColor = ContextCompat.getColor(act, R.color.colorPrimaryDark)
+            window.statusBarColor = ThemeUtils.getThemeAttrColor(act, R.attr.colorSecondaryDark)
         }
     }
 
