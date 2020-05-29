@@ -27,7 +27,8 @@ import kotlin.system.exitProcess
  * Modified by Dilip Suthar on 21/12/19
  */
 object Tools {
-    // TODO: Ad code blocks
+    private var toast: Toast? = null
+
     enum class InvisibilityType {
         GONE,
         INVISIBLE
@@ -120,7 +121,8 @@ object Tools {
         val clip = "clipboard"
         (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager)
             .setPrimaryClip(ClipData.newPlainText(clip, data))
-        context.displayToast("$msg copied to clipboard")
+        toast?.cancel()
+        toast = context.displayToast("$msg copied to clipboard")
     }
 
     fun hasNetwork(ctx: Context): Boolean {
@@ -137,5 +139,7 @@ object Tools {
         alarmManager.set(AlarmManager.RTC, 50, pendingIntent)
         exitProcess(0)
     }
+
+    fun isLolliopopOrGreater(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1
 
 }

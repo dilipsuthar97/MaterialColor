@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.util.Log
 import com.techflow.materialcolor.helpers.displayToast
+import com.techflow.materialcolor.helpers.isDebug
 import com.techflow.materialcolor.helpers.isTablet
 import com.techflow.materialcolor.utils.ThemeUtils
 
@@ -28,10 +29,12 @@ class MaterialColor : Application() {
         const val FIREBASE_EVENT_TAB_BOOKMARKED_COLOR = "tab_bookmarked_color_"
         const val FIREBASE_EVENT_REMOVE_ADS = "remove_ads_"
         const val FIREBASE_EVENT_CUSTOM_COLOR_MAKER = "custom_color_maker_"
-        const val FIREBASE_EVENT_CUSTOM_GRADIENT_MAKER = "custom_gradient_maker"
+        const val FIREBASE_EVENT_CUSTOM_GRADIENT_MAKER = "custom_gradient_maker_"
         const val FIREBASE_EVENT_ABOUT_ME = "about_me_"
         const val FIREBASE_EVENT_READ_POLICY = "read_policy_"
         const val FIREBASE_EVENT_MATERIAL_DESIGN_TOOL = "material_design_tool_"
+        const val FIREBASE_EVENT_FLAT_UI_COLORS = "flat_ui_colors_"
+        const val FIREBASE_EVENT_SOCIAL_COLORS = "social_colors_"
         const val FIREBASE_EVENT_SUPPORT_DEVELOPMENT = "support_development_"
         const val FIREBASE_EVENT_DARK_MODE = "dark_mode_"
 
@@ -45,14 +48,6 @@ class MaterialColor : Application() {
                 AdType.INTERSTITIAL -> BuildConfig.AUDIENCE_INTERSTITIAL_ID
             }
         }
-
-        fun isDebug(ctx: Context): Boolean {
-            try {
-                return (ctx.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) !== 0
-            } catch (ignored: Exception) {
-            }
-            return false
-        }
     }
 
     override fun onCreate() {
@@ -63,7 +58,7 @@ class MaterialColor : Application() {
         super.onCreate()
         instance = this
 
-        if (isDebug(this)) displayToast("You'r in debug mode")
+        if (this.isDebug()) displayToast("You'r in debug mode")
 
         // TODO: remove during production
         if (this.isTablet())

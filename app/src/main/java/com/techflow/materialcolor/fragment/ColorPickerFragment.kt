@@ -2,6 +2,7 @@ package com.techflow.materialcolor.fragment
 
 import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
@@ -26,6 +27,7 @@ import com.getkeepsafe.taptargetview.TapTargetView
 import com.techflow.materialcolor.activity.HomeActivity
 import com.techflow.materialcolor.adapter.AdapterColorFromImage
 import com.techflow.materialcolor.helpers.PermissionHelper
+import com.techflow.materialcolor.helpers.displayToast
 import com.techflow.materialcolor.utils.Preferences
 import com.techflow.materialcolor.utils.SharedPref
 import com.techflow.materialcolor.utils.Tools
@@ -64,17 +66,17 @@ class ColorPickerFragment : Fragment() {
 
         binding.btnImgChooser.setOnClickListener {
             // Load ad
-            if (SharedPref.getInstance(context!!).getBoolean(Preferences.SHOW_AD, true))
-                HomeActivity.showInterstitialAd(context!!)
+            if (SharedPref.getInstance(requireContext()).getBoolean(Preferences.SHOW_AD, true))
+                HomeActivity.showInterstitialAd(requireContext())
 
             AnimUtils.bounceAnim(it)
             when {
-                PermissionHelper.isPermissionsGranted(context!!, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)) ->
+                PermissionHelper.isGranted(requireContext(), arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)) ->
                     openImagePicker()
-                ActivityCompat.shouldShowRequestPermissionRationale(activity!!, Manifest.permission.READ_EXTERNAL_STORAGE) ->
+                ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) ->
                     showPermissionDeniedDialog()
                 else ->
-                    PermissionHelper.requestPermissions(activity!!, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE))
+                    PermissionHelper.requestInFragment(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE))
             }
         }
     }
@@ -83,13 +85,13 @@ class ColorPickerFragment : Fragment() {
      * @func show permission denied dialog
      */
     private fun showPermissionDeniedDialog() {
-        MaterialDialog(context!!).show {
+        MaterialDialog(requireContext()).show {
             cornerRadius(16f)
             title(text = "Permission denied previously")
             message(text = "Without the STORAGE permission the app is unable to load image. Are you sure you want to deny this permission?")
             positiveButton(text = "I'm sure") {}
             negativeButton(text = "Retry") {
-                PermissionHelper.requestPermissions(activity!!, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE))
+                PermissionHelper.requestInFragment(this@ColorPickerFragment, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE))
             }
         }
     }
@@ -101,7 +103,7 @@ class ColorPickerFragment : Fragment() {
         CropImage.activity()
             .setGuidelines(CropImageView.Guidelines.ON_TOUCH)
             .setAspectRatio(2, 1)
-            .start(context!!, this)
+            .start(requireContext(), this)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -114,6 +116,24 @@ class ColorPickerFragment : Fragment() {
                     extractColorFromImage()
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE)
                     result.error
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == PermissionHelper.getRequestCode()) {
+            for ((i, p) in permissions.withIndex()) {
+                val permission = permissions[i]
+                val grantResult = grantResults[i]
+
+                if (permission == Manifest.permission.READ_EXTERNAL_STORAGE) {
+                    if (grantResult == PackageManager.PERMISSION_GRANTED) openImagePicker()
+                    else showPermissionDeniedDialog()
+                }
             }
         }
     }
@@ -166,7 +186,7 @@ class ColorPickerFragment : Fragment() {
             Tools.inVisibleViews(binding.imgDummy, type = Tools.InvisibilityType.GONE)
             Tools.visibleViews(binding.lytColorPalette)
 
-            val adapterColorFromImage = AdapterColorFromImage(palettes, context!!)
+            val adapterColorFromImage = AdapterColorFromImage(palettes, requireContext())
             with(binding.recyclerView) {
                 layoutManager = LinearLayoutManager(context)
                 setHasFixedSize(true)
@@ -179,9 +199,9 @@ class ColorPickerFragment : Fragment() {
      * @func show app intro for first use
      */
     private fun showTutorial() {
-        with(SharedPref.getInstance(context!!)) {
+        with(SharedPref.getInstance(requireContext())) {
             if (getBoolean(Preferences.ColorPickerFragFR, true)) {
-                TapTargetView.showFor(activity!!,
+                TapTargetView.showFor(requireActivity(),
                     TapTarget.forView(
                         binding.btnImgChooser,
                         "Tap here!",

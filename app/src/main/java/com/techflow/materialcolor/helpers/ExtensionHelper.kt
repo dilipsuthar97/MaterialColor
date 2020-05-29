@@ -1,6 +1,7 @@
 package com.techflow.materialcolor.helpers
 
 import android.content.Context
+import android.content.pm.ApplicationInfo
 import android.content.res.Configuration
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -42,12 +43,15 @@ fun Context.displayToast(@StringRes message: Int) {
  * @func display toast
  * @param message string value to display message
  */
-fun Context.displayToast(message: String, duration: Int = Toast.LENGTH_SHORT) {
-    Toast.makeText(
+fun Context.displayToast(message: String, duration: Int = Toast.LENGTH_SHORT): Toast {
+     val toast = Toast.makeText(
         this,
         message,
         duration
-    ).show()
+    )
+    toast.show()
+
+    return toast
 }
 
 /**
@@ -89,4 +93,15 @@ fun Context.openWebView(url: String) {
  */
 fun Context.isTablet(): Boolean {
     return (this.resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE
+}
+
+/**
+ * @func check weather app is in debug mode or not
+ */
+fun Context.isDebug(): Boolean {
+    try {
+        return (applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) !== 0
+    } catch (ignored: Exception) {
+    }
+    return false
 }
