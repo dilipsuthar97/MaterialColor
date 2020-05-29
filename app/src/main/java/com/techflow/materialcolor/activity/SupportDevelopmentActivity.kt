@@ -11,6 +11,7 @@ import com.techflow.materialcolor.MaterialColor
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivitySupportDevelopmentBinding
 import com.techflow.materialcolor.helpers.displayToast
+import com.techflow.materialcolor.helpers.isDebug
 import com.techflow.materialcolor.utils.*
 
 /**
@@ -36,7 +37,7 @@ class SupportDevelopmentActivity : BaseActivity(), PurchasesUpdatedListener, Bil
 
         startLoader()
         if (Tools.hasNetwork(this)) {
-            if (!MaterialColor.isDebug(this)) setupBillingClient()
+            if (!this.isDebug()) setupBillingClient()
 
         } else displayToast("Make sure you have active internet")
 

@@ -49,20 +49,20 @@ class HomeFragment : Fragment(), AdapterColor.OnItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initComponent(view)
+        initComponent()
     }
 
     /**
      * @func init all component's config
      * @param view view
      */
-    private fun initComponent(view: View) {
+    private fun initComponent() {
 
         binding.recyclerView.setHasFixedSize(true)
         binding.recyclerView.layoutManager =
             if (context?.isTablet()!!) GridLayoutManager(context, 2) else LinearLayoutManager(context)
         binding.recyclerView.isNestedScrollingEnabled = false
-        val colorList = DataGenerator.getColorData(context!!)
+        val colorList = DataGenerator.getColorData(requireContext())
 
         // Add AdView for each 5 steps >>>>>>>>>>
         /*var adCount = 0
@@ -73,7 +73,7 @@ class HomeFragment : Fragment(), AdapterColor.OnItemClickListener {
             }
         }*/
 
-        val adapter = AdapterColor(context!!, activity!!, this, null)
+        val adapter = AdapterColor(requireContext(), requireActivity(), this, null)
         binding.recyclerView.adapter = adapter
         adapter.setColors(colorList)
     }
@@ -86,8 +86,8 @@ class HomeFragment : Fragment(), AdapterColor.OnItemClickListener {
      */
     override fun onItemClick(view: View, color: Color, position: Int) {
         // Load interstitial ad
-        if (SharedPref.getInstance(context!!).getBoolean(Preferences.SHOW_AD, true))
-            HomeActivity.showInterstitialAd(context!!)
+        if (SharedPref.getInstance(requireContext()).getBoolean(Preferences.SHOW_AD, true))
+            HomeActivity.showInterstitialAd(requireContext())
 
         val i = Intent(activity, ColorActivity::class.java)
         i.putExtra("COLOR_NAME", color.colorName)
@@ -102,7 +102,7 @@ class HomeFragment : Fragment(), AdapterColor.OnItemClickListener {
      * @param position recycler view item position
      */
     override fun onItemLongClick(view: View, color: Color, position: Int) {
-        Tools.copyToClipboard(context!!, color.colorCode, "HEX code ${color.colorCode}")
+        Tools.copyToClipboard(requireContext(), color.colorCode, "HEX code ${color.colorCode}")
     }
 
     /**

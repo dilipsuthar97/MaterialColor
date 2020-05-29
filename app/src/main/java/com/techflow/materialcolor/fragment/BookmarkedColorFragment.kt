@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -42,10 +43,11 @@ class BookmarkedColorFragment : Fragment(), AdapterColor.OnItemClickListener {
 
     private lateinit var binding: FragmentBookmarkedColorBinding
     private lateinit var adapter: AdapterColor
+    private var toast: Toast? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_bookmarked_color, container, false)
-        mDb = AppDatabase.getInstance(context!!)
+        mDb = AppDatabase.getInstance(requireContext())
 
         return binding.root
     }
@@ -55,7 +57,7 @@ class BookmarkedColorFragment : Fragment(), AdapterColor.OnItemClickListener {
         binding.recyclerView.layoutManager =
             if (context?.isTablet()!!) GridLayoutManager(context, 2) else LinearLayoutManager(context)
         binding.recyclerView.setHasFixedSize(true)
-        adapter = AdapterColor(context!!, activity!!, this, mDb)
+        adapter = AdapterColor(requireContext(), requireActivity(), this, mDb)
         binding.recyclerView.adapter = adapter
 
         initViewModel()
@@ -70,7 +72,7 @@ class BookmarkedColorFragment : Fragment(), AdapterColor.OnItemClickListener {
             .of(this, factory)
             .get(BookmarkedColorViewModel::class.java)
 
-        viewModel.getBookmarkedColors()?.observe(this, Observer {
+        viewModel.getBookmarkedColors()?.observe(viewLifecycleOwner, Observer {
             if (it == null || it.isEmpty()) {
                 Tools.visibleViews(binding.layoutNoItems)
                 Tools.inVisibleViews(binding.recyclerView, type = Tools.InvisibilityType.GONE)
@@ -90,7 +92,7 @@ class BookmarkedColorFragment : Fragment(), AdapterColor.OnItemClickListener {
      * @param position recycler view item position
      */
     override fun onItemClick(view: View, color: Color, position: Int) {
-        Tools.copyToClipboard(context!!, color.colorCode, "HEX code ${color.colorCode}")
+        Tools.copyToClipboard(requireContext(), color.colorCode, "HEX code ${color.colorCode}")
     }
 
     /**
@@ -103,7 +105,7 @@ class BookmarkedColorFragment : Fragment(), AdapterColor.OnItemClickListener {
     }
 
     /**
-     * @inherited on bookmark button click ballback
+     * @inherited on bookmark button click callback
      * @param view view
      * @param color color object
      * @param position recycler view item position
@@ -115,7 +117,8 @@ class BookmarkedColorFragment : Fragment(), AdapterColor.OnItemClickListener {
             mDb?.colorDao()?.removeColor(adapter.getColor(position))
 
             AppExecutorHelper.getInstance()?.mainThread()?.execute {
-                context?.displayToast("${color.colorCode} removed from bookmark")
+                toast?.cancel()
+                toast =  context?.displayToast("${color.colorCode} removed from bookmark")
             }
         }
     }

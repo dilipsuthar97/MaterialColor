@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -37,6 +38,7 @@ class ColorActivity : BaseActivity(), AdapterColor.OnItemClickListener {
 
     private var mDb: AppDatabase? = null
     private lateinit var adapterColor: AdapterColor
+    private var toast: Toast? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -158,7 +160,7 @@ class ColorActivity : BaseActivity(), AdapterColor.OnItemClickListener {
     }
 
     /**
-     * @inherited on bookmark button click ballback
+     * @inherited on bookmark button click callback
      * @param view view
      * @param color color object
      * @param position recycler view item position
@@ -171,7 +173,8 @@ class ColorActivity : BaseActivity(), AdapterColor.OnItemClickListener {
                 mDb?.colorDao()?.removeColor(adapterColor.getColor(position).colorCode)
 
                 AppExecutorHelper.getInstance()?.mainThread()?.execute {
-                    this.displayToast("${color.colorCode} removed from bookmark")
+                    toast?.cancel()
+                    toast = this.displayToast("${color.colorCode} removed from bookmark")
                     val btn = view as ImageButton
                     btn.setImageResource(R.drawable.ic_bookmark_border)
                     adapterColor.setBookmarkedValue(position, false)
@@ -184,7 +187,8 @@ class ColorActivity : BaseActivity(), AdapterColor.OnItemClickListener {
                 mDb?.colorDao()?.saveColor(adapterColor.getColor(position))
 
                AppExecutorHelper.getInstance()?.mainThread()?.execute {
-                   this.displayToast("${color.colorCode} bookmarked")
+                   toast?.cancel()
+                   toast = this.displayToast("${color.colorCode} bookmarked")
                    val btn = view as ImageButton
                    btn.setImageResource(R.drawable.ic_bookmark)
                    adapterColor.setBookmarkedValue(position, true)

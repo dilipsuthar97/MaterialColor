@@ -22,6 +22,7 @@ import com.techflow.materialcolor.MaterialColor
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivitySettingsBinding
 import com.techflow.materialcolor.helpers.displayToast
+import com.techflow.materialcolor.helpers.isDebug
 import com.techflow.materialcolor.helpers.openWebView
 import com.techflow.materialcolor.utils.*
 
@@ -52,7 +53,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
 
         // Setup billing client for in-app purchase
         if (Tools.hasNetwork(this)) {
-            if (!MaterialColor.isDebug(this)) setupBillingClient()
+            if (!this.isDebug()) setupBillingClient()
             Tools.visibleViews(bind.progressBar)
             Tools.inVisibleViews(bind.btnRemoveAds, type = Tools.InvisibilityType.GONE)
         }
@@ -381,7 +382,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
                         val sku = skuDetails.sku
                         val price = skuDetails.price
 
-                        if ("" == sku) {
+                        if ("" == sku) {    // TODO: Add in-app purchase product ID
                             bind.btnRemoveAds.text = "Check & Pay $price"   // Set product price to button text
                         }
                     }

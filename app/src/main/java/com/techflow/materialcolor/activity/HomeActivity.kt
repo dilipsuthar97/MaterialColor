@@ -36,6 +36,7 @@ import com.techflow.materialcolor.databinding.ActivityHomeBinding
 import com.techflow.materialcolor.fragment.*
 import com.techflow.materialcolor.helpers.displaySnackbar
 import com.techflow.materialcolor.helpers.displayToast
+import com.techflow.materialcolor.helpers.isDebug
 import com.techflow.materialcolor.helpers.isTablet
 import com.techflow.materialcolor.utils.Preferences
 import com.techflow.materialcolor.utils.SharedPref
@@ -75,7 +76,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
         fun showInterstitialAd(context: Context) {
 
-            if (!MaterialColor.isDebug(MaterialColor.getInstance())) {
+            if (!MaterialColor.getInstance().isDebug()) {
                 if (SharedPref.getInstance(context).actionShowInterstitialAd()) {
                     Timber.d(HomeActivity::class.java.simpleName, "serving ads")
                     if (interstitialAd.isAdLoaded)
@@ -115,7 +116,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         initIntro()
         initBottomNavigation()
         initMenuSheet()
-        if (!MaterialColor.isDebug(this)) initAd()
+        if (!this.isDebug()) initAd()
         initInAppUpdate()   // Init in-app update
     }
 
@@ -302,6 +303,11 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         view.findViewById<LinearLayout>(R.id.btn_material_design_tool).setOnClickListener {
             firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_MATERIAL_DESIGN_TOOL, null)
             startActivity(Intent(this, DesignToolActivity::class.java))
+        }
+
+        view.findViewById<LinearLayout>(R.id.btn_flat_ui_colors).setOnClickListener {
+            firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_FLAT_UI_COLORS, null)
+            startActivity(Intent(this, FlatUIColorsActivity::class.java))
         }
 
         view.findViewById<MaterialButton>(R.id.btn_support_development).setOnClickListener {
