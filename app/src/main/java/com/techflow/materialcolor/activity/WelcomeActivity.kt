@@ -45,6 +45,6 @@ class WelcomeActivity : BaseActivity() {
         Handler().postDelayed({
             startActivity(Intent(this, HomeActivity::class.java))
             finish()
-        }, 800)
+        }, 500)
     }
 }

@@ -8,10 +8,7 @@ import androidx.databinding.DataBindingUtil
 import com.google.android.material.appbar.MaterialToolbar
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivityCustomColorBinding
-import com.techflow.materialcolor.utils.StorageKey
-import com.techflow.materialcolor.utils.SharedPref
-import com.techflow.materialcolor.utils.ThemeUtils
-import com.techflow.materialcolor.utils.Tools
+import com.techflow.materialcolor.utils.*
 import it.sephiroth.android.library.xtooltip.ClosePolicy
 import it.sephiroth.android.library.xtooltip.Tooltip
 
@@ -116,6 +113,10 @@ class CustomColorActivity : BaseActivity() {
         bind.lytHex.setOnClickListener {
             Tools.copyToClipboard(this, hexCode, "HEX code $hexCode")
         }
+        bind.lytHex.setOnLongClickListener {
+            ColorUtils.executeColorCodePopupMenu(this, hexCode, it)
+            true
+        }
 
         bind.lytRgb.setOnClickListener {
             val rgbCode = "( $red, $green, $blue )"
@@ -125,17 +126,6 @@ class CustomColorActivity : BaseActivity() {
     }
 
     /**
-     * @func convert color's rgb value into hex code
-     * @param r red color value
-     * @param g green color value
-     * @param b blue color value
-     *
-     * @return string value of hex code
-     */
-    private fun rgbToHex(r: Int, g: Int, b: Int): String =
-        "#${Integer.toHexString(r)}${Integer.toHexString(g)}${Integer.toHexString(b)}"
-
-    /**
      * @func set color results into UI
      * @param r red color value
      * @param g green color value
@@ -143,7 +133,7 @@ class CustomColorActivity : BaseActivity() {
      */
     private fun setResult(r: Int, g: Int, b: Int) {
         bind.tvRgbCode.text = "( $r, $g, $b )"
-        hexCode = rgbToHex(r, g, b)
+        hexCode = ColorUtils.rgbToHex(r, g, b)
         bind.tvHexCode.text = hexCode
 
         bind.tvRed.text = r.toString()

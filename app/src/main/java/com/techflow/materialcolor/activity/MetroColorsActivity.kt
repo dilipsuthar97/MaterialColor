@@ -19,6 +19,7 @@ import com.techflow.materialcolor.helpers.displayToast
 import com.techflow.materialcolor.helpers.isTablet
 import com.techflow.materialcolor.model.Color
 import com.techflow.materialcolor.utils.AnimUtils
+import com.techflow.materialcolor.utils.ColorUtils
 import com.techflow.materialcolor.utils.ThemeUtils
 import com.techflow.materialcolor.utils.Tools
 
@@ -95,6 +96,7 @@ class MetroColorsActivity : BaseActivity(), AdapterColor.OnItemClickListener {
      * @param position recycler view item position
      */
     override fun onItemLongClick(view: View, color: Color, position: Int) {
+        ColorUtils.executeColorCodePopupMenu(this, color.colorCode, view)
     }
 
     /**
