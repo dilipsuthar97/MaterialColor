@@ -4,10 +4,12 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.PorterDuff
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.getkeepsafe.taptargetview.TapTarget
@@ -15,10 +17,11 @@ import com.getkeepsafe.taptargetview.TapTargetSequence
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.db.AppDatabase
 import com.techflow.materialcolor.helpers.AppExecutorHelper
+import com.techflow.materialcolor.helpers.displayToast
 import com.techflow.materialcolor.helpers.isDark
+import com.techflow.materialcolor.helpers.showPopup
 import com.techflow.materialcolor.model.Color
-import com.techflow.materialcolor.utils.StorageKey
-import com.techflow.materialcolor.utils.SharedPref
+import com.techflow.materialcolor.utils.*
 import kotlin.collections.ArrayList
 
 /**
@@ -85,6 +88,7 @@ class AdapterColor constructor(
         private val tvColorCode: TextView = view.findViewById(R.id.tv_color_code)
         private val btnTap: View = view.findViewById(R.id.btn_tap)
         private lateinit var btnBookmark: ImageButton
+        private lateinit var btnMore: ImageButton
 
         fun setData(colorCard: Color,
                     context: Context,
@@ -97,7 +101,7 @@ class AdapterColor constructor(
             tvColorCode.text = colorCard.colorCode
             viewColor.setBackgroundColor(colorCard.color)
 
-            if (itemViewType == Color.TYPE_COLOR_SHADE) {
+            if (itemViewType == Color.TYPE_COLOR_SHADE) {  // When color is type of shade
 
                 btnBookmark = holder.itemView.findViewById(R.id.btn_bookmark)
                 var color: Color? = null
@@ -132,6 +136,12 @@ class AdapterColor constructor(
                     btnBookmark.setColorFilter(ContextCompat.getColor(context, R.color.colorTextPrimary), PorterDuff.Mode.SRC_ATOP)
                 }
 
+            } else if (itemViewType == Color.TYPE_COLOR) {
+                btnMore = holder.itemView.findViewById(R.id.btn_more) as ImageButton
+                btnMore.setOnClickListener {
+                    AnimUtils.bounceAnim(it)
+                    ColorUtils.executeColorCodePopupMenu(context, colorCard.colorCode, it)
+                }
             }
         }
 

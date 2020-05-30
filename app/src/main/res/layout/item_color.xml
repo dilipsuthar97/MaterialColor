@@ -33,27 +33,51 @@
                         android:layout_height="70dp"
                         android:background="@color/red_500" />
 
-                <TextView
-                        android:id="@+id/tv_color_name"
-                        android:layout_width="wrap_content"
+                <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:paddingStart="15dp"
-                        android:paddingEnd="0dp"
-                        android:text="Colorname"
-                        android:textColor="?attr/colorTextPrimary"
-                        android:textSize="18sp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
 
-                <TextView
-                        android:id="@+id/tv_color_code"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:paddingStart="15dp"
-                        android:paddingEnd="0dp"
-                        android:text="ColorCode"
-                        android:textColor="?attr/colorTextSecondary"
-                        android:textSize="14sp" />
+                    <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                        <TextView
+                                android:id="@+id/tv_color_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:paddingStart="15dp"
+                                android:paddingEnd="0dp"
+                                android:text="Colorname"
+                                android:textColor="?attr/colorTextPrimary"
+                                android:textSize="18sp" />
+
+                        <TextView
+                                android:id="@+id/tv_color_code"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:paddingStart="15dp"
+                                android:paddingEnd="0dp"
+                                android:text="ColorCode"
+                                android:textColor="?attr/colorTextSecondary"
+                                android:textSize="14sp" />
+
+                    </LinearLayout>
+
+                    <ImageButton
+                            android:id="@+id/btn_more"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:tint="?attr/colorTextSecondary"
+                            app:srcCompat="@drawable/ic_more_vert"/>
+
+                </LinearLayout>
+
             </LinearLayout>
         </com.balysv.materialripple.MaterialRippleLayout>
     </androidx.cardview.widget.CardView>

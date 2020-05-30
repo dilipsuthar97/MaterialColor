@@ -10,15 +10,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetSequence
 import com.techflow.materialcolor.R
+import com.techflow.materialcolor.helpers.showPopup
 import com.techflow.materialcolor.model.Gradient
-import com.techflow.materialcolor.utils.AnimUtils
-import com.techflow.materialcolor.utils.StorageKey
-import com.techflow.materialcolor.utils.SharedPref
-import com.techflow.materialcolor.utils.Tools
+import com.techflow.materialcolor.utils.*
 
 class AdapterGradient(
     private val items: ArrayList<Gradient>,
@@ -39,9 +38,9 @@ class AdapterGradient(
     override fun getItemCount(): Int = items.size
 
     override fun getItemViewType(position: Int): Int {
-        return when {
-            items[position].type == Gradient.TYPE_GRADIENT -> Gradient.TYPE_GRADIENT
-            items[position].type == Gradient.TYPE_SECTION -> Gradient.TYPE_SECTION
+        return when (items[position].type) {
+            Gradient.TYPE_GRADIENT -> Gradient.TYPE_GRADIENT
+            Gradient.TYPE_SECTION -> Gradient.TYPE_SECTION
             else -> Gradient.TYPE_AD
         }
     }
@@ -49,14 +48,25 @@ class AdapterGradient(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ViewHolder) {
             holder.setData(items[position])
+
             holder.btnPColor.setOnClickListener {
                 AnimUtils.bounceAnim(it)
                 Tools.copyToClipboard(context, items[position].primaryColor, "HEX code ${items[position].primaryColor}")
             }
-
             holder.btnSColor.setOnClickListener {
                 AnimUtils.bounceAnim(it)
                 Tools.copyToClipboard(context, items[position].secondaryColor, "HEX code ${items[position].secondaryColor}")
+            }
+
+            holder.btnPColor.setOnLongClickListener {
+                AnimUtils.bounceAnim(it)
+                ColorUtils.executeColorCodePopupMenu(context, items[position].primaryColor, it)
+                true
+            }
+            holder.btnSColor.setOnLongClickListener {
+                AnimUtils.bounceAnim(it)
+                ColorUtils.executeColorCodePopupMenu(context, items[position].secondaryColor, it)
+                true
             }
 
             holder.showTutorial(position, context, activity)

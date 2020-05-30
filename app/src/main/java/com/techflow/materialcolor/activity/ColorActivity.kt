@@ -6,6 +6,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
@@ -16,12 +17,10 @@ import com.techflow.materialcolor.adapter.AdapterColor
 import com.techflow.materialcolor.data.DataGenerator
 import com.techflow.materialcolor.db.AppDatabase
 import com.techflow.materialcolor.databinding.ActivityColorBinding
-import com.techflow.materialcolor.helpers.AppExecutorHelper
-import com.techflow.materialcolor.helpers.displayToast
-import com.techflow.materialcolor.helpers.isDark
-import com.techflow.materialcolor.helpers.isTablet
+import com.techflow.materialcolor.helpers.*
 import com.techflow.materialcolor.model.Color
 import com.techflow.materialcolor.utils.AnimUtils
+import com.techflow.materialcolor.utils.ColorUtils
 import com.techflow.materialcolor.utils.Tools
 
 /**
@@ -155,6 +154,7 @@ class ColorActivity : BaseActivity(), AdapterColor.OnItemClickListener {
      * @param position recycler view item position
      */
     override fun onItemLongClick(view: View, color: Color, position: Int) {
+        ColorUtils.executeColorCodePopupMenu(this, color.colorCode, view)
     }
 
     /**

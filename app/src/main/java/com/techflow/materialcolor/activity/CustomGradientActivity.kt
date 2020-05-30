@@ -11,6 +11,7 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivityCustomGradientBinding
 import com.techflow.materialcolor.utils.*
+import com.techflow.materialcolor.utils.ColorUtils.rgbToHex
 import it.sephiroth.android.library.xtooltip.ClosePolicy
 import it.sephiroth.android.library.xtooltip.Tooltip
 
@@ -101,6 +102,15 @@ class CustomGradientActivity : BaseActivity() {
                 rgbToHex(pRed, pGreen, pBlue),
                 "Primary color ${rgbToHex(pRed, pGreen, pBlue)}")
         }
+        binding.btnPrimaryColor.setOnLongClickListener {
+            AnimUtils.bounceAnim(it)
+            ColorUtils.executeColorCodePopupMenu(
+                this,
+                rgbToHex(gradientCustom.primaryColor.red, gradientCustom.primaryColor.green, gradientCustom.primaryColor.blue),
+                it
+            )
+            true
+        }
 
         binding.btnSecondaryColor.setOnClickListener {
             AnimUtils.bounceAnim(it)
@@ -108,6 +118,15 @@ class CustomGradientActivity : BaseActivity() {
                 this,
                 rgbToHex(sRed, sGreen, sBlue),
                 "Secondary color ${rgbToHex(sRed, sGreen, sBlue)}")
+        }
+        binding.btnSecondaryColor.setOnLongClickListener {
+            AnimUtils.bounceAnim(it)
+            ColorUtils.executeColorCodePopupMenu(
+                this,
+                rgbToHex(gradientCustom.secondaryColor.red, gradientCustom.secondaryColor.green, gradientCustom.secondaryColor.blue),
+                it
+            )
+            true
         }
 
         // Primary color seekbar listeners
@@ -251,17 +270,6 @@ class CustomGradientActivity : BaseActivity() {
     }
 
     /**
-     * @func convert color's rgb value into hex code
-     * @param r red color value
-     * @param g green color value
-     * @param b blue color value
-     *
-     * @return string value of hex code
-     */
-    private fun rgbToHex(r: Int, g: Int, b: Int): String =
-        "#${Integer.toHexString(r)}${Integer.toHexString(g)}${Integer.toHexString(b)}"
-
-    /**
      * @func show tooltip instruction
      */
     private fun showTooltip() {
@@ -316,10 +324,4 @@ class CustomGradientActivity : BaseActivity() {
 data class GradientCustom(
     var primaryColor: RGB,
     var secondaryColor: RGB
-)
-
-data class RGB(
-    var red: Int,
-    var green: Int,
-    var blue: Int
 )
