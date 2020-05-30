@@ -27,8 +27,7 @@ import com.getkeepsafe.taptargetview.TapTargetView
 import com.techflow.materialcolor.activity.HomeActivity
 import com.techflow.materialcolor.adapter.AdapterColorFromImage
 import com.techflow.materialcolor.helpers.PermissionHelper
-import com.techflow.materialcolor.helpers.displayToast
-import com.techflow.materialcolor.utils.Preferences
+import com.techflow.materialcolor.utils.StorageKey
 import com.techflow.materialcolor.utils.SharedPref
 import com.techflow.materialcolor.utils.Tools
 import java.util.*
@@ -66,7 +65,7 @@ class ColorPickerFragment : Fragment() {
 
         binding.btnImgChooser.setOnClickListener {
             // Load ad
-            if (SharedPref.getInstance(requireContext()).getBoolean(Preferences.SHOW_AD, true))
+            if (SharedPref.getInstance(requireContext()).getBoolean(StorageKey.SHOW_AD, true))
                 HomeActivity.showInterstitialAd(requireContext())
 
             AnimUtils.bounceAnim(it)
@@ -200,7 +199,7 @@ class ColorPickerFragment : Fragment() {
      */
     private fun showTutorial() {
         with(SharedPref.getInstance(requireContext())) {
-            if (getBoolean(Preferences.ColorPickerFragFR, true)) {
+            if (getBoolean(StorageKey.ColorPickerFragFR, true)) {
                 TapTargetView.showFor(requireActivity(),
                     TapTarget.forView(
                         binding.btnImgChooser,
@@ -217,7 +216,7 @@ class ColorPickerFragment : Fragment() {
                         .targetRadius(90)
                 )
 
-                saveData(Preferences.ColorPickerFragFR, false)
+                saveData(StorageKey.ColorPickerFragFR, false)
             }
         }
     }

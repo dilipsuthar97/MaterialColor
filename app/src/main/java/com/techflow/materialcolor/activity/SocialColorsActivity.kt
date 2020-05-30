@@ -13,7 +13,7 @@ import com.techflow.materialcolor.R
 import com.techflow.materialcolor.adapter.AdapterColor
 import com.techflow.materialcolor.data.DataGenerator
 import com.techflow.materialcolor.db.AppDatabase
-import com.techflow.materialcolor.databinding.ActivityFlatUiColorsBinding
+import com.techflow.materialcolor.databinding.ActivitySocialColorsBinding
 import com.techflow.materialcolor.helpers.AppExecutorHelper
 import com.techflow.materialcolor.helpers.displayToast
 import com.techflow.materialcolor.helpers.isTablet
@@ -23,12 +23,12 @@ import com.techflow.materialcolor.utils.ThemeUtils
 import com.techflow.materialcolor.utils.Tools
 
 /**
- * Created by Dilip Suthar on 23/05/2020
+ * Created by Dilip Suthar on 29/05/2020
  */
-class FlatUIColorsActivity : BaseActivity(), AdapterColor.OnItemClickListener {
-    private val TAG = FlatUIColorsActivity::class.java.simpleName
+class SocialColorsActivity : BaseActivity(), AdapterColor.OnItemClickListener {
+    private val TAG = SocialColorsActivity::class.java.simpleName
 
-    private lateinit var bind: ActivityFlatUiColorsBinding
+    private lateinit var bind: ActivitySocialColorsBinding
     private lateinit var listColor: ArrayList<Color>
 
     private var mDb: AppDatabase? = null
@@ -37,7 +37,7 @@ class FlatUIColorsActivity : BaseActivity(), AdapterColor.OnItemClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        bind = DataBindingUtil.setContentView(this, R.layout.activity_flat_ui_colors)
+        bind = DataBindingUtil.setContentView(this, R.layout.activity_social_colors)
         mDb = AppDatabase.getInstance(this)
 
         initToolbar()
@@ -50,7 +50,7 @@ class FlatUIColorsActivity : BaseActivity(), AdapterColor.OnItemClickListener {
     private fun initToolbar() {
         setSupportActionBar(bind.toolbar as MaterialToolbar)
         val actionBar = supportActionBar!!
-        actionBar.title = "Flat UI Colors"
+        actionBar.title = "Social Colors"
         actionBar.setDisplayHomeAsUpEnabled(true)
         actionBar.setHomeButtonEnabled(true)
         (bind.toolbar as MaterialToolbar).setNavigationIcon(R.drawable.ic_arrow_back)
@@ -61,7 +61,7 @@ class FlatUIColorsActivity : BaseActivity(), AdapterColor.OnItemClickListener {
      * @func init all component's config
      */
     private fun initComponent() {
-        listColor = DataGenerator.getFlatUIColorData(this)
+        listColor = DataGenerator.getSocialColorData(this)
 
         adapterColor = AdapterColor(this, this, this, mDb)
 

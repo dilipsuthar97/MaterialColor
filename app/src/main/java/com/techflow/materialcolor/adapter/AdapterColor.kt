@@ -13,14 +13,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetSequence
 import com.techflow.materialcolor.R
-import com.techflow.materialcolor.database.AppDatabase
+import com.techflow.materialcolor.db.AppDatabase
 import com.techflow.materialcolor.helpers.AppExecutorHelper
 import com.techflow.materialcolor.helpers.isDark
 import com.techflow.materialcolor.model.Color
-import com.techflow.materialcolor.utils.AnimUtils
-import com.techflow.materialcolor.utils.Preferences
+import com.techflow.materialcolor.utils.StorageKey
 import com.techflow.materialcolor.utils.SharedPref
+import kotlin.collections.ArrayList
 
+/**
+ * @author Dilip Suthar
+ * Modified by Dilip Suthar on 29/05/2020
+ */
 class AdapterColor constructor(
     private val context: Context,
     private val activity: Activity,
@@ -64,9 +68,9 @@ class AdapterColor constructor(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when {
-            colorList[position].type == Color.TYPE_COLOR -> Color.TYPE_COLOR
-            colorList[position].type == Color.TYPE_COLOR_SHADE -> Color.TYPE_COLOR_SHADE
+        return when (colorList[position].type) {
+            Color.TYPE_COLOR -> Color.TYPE_COLOR
+            Color.TYPE_COLOR_SHADE -> Color.TYPE_COLOR_SHADE
             else -> Color.TYPE_AD
         }
     }
@@ -146,7 +150,7 @@ class AdapterColor constructor(
             val sharedPref = SharedPref.getInstance(context)
 
             if (itemViewType == Color.TYPE_COLOR) {
-                if (sharedPref.getBoolean(Preferences.HomeFragFR, true) && pos == 1) {
+                if (sharedPref.getBoolean(StorageKey.HomeFragFR, true) && pos == 1) {
                     TapTargetSequence(activity)
                         .targets(
                             TapTarget.forView(tvColorName, "Material Color", "By tapping here you can see the different shades for this color.")
@@ -161,12 +165,12 @@ class AdapterColor constructor(
                                 .targetRadius(50))
                         .start()
 
-                    sharedPref.saveData(Preferences.HomeFragFR, false)
+                    sharedPref.saveData(StorageKey.HomeFragFR, false)
                 }
 
             } else {
 
-                if (sharedPref.getBoolean(Preferences.ColorActFR, true) && pos == 1) {
+                if (sharedPref.getBoolean(StorageKey.ColorActFR, true) && pos == 1) {
                     TapTargetSequence(activity)
                         .targets(
                             TapTarget.forView(viewColor, "Color shades", "Tap here to copy the color code.")
@@ -181,7 +185,7 @@ class AdapterColor constructor(
                                 .targetRadius(50))
                         .start()
 
-                    sharedPref.saveData(Preferences.ColorActFR, false)
+                    sharedPref.saveData(StorageKey.ColorActFR, false)
                 }
             }
         }
