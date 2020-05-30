@@ -5,11 +5,9 @@ import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.view.View
 import android.widget.SeekBar
-import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
-import com.balysv.materialripple.MaterialRippleLayout
+import com.google.android.material.appbar.MaterialToolbar
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivityCustomGradientBinding
 import com.techflow.materialcolor.utils.*
@@ -40,17 +38,17 @@ class CustomGradientActivity : BaseActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_custom_gradient)
         sharedPref = SharedPref.getInstance(this)
 
-        pRed = sharedPref.getInt(Preferences.PRIMARY_GRADIENT_RED, 255)
-        pGreen = sharedPref.getInt(Preferences.PRIMARY_GRADIENT_GREEN, 0)
-        pBlue = sharedPref.getInt(Preferences.PRIMARY_GRADIENT_BLUE, 255)
+        pRed = sharedPref.getInt(StorageKey.PRIMARY_GRADIENT_RED, 255)
+        pGreen = sharedPref.getInt(StorageKey.PRIMARY_GRADIENT_GREEN, 0)
+        pBlue = sharedPref.getInt(StorageKey.PRIMARY_GRADIENT_BLUE, 255)
 
-        sRed = sharedPref.getInt(Preferences.SECONDARY_GRADIENT_RED, 0)
-        sGreen = sharedPref.getInt(Preferences.SECONDARY_GRADIENT_GREEN, 255)
-        sBlue = sharedPref.getInt(Preferences.SECONDARY_GRADIENT_BLUE, 255)
+        sRed = sharedPref.getInt(StorageKey.SECONDARY_GRADIENT_RED, 0)
+        sGreen = sharedPref.getInt(StorageKey.SECONDARY_GRADIENT_GREEN, 255)
+        sBlue = sharedPref.getInt(StorageKey.SECONDARY_GRADIENT_BLUE, 255)
 
         initToolbar()
         initComponent()
-        if (SharedPref.getInstance(this).getBoolean(Preferences.CustomGradientActFR, true))
+        if (SharedPref.getInstance(this).getBoolean(StorageKey.CustomGradientActFR, true))
             showTooltip()
     }
 
@@ -66,12 +64,12 @@ class CustomGradientActivity : BaseActivity() {
      * @func init toolbar config
      */
     private fun initToolbar() {
-        setSupportActionBar(binding.toolbar as Toolbar)
+        setSupportActionBar(binding.toolbar as MaterialToolbar)
         supportActionBar?.title = "Gradient Maker"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (binding.toolbar as Toolbar).setNavigationIcon(R.drawable.ic_arrow_back)
+        (binding.toolbar as MaterialToolbar).setNavigationIcon(R.drawable.ic_arrow_back)
         Tools.changeNavigationIconColor(
-            binding.toolbar as Toolbar,
+            binding.toolbar as MaterialToolbar,
             ThemeUtils.getThemeAttrColor(this, R.attr.colorTextPrimary))
     }
 
@@ -125,7 +123,7 @@ class CustomGradientActivity : BaseActivity() {
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                sharedPref.saveData(Preferences.PRIMARY_GRADIENT_RED, seekBar?.progress ?: 0)
+                sharedPref.saveData(StorageKey.PRIMARY_GRADIENT_RED, seekBar?.progress ?: 0)
             }
         })
 
@@ -141,7 +139,7 @@ class CustomGradientActivity : BaseActivity() {
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                sharedPref.saveData(Preferences.PRIMARY_GRADIENT_GREEN, seekBar?.progress ?: 0)
+                sharedPref.saveData(StorageKey.PRIMARY_GRADIENT_GREEN, seekBar?.progress ?: 0)
             }
         })
 
@@ -157,7 +155,7 @@ class CustomGradientActivity : BaseActivity() {
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                sharedPref.saveData(Preferences.PRIMARY_GRADIENT_BLUE, seekBar?.progress ?: 0)
+                sharedPref.saveData(StorageKey.PRIMARY_GRADIENT_BLUE, seekBar?.progress ?: 0)
             }
         })
 
@@ -174,7 +172,7 @@ class CustomGradientActivity : BaseActivity() {
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                sharedPref.saveData(Preferences.SECONDARY_GRADIENT_RED, seekBar?.progress ?: 0)
+                sharedPref.saveData(StorageKey.SECONDARY_GRADIENT_RED, seekBar?.progress ?: 0)
             }
         })
 
@@ -190,7 +188,7 @@ class CustomGradientActivity : BaseActivity() {
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                sharedPref.saveData(Preferences.SECONDARY_GRADIENT_GREEN, seekBar?.progress ?: 0)
+                sharedPref.saveData(StorageKey.SECONDARY_GRADIENT_GREEN, seekBar?.progress ?: 0)
             }
         })
 
@@ -206,7 +204,7 @@ class CustomGradientActivity : BaseActivity() {
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                sharedPref.saveData(Preferences.SECONDARY_GRADIENT_BLUE, seekBar?.progress ?: 0)
+                sharedPref.saveData(StorageKey.SECONDARY_GRADIENT_BLUE, seekBar?.progress ?: 0)
             }
         })
 
@@ -302,7 +300,7 @@ class CustomGradientActivity : BaseActivity() {
 
                 tooltip?.doOnHidden {
                     SharedPref.getInstance(this)
-                        .saveData(Preferences.CustomGradientActFR, false)
+                        .saveData(StorageKey.CustomGradientActFR, false)
                 }
                     ?.show(binding.btnSecondaryColor, Tooltip.Gravity.TOP, true)
 

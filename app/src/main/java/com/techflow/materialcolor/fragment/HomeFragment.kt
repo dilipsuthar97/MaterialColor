@@ -18,7 +18,7 @@ import com.techflow.materialcolor.data.DataGenerator
 import com.techflow.materialcolor.databinding.FragmentHomeBinding
 import com.techflow.materialcolor.helpers.isTablet
 import com.techflow.materialcolor.model.Color
-import com.techflow.materialcolor.utils.Preferences
+import com.techflow.materialcolor.utils.StorageKey
 import com.techflow.materialcolor.utils.SharedPref
 import com.techflow.materialcolor.utils.Tools
 /**
@@ -86,7 +86,7 @@ class HomeFragment : Fragment(), AdapterColor.OnItemClickListener {
      */
     override fun onItemClick(view: View, color: Color, position: Int) {
         // Load interstitial ad
-        if (SharedPref.getInstance(requireContext()).getBoolean(Preferences.SHOW_AD, true))
+        if (SharedPref.getInstance(requireContext()).getBoolean(StorageKey.SHOW_AD, true))
             HomeActivity.showInterstitialAd(requireContext())
 
         val i = Intent(activity, ColorActivity::class.java)

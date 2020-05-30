@@ -9,19 +9,14 @@ import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.view.size
 import androidx.recyclerview.widget.RecyclerView
-import com.facebook.ads.*
 import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetSequence
-import com.techflow.materialcolor.MaterialColor.AdType
-import com.techflow.materialcolor.MaterialColor
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.model.Gradient
 import com.techflow.materialcolor.utils.AnimUtils
-import com.techflow.materialcolor.utils.Preferences
+import com.techflow.materialcolor.utils.StorageKey
 import com.techflow.materialcolor.utils.SharedPref
 import com.techflow.materialcolor.utils.Tools
 
@@ -120,7 +115,7 @@ class AdapterGradient(
             val msg1 = "Tap here to copy primary color of gradient"
             val msg2 = "Tap here to copy secondary color of gradient"
 
-            if (sharedPref.getBoolean(Preferences.GradientFragFR, true) && pos == 1) {
+            if (sharedPref.getBoolean(StorageKey.GradientFragFR, true) && pos == 1) {
                 TapTargetSequence(act)
                     .targets(
                         TapTarget.forView(tvPrimaryColor, "Primary Color HexCode", msg1)
@@ -147,7 +142,7 @@ class AdapterGradient(
                     )
                     .start()
 
-                sharedPref.saveData(Preferences.GradientFragFR, false)
+                sharedPref.saveData(StorageKey.GradientFragFR, false)
             }
         }
     }

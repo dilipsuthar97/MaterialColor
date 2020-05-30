@@ -35,6 +35,7 @@ class MaterialColor : Application() {
         const val FIREBASE_EVENT_MATERIAL_DESIGN_TOOL = "material_design_tool_"
         const val FIREBASE_EVENT_FLAT_UI_COLORS = "flat_ui_colors_"
         const val FIREBASE_EVENT_SOCIAL_COLORS = "social_colors_"
+        const val FIREBASE_EVENT_METRO_COLORS = "metro_colors_"
         const val FIREBASE_EVENT_SUPPORT_DEVELOPMENT = "support_development_"
         const val FIREBASE_EVENT_DARK_MODE = "dark_mode_"
 
@@ -58,13 +59,14 @@ class MaterialColor : Application() {
         super.onCreate()
         instance = this
 
-        if (this.isDebug()) displayToast("You'r in debug mode")
-
         // TODO: remove during production
-        if (this.isTablet())
-            Log.d(TAG, "Tablet")
-        else
-            Log.d(TAG, "Phone")
+        if (isDebug()) {
+            displayToast("You'r in debug mode")
+            if (this.isTablet())
+                Log.d(TAG, "Tablet")
+            else
+                Log.d(TAG, "Phone")
+        }
     }
 
 }

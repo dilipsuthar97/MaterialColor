@@ -1,21 +1,20 @@
 package com.techflow.materialcolor.activity
 
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageButton
 import android.widget.Toast
-import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.appbar.MaterialToolbar
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.adapter.AdapterColor
 import com.techflow.materialcolor.data.DataGenerator
-import com.techflow.materialcolor.database.AppDatabase
+import com.techflow.materialcolor.db.AppDatabase
 import com.techflow.materialcolor.databinding.ActivityColorBinding
 import com.techflow.materialcolor.helpers.AppExecutorHelper
 import com.techflow.materialcolor.helpers.displayToast
@@ -24,7 +23,6 @@ import com.techflow.materialcolor.helpers.isTablet
 import com.techflow.materialcolor.model.Color
 import com.techflow.materialcolor.utils.AnimUtils
 import com.techflow.materialcolor.utils.Tools
-import kotlinx.android.synthetic.main.activity_color.*
 
 /**
  * @author Dilip Suthar
@@ -67,24 +65,24 @@ class ColorActivity : BaseActivity(), AdapterColor.OnItemClickListener {
      * @param color int value of color
      */
     private fun initToolbar(colorName: String, color: Int) {
-        setSupportActionBar(bind.toolbar as Toolbar)
+        setSupportActionBar(bind.toolbar as MaterialToolbar)
         bind.toolbar.setBackgroundColor(color)
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (bind.toolbar as Toolbar).setNavigationIcon(R.drawable.ic_arrow_back)
+        (bind.toolbar as MaterialToolbar).setNavigationIcon(R.drawable.ic_arrow_back)
         supportActionBar?.title = colorName
         Tools.setSystemBarColorById(this, color)
 
         if (color.isDark()) {
-            (bind.toolbar as Toolbar).setTitleTextColor(ContextCompat.getColor(this, R.color.colorTextPrimary_dark))
+            (bind.toolbar as MaterialToolbar).setTitleTextColor(ContextCompat.getColor(this, R.color.colorTextPrimary_dark))
             Tools.changeNavigationIconColor(
-                bind.toolbar as Toolbar,
+                bind.toolbar as MaterialToolbar,
                 ContextCompat.getColor(this, R.color.colorTextPrimary_dark))
             Tools.clearSystemBarLight(this)
         } else {
-            (bind.toolbar as Toolbar).setTitleTextColor(ContextCompat.getColor(this, R.color.colorTextPrimary))
+            (bind.toolbar as MaterialToolbar).setTitleTextColor(ContextCompat.getColor(this, R.color.colorTextPrimary))
             Tools.changeNavigationIconColor(
-                bind.toolbar as Toolbar,
+                bind.toolbar as MaterialToolbar,
                 ContextCompat.getColor(this, R.color.colorTextPrimary))
             Tools.setSystemBarLight(this)
         }

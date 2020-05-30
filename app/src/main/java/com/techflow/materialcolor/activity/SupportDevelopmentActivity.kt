@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import com.afollestad.materialdialogs.MaterialDialog
 import com.android.billingclient.api.*
+import com.google.android.material.appbar.MaterialToolbar
 import com.techflow.materialcolor.MaterialColor
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivitySupportDevelopmentBinding
@@ -55,13 +56,13 @@ class SupportDevelopmentActivity : BaseActivity(), PurchasesUpdatedListener, Bil
      * @func init toolbar config
      */
     private fun initToolbar() {
-        setSupportActionBar(binding.toolbar as Toolbar)
+        setSupportActionBar(binding.toolbar as MaterialToolbar)
         supportActionBar?.let {
             it.title = "Support Development"
             it.setHomeButtonEnabled(true)
         }
-        (binding.toolbar as Toolbar).setNavigationIcon(R.drawable.ic_arrow_back)
-        Tools.changeNavigationIconColor(binding.toolbar as Toolbar, ThemeUtils.getThemeAttrColor(this, R.attr.colorTextPrimary))
+        (binding.toolbar as MaterialToolbar).setNavigationIcon(R.drawable.ic_arrow_back)
+        Tools.changeNavigationIconColor(binding.toolbar as MaterialToolbar, ThemeUtils.getThemeAttrColor(this, R.attr.colorTextPrimary))
     }
 
     /**

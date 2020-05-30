@@ -4,12 +4,11 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.SeekBar
-import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
-import com.balysv.materialripple.MaterialRippleLayout
+import com.google.android.material.appbar.MaterialToolbar
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivityCustomColorBinding
-import com.techflow.materialcolor.utils.Preferences
+import com.techflow.materialcolor.utils.StorageKey
 import com.techflow.materialcolor.utils.SharedPref
 import com.techflow.materialcolor.utils.ThemeUtils
 import com.techflow.materialcolor.utils.Tools
@@ -34,13 +33,13 @@ class CustomColorActivity : BaseActivity() {
         bind = DataBindingUtil.setContentView(this, R.layout.activity_custom_color)
         sharedPref = SharedPref.getInstance(this)
 
-        red = sharedPref.getInt(Preferences.RED, 125)
-        green = sharedPref.getInt(Preferences.GREEN, 125)
-        blue = sharedPref.getInt(Preferences.BLUE, 125)
+        red = sharedPref.getInt(StorageKey.RED, 125)
+        green = sharedPref.getInt(StorageKey.GREEN, 125)
+        blue = sharedPref.getInt(StorageKey.BLUE, 125)
 
         initToolbar()
         initComponent()
-        if (SharedPref.getInstance(this).getBoolean(Preferences.CustomColorActFR, true))
+        if (SharedPref.getInstance(this).getBoolean(StorageKey.CustomColorActFR, true))
             showTooltip()
     }
 
@@ -53,12 +52,12 @@ class CustomColorActivity : BaseActivity() {
      * @func init toolbar config
      */
     private fun initToolbar() {
-        setSupportActionBar(bind.toolbar as Toolbar)
+        setSupportActionBar(bind.toolbar as MaterialToolbar)
         supportActionBar?.title = "Palette creator"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
-        (bind.toolbar as Toolbar).setNavigationIcon(R.drawable.ic_arrow_back)
-        Tools.changeNavigationIconColor(bind.toolbar as Toolbar, ThemeUtils.getThemeAttrColor(this, R.attr.colorTextPrimary))
+        (bind.toolbar as MaterialToolbar).setNavigationIcon(R.drawable.ic_arrow_back)
+        Tools.changeNavigationIconColor(bind.toolbar as MaterialToolbar, ThemeUtils.getThemeAttrColor(this, R.attr.colorTextPrimary))
     }
 
     /**
@@ -82,7 +81,7 @@ class CustomColorActivity : BaseActivity() {
             }
 
             override fun onStopTrackingTouch(p0: SeekBar?) {
-                sharedPref.saveData(Preferences.RED, p0?.progress ?: 0)
+                sharedPref.saveData(StorageKey.RED, p0?.progress ?: 0)
             }
         })
 
@@ -96,7 +95,7 @@ class CustomColorActivity : BaseActivity() {
             }
 
             override fun onStopTrackingTouch(p0: SeekBar?) {
-                sharedPref.saveData(Preferences.GREEN, p0?.progress ?: 0)
+                sharedPref.saveData(StorageKey.GREEN, p0?.progress ?: 0)
             }
         })
 
@@ -110,7 +109,7 @@ class CustomColorActivity : BaseActivity() {
             }
 
             override fun onStopTrackingTouch(p0: SeekBar?) {
-                sharedPref.saveData(Preferences.BLUE, p0?.progress ?: 0)
+                sharedPref.saveData(StorageKey.BLUE, p0?.progress ?: 0)
             }
         })
 
@@ -192,7 +191,7 @@ class CustomColorActivity : BaseActivity() {
 
                 tooltip?.doOnHidden {
                     SharedPref.getInstance(this)
-                        .saveData(Preferences.CustomColorActFR, false)
+                        .saveData(StorageKey.CustomColorActFR, false)
                 }
                     ?.show(bind.lytRgb, Tooltip.Gravity.TOP, true)
 

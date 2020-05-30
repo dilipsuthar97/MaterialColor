@@ -44,6 +44,28 @@ object DataGenerator {
         return items
     }
 
+    fun getSocialColorData(ctx: Context): ArrayList<Color> {
+        val items = ArrayList<Color>()
+        val colorNames = ctx.resources.getStringArray(R.array.social_colors_name)
+        val colorCodes = ctx.resources.getStringArray(R.array.social_colors)
+        val colors = ColorUtils.getParsedColors(colorCodes)
+        for (i in colorNames.indices) {
+            items.add(Color(Color.TYPE_COLOR_SHADE, colors[i], colorNames[i], colorCodes[i]))
+        }
+        return items
+    }
+
+    fun getMetroColorData(ctx: Context): ArrayList<Color> {
+        val items = ArrayList<Color>()
+        val colorNames = ctx.resources.getStringArray(R.array.metro_colors_name)
+        val colorCodes = ctx.resources.getStringArray(R.array.metro_colors)
+        val colors = ColorUtils.getParsedColors(colorCodes)
+        for (i in colorNames.indices) {
+            items.add(Color(Color.TYPE_COLOR_SHADE, colors[i], colorNames[i], colorCodes[i]))
+        }
+        return items
+    }
+
     /** ---------- All material color shades ---------- */
     fun getRedColorData(ctx: Context): ArrayList<Color> {
         val items = ArrayList<Color>()

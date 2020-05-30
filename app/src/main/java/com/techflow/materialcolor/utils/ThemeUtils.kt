@@ -6,7 +6,6 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
-import androidx.core.content.ContextCompat
 import com.techflow.materialcolor.R
 
 /**
@@ -26,7 +25,7 @@ object ThemeUtils {
      */
     fun getTheme(context: Context): String {
         val sharedPreferences = SharedPref.getInstance(context)
-        return sharedPreferences.getString(Preferences.THEME, LIGHT)!!
+        return sharedPreferences.getString(StorageKey.THEME, LIGHT)!!
     }
 
     /**
@@ -37,8 +36,8 @@ object ThemeUtils {
     fun setTheme(context: Context, theme: String) {
         val sharedPreferences = SharedPref.getInstance(context)
         when (theme) {
-            LIGHT -> sharedPreferences.saveData(Preferences.THEME, LIGHT)
-            DARK -> sharedPreferences.saveData(Preferences.THEME, DARK)
+            LIGHT -> sharedPreferences.saveData(StorageKey.THEME, LIGHT)
+            DARK -> sharedPreferences.saveData(StorageKey.THEME, DARK)
         }
     }
 

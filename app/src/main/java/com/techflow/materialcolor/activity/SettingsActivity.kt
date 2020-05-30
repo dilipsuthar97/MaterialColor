@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ShareCompat
 import androidx.databinding.DataBindingUtil
 import com.afollestad.materialdialogs.MaterialDialog
@@ -16,6 +15,7 @@ import com.android.billingclient.api.*
 import com.android.billingclient.api.BillingClient.BillingResponseCode
 import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetView
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.techflow.materialcolor.MaterialColor
@@ -57,7 +57,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
             Tools.visibleViews(bind.progressBar)
             Tools.inVisibleViews(bind.btnRemoveAds, type = Tools.InvisibilityType.GONE)
         }
-        if (!SharedPref.getInstance(this).getBoolean(Preferences.SHOW_AD, true)) {
+        if (!SharedPref.getInstance(this).getBoolean(StorageKey.SHOW_AD, true)) {
             bind.btnRemoveAds.isEnabled = false
         }
 
@@ -86,13 +86,13 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
 
         // Bottom sheet config setting
         bind.switchBottomSheetConfig.isChecked =
-            SharedPref.getInstance(this).getBoolean(Preferences.BOTTOM_SHEET_CONFIG, false)
+            SharedPref.getInstance(this).getBoolean(StorageKey.BOTTOM_SHEET_CONFIG, false)
 
         bind.switchBottomSheetConfig.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked)
-                SharedPref.getInstance(this).saveData(Preferences.BOTTOM_SHEET_CONFIG, true)
+                SharedPref.getInstance(this).saveData(StorageKey.BOTTOM_SHEET_CONFIG, true)
             else
-                SharedPref.getInstance(this).saveData(Preferences.BOTTOM_SHEET_CONFIG, false)
+                SharedPref.getInstance(this).saveData(StorageKey.BOTTOM_SHEET_CONFIG, false)
         }
     }
 
@@ -191,13 +191,13 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
      * @func init toolbar config
      */
     private fun initToolbar() {
-        setSupportActionBar(bind.toolbar as Toolbar)
+        setSupportActionBar(bind.toolbar as MaterialToolbar)
         val actionBar = supportActionBar!!
         actionBar.title = "Settings"
         actionBar.setDisplayHomeAsUpEnabled(true)
         actionBar.setHomeButtonEnabled(true)
-        (bind.toolbar as Toolbar).setNavigationIcon(R.drawable.ic_arrow_back)
-        Tools.changeNavigationIconColor(bind.toolbar as Toolbar, ThemeUtils.getThemeAttrColor(this, R.attr.colorTextPrimary))
+        (bind.toolbar as MaterialToolbar).setNavigationIcon(R.drawable.ic_arrow_back)
+        Tools.changeNavigationIconColor(bind.toolbar as MaterialToolbar, ThemeUtils.getThemeAttrColor(this, R.attr.colorTextPrimary))
     }
 
     /**
@@ -223,7 +223,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
     private fun showTutorial() {
         val sharedPref = SharedPref.getInstance(this)
 
-        if (sharedPref.getBoolean(Preferences.SettingActFR, true)) {
+        if (sharedPref.getBoolean(StorageKey.SettingActFR, true)) {
             TapTargetView.showFor(this,
                 TapTarget.forView(bind.btnRate, "Rate us", "Rate us on Google PlayStore.")
                     .outerCircleColor(R.color.colorPrimary)
@@ -237,7 +237,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
                     .targetRadius(50)
             )
 
-            sharedPref.saveData(Preferences.SettingActFR, false)
+            sharedPref.saveData(StorageKey.SettingActFR, false)
         }
     }
 
@@ -246,15 +246,15 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
      */
     private fun resetTutorial(sharedPref: SharedPref) {
         with(sharedPref) {
-            saveData(Preferences.isFirstRun, true)
-            saveData(Preferences.HomeFragFR, true)
-            saveData(Preferences.GradientFragFR, true)
-            saveData(Preferences.ColorPickerFragFR, true)
-            saveData(Preferences.SettingActFR, true)
-            saveData(Preferences.ColorActFR, true)
-            saveData(Preferences.CustomColorActFR, true)
-            saveData(Preferences.CustomGradientActFR, true)
-            saveData(Preferences.DesignToolActFR, true)
+            saveData(StorageKey.isFirstRun, true)
+            saveData(StorageKey.HomeFragFR, true)
+            saveData(StorageKey.GradientFragFR, true)
+            saveData(StorageKey.ColorPickerFragFR, true)
+            saveData(StorageKey.SettingActFR, true)
+            saveData(StorageKey.ColorActFR, true)
+            saveData(StorageKey.CustomColorActFR, true)
+            saveData(StorageKey.CustomGradientActFR, true)
+            saveData(StorageKey.DesignToolActFR, true)
         }
     }
 
@@ -318,7 +318,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
                 }
 
                 // Disable ad showing
-                SharedPref.getInstance(this).saveData(Preferences.SHOW_AD, false)
+                SharedPref.getInstance(this).saveData(StorageKey.SHOW_AD, false)
 
             }
             BillingResponseCode.USER_CANCELED -> displayToast("Transaction canceled :|")
@@ -330,7 +330,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
             BillingResponseCode.ITEM_ALREADY_OWNED -> {
 
                 // Disable ad showing
-                SharedPref.getInstance(this).saveData(Preferences.SHOW_AD, false)
+                SharedPref.getInstance(this).saveData(StorageKey.SHOW_AD, false)
 
                 bind.btnRemoveAds.isEnabled = false
 

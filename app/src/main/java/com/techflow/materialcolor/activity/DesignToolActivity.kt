@@ -1,7 +1,6 @@
 package com.techflow.materialcolor.activity
 
 import android.content.res.ColorStateList
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -15,16 +14,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.color.colorChooser
+import com.google.android.material.appbar.MaterialToolbar
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivityDesignToolBinding
 import com.techflow.materialcolor.helpers.displayToast
 import com.techflow.materialcolor.helpers.isDark
-import com.techflow.materialcolor.utils.Preferences
+import com.techflow.materialcolor.utils.StorageKey
 import com.techflow.materialcolor.utils.SharedPref
 import com.techflow.materialcolor.utils.Tools
 import it.sephiroth.android.library.xtooltip.ClosePolicy
 import it.sephiroth.android.library.xtooltip.Tooltip
-import kotlinx.android.synthetic.main.activity_settings.*
 
 /**
  * @author Dilip Suthar
@@ -46,7 +45,7 @@ class DesignToolActivity : AppCompatActivity() {
         initNavigationDrawer()
         initComponent()
         subscribeObserver()
-        if (SharedPref.getInstance(this).getBoolean(Preferences.DesignToolActFR, true))
+        if (SharedPref.getInstance(this).getBoolean(StorageKey.DesignToolActFR, true))
             showTooltip()
 
         // Show warning dialog before use
@@ -88,10 +87,10 @@ class DesignToolActivity : AppCompatActivity() {
      * @func init toolbar config
      */
     private fun initToolbar() {
-        setSupportActionBar(binding.toolbar as Toolbar)
+        setSupportActionBar(binding.toolbar as MaterialToolbar)
         supportActionBar?.title = "Design Tool"
         supportActionBar?.setHomeButtonEnabled(true)
-        (binding.toolbar as Toolbar).setNavigationIcon(R.drawable.ic_menu)
+        (binding.toolbar as MaterialToolbar).setNavigationIcon(R.drawable.ic_menu)
     }
 
     /**
@@ -261,7 +260,7 @@ class DesignToolActivity : AppCompatActivity() {
 
                 tooltip?.doOnHidden {
                     SharedPref.getInstance(this)
-                        .saveData(Preferences.DesignToolActFR, false)
+                        .saveData(StorageKey.DesignToolActFR, false)
                 }
                     ?.show(binding.btnSecondaryColor, Tooltip.Gravity.TOP, true)
 

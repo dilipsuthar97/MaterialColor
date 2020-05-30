@@ -2,7 +2,7 @@ package com.techflow.materialcolor.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.techflow.materialcolor.database.AppDatabase
+import com.techflow.materialcolor.db.AppDatabase
 /**
  * Created by Dilip Suthar on 03/12/19
  */

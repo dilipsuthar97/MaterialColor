@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.adapter.AdapterColor
-import com.techflow.materialcolor.database.AppDatabase
+import com.techflow.materialcolor.db.AppDatabase
 import com.techflow.materialcolor.databinding.FragmentBookmarkedColorBinding
 import com.techflow.materialcolor.helpers.AppExecutorHelper
 import com.techflow.materialcolor.helpers.displayToast
