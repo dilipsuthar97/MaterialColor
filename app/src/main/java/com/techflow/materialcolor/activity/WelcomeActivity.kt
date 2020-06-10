@@ -43,7 +43,7 @@ class WelcomeActivity : BaseActivity() {
      */
     private fun initComponent() {
         Handler().postDelayed({
-            startActivity(Intent(this, HomeActivity::class.java))
+            startActivity(Intent(this, AppIntroActivity::class.java))
             finish()
         }, 500)
     }

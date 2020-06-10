@@ -319,7 +319,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
     }
 
     /**
-     * @func init audience network config for ad
+     * @func init audience network config for ad ---------------------------------------------------
      */
     private fun initAd() {
         Log.d(TAG, "initAd: called")
@@ -388,7 +388,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
 
     /**
-     * @func in-app update functionality ---------------------------------------------------------
+     * @func in-app update functionality -----------------------------------------------------------
      */
     private var updateStarted = false
     private fun initInAppUpdate() {
