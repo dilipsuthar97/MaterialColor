@@ -8,8 +8,20 @@ import com.techflow.materialcolor.R
 import com.techflow.materialcolor.helpers.showPopup
 import java.math.RoundingMode
 import java.text.DecimalFormat
+import java.util.*
 
 object ColorUtils {
+
+    /**
+     * @func convert color's int value into hex code
+     * @param color int value of color
+     *
+     * @return return string value of hex code
+     */
+    fun getHexCode(color: Int): String {
+        return "#${Integer.toHexString(color).toUpperCase(Locale.getDefault()).substring(2)}"  // Without alpha
+        //return "#${Integer.toHexString(color).toUpperCase()}"  // With alpha
+    }
 
     /**
      * Convert Array of hex code string into IntArray
@@ -73,6 +85,12 @@ object ColorUtils {
         )
     }
 
+    /**
+     * Open popup menu for color code selector
+     * @param context Context
+     * @param hexCode String hex code for color
+     * @param view View view to display popup on behalf
+     */
     fun executeColorCodePopupMenu(context: Context, hexCode: String, view: View) {
         val popupListener = PopupMenu.OnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {

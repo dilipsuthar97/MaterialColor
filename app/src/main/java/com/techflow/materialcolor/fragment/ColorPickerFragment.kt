@@ -18,7 +18,6 @@ import com.techflow.materialcolor.R
 
 import com.techflow.materialcolor.databinding.FragmentColorPickerBinding
 import com.techflow.materialcolor.model.ColorFromImage
-import com.techflow.materialcolor.utils.AnimUtils
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import com.afollestad.materialdialogs.MaterialDialog
@@ -26,10 +25,9 @@ import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetView
 import com.techflow.materialcolor.activity.HomeActivity
 import com.techflow.materialcolor.adapter.AdapterColorFromImage
+import com.techflow.materialcolor.helpers.AppExecutorHelper
 import com.techflow.materialcolor.helpers.PermissionHelper
-import com.techflow.materialcolor.utils.StorageKey
-import com.techflow.materialcolor.utils.SharedPref
-import com.techflow.materialcolor.utils.Tools
+import com.techflow.materialcolor.utils.*
 import java.util.*
 
 /**
@@ -148,48 +146,50 @@ class ColorPickerFragment : Fragment() {
             Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
         }
 
-        Palette.from(bitmap).generate {
-            val palettes = mutableListOf<ColorFromImage>()
-            with(it!!) {
-                for (i in 0..5) {
-                    var color: Int
-                    when (i) {
-                        0 -> {
-                            color = getVibrantColor(0)
-                            if (color != 0) palettes.add(ColorFromImage(color, getHexCode(color)))
-                        }
-                        1 -> {
-                            color = getLightVibrantColor(0)
-                            if (color != 0) palettes.add(ColorFromImage(color, getHexCode(color)))
-                        }
-                        2 -> {
-                            color = getDarkVibrantColor(0)
-                            if (color != 0) palettes.add(ColorFromImage(color, getHexCode(color)))
-                        }
-                        3 -> {
-                            color = getMutedColor(0)
-                            if (color != 0) palettes.add(ColorFromImage(color, getHexCode(color)))
-                        }
-                        4 -> {
-                            color = getLightMutedColor(0)
-                            if (color != 0) palettes.add(ColorFromImage(color, getHexCode(color)))
-                        }
-                        5 -> {
-                            color = getDarkMutedColor(0)
-                            if (color != 0) palettes.add(ColorFromImage(color, getHexCode(color)))
+        AppExecutorHelper.getInstance()?.multiThreadIO()?.execute {
+            Palette.from(bitmap).generate {
+                val palettes = mutableListOf<ColorFromImage>()
+                with(it!!) {
+                    for (i in 0..5) {
+                        var color: Int
+                        when (i) {
+                            0 -> {
+                                color = getVibrantColor(0)
+                                if (color != 0) palettes.add(ColorFromImage(color, ColorUtils.getHexCode(color)))
+                            }
+                            1 -> {
+                                color = getLightVibrantColor(0)
+                                if (color != 0) palettes.add(ColorFromImage(color, ColorUtils.getHexCode(color)))
+                            }
+                            2 -> {
+                                color = getDarkVibrantColor(0)
+                                if (color != 0) palettes.add(ColorFromImage(color, ColorUtils.getHexCode(color)))
+                            }
+                            3 -> {
+                                color = getMutedColor(0)
+                                if (color != 0) palettes.add(ColorFromImage(color, ColorUtils.getHexCode(color)))
+                            }
+                            4 -> {
+                                color = getLightMutedColor(0)
+                                if (color != 0) palettes.add(ColorFromImage(color, ColorUtils.getHexCode(color)))
+                            }
+                            5 -> {
+                                color = getDarkMutedColor(0)
+                                if (color != 0) palettes.add(ColorFromImage(color, ColorUtils.getHexCode(color)))
+                            }
                         }
                     }
                 }
-            }
 
-            Tools.inVisibleViews(binding.imgDummy, type = Tools.InvisibilityType.GONE)
-            Tools.visibleViews(binding.lytColorPalette)
+                Tools.inVisibleViews(binding.imgDummy, type = Tools.InvisibilityType.GONE)
+                Tools.visibleViews(binding.lytColorPalette)
 
-            val adapterColorFromImage = AdapterColorFromImage(palettes, requireContext())
-            with(binding.recyclerView) {
-                layoutManager = LinearLayoutManager(context)
-                setHasFixedSize(true)
-                adapter = adapterColorFromImage
+                val adapterColorFromImage = AdapterColorFromImage(palettes, requireContext())
+                with(binding.recyclerView) {
+                    layoutManager = LinearLayoutManager(context)
+                    setHasFixedSize(true)
+                    adapter = adapterColorFromImage
+                }
             }
         }
     }
@@ -219,16 +219,5 @@ class ColorPickerFragment : Fragment() {
                 saveData(StorageKey.ColorPickerFragFR, false)
             }
         }
-    }
-
-    /**
-     * @func convert color's int value into hex code
-     * @param color int value of color
-     *
-     * @return return string value of hex code
-     */
-    private fun getHexCode(color: Int): String {
-        return "#${Integer.toHexString(color).toUpperCase(Locale.getDefault()).substring(2)}"  // Without alpha
-        //return "#${Integer.toHexString(color).toUpperCase()}"  // With alpha
     }
 }
