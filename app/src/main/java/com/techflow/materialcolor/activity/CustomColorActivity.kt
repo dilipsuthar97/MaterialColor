@@ -6,6 +6,7 @@ import android.view.MenuItem
 import android.widget.SeekBar
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.appbar.MaterialToolbar
+import com.techflow.materialcolor.MaterialColor
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivityCustomColorBinding
 import com.techflow.materialcolor.utils.*
@@ -111,6 +112,7 @@ class CustomColorActivity : BaseActivity() {
         })
 
         bind.lytHex.setOnClickListener {
+            HomeActivity.firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_COPY_HEX_CODE, null)
             Tools.copyToClipboard(this, hexCode, "HEX code $hexCode")
         }
         bind.lytHex.setOnLongClickListener {
@@ -120,6 +122,7 @@ class CustomColorActivity : BaseActivity() {
 
         bind.lytRgb.setOnClickListener {
             val rgbCode = "( $red, $green, $blue )"
+            HomeActivity.firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_COPY_RGB_CODE, null)
             Tools.copyToClipboard(this, rgbCode, "RGB code $rgbCode")
         }
 

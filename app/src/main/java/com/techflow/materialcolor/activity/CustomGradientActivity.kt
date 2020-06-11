@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.widget.SeekBar
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.appbar.MaterialToolbar
+import com.techflow.materialcolor.MaterialColor
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivityCustomGradientBinding
 import com.techflow.materialcolor.utils.*
@@ -97,6 +98,7 @@ class CustomGradientActivity : BaseActivity() {
          */
         binding.btnPrimaryColor.setOnClickListener {
             AnimUtils.bounceAnim(it)
+            HomeActivity.firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_COPY_HEX_CODE, null)
             Tools.copyToClipboard(
                 this,
                 rgbToHex(pRed, pGreen, pBlue),
@@ -114,6 +116,7 @@ class CustomGradientActivity : BaseActivity() {
 
         binding.btnSecondaryColor.setOnClickListener {
             AnimUtils.bounceAnim(it)
+            HomeActivity.firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_COPY_HEX_CODE, null)
             Tools.copyToClipboard(
                 this,
                 rgbToHex(sRed, sGreen, sBlue),

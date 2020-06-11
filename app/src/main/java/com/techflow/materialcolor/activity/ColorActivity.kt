@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.appbar.MaterialToolbar
+import com.techflow.materialcolor.MaterialColor
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.adapter.AdapterColor
 import com.techflow.materialcolor.data.DataGenerator
@@ -144,6 +145,7 @@ class ColorActivity : BaseActivity(), AdapterColor.OnItemClickListener {
      * @param position recycler view item position
      */
     override fun onItemClick(view: View, color: Color, position: Int) {
+        HomeActivity.firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_COPY_HEX_CODE, null)
         Tools.copyToClipboard(this@ColorActivity, color.colorCode, "HEX code ${color.colorCode}")
     }
 

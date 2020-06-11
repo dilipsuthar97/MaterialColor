@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.techflow.materialcolor.MaterialColor
 import com.techflow.materialcolor.R
+import com.techflow.materialcolor.activity.HomeActivity
 import com.techflow.materialcolor.model.ColorFromImage
 import com.techflow.materialcolor.utils.AnimUtils
 import com.techflow.materialcolor.utils.ColorUtils
@@ -34,6 +36,7 @@ class AdapterColorFromImage(
 
                 cardCopyCode.setOnClickListener {
                     AnimUtils.bounceAnim(it)
+                    HomeActivity.firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_COPY_HEX_CODE, null)
                     Tools.copyToClipboard(context, colorFromImage.hexCode, "Code ${colorFromImage.hexCode} ")
                 }
                 cardCopyCode.setOnLongClickListener {
