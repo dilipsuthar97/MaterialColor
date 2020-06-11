@@ -38,6 +38,9 @@ class MaterialColor : Application() {
         const val FIREBASE_EVENT_METRO_COLORS = "metro_colors_"
         const val FIREBASE_EVENT_SUPPORT_DEVELOPMENT = "support_development_"
         const val FIREBASE_EVENT_DARK_MODE = "dark_mode_"
+        const val FIREBASE_EVENT_COPY_HEX_CODE = "copy_hex_code_"
+        const val FIREBASE_EVENT_COPY_RGB_CODE = "copy_rgb_code_"
+        const val FIREBASE_EVENT_COPY_HSV_CODE = "copy_hsv_code_"
 
         fun getInstance(): MaterialColor {
             return instance

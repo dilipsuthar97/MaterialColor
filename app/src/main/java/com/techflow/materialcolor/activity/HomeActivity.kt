@@ -42,7 +42,10 @@ import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
+import com.google.android.play.core.ktx.updatePriority
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import com.techflow.materialcolor.MaterialColor.AdType
 import com.techflow.materialcolor.MaterialColor
 import com.techflow.materialcolor.R
@@ -61,11 +64,14 @@ import com.techflow.materialcolor.utils.ThemeUtils
  */
 class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
     private val TAG = HomeActivity::class.java.simpleName
+    private val HIGH_PRIORITY_UPDATE = 5
 
     val REQUEST_CODE_UPDATE = 201
 
     // STATIC
     companion object {
+        lateinit var firebaseAnalytics: FirebaseAnalytics
+
         // Audience network
         private lateinit var interstitialAd: InterstitialAd
 
@@ -94,8 +100,6 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
     private lateinit var bookmarkedColorFragment: BookmarkedColorFragment
     private lateinit var activeFragment: Fragment
 
-    private lateinit var firebaseAnalytics: FirebaseAnalytics
-
     private lateinit var bottomSheet: MaterialDialog
 
     private var adView: AdView? = null
@@ -104,7 +108,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
         sharedPref = SharedPref.getInstance(this)
-        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
+        firebaseAnalytics = Firebase.analytics
 
         initToolbar()
         initComponent()
@@ -393,12 +397,14 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
     private var updateStarted = false
     private fun initInAppUpdate() {
         val appUpdateManager = AppUpdateManagerFactory.create(this)
-            val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
 
         val listener = InstallStateUpdatedListener { state ->
 
             // Show update downloading...
             if (state.installStatus() == InstallStatus.DOWNLOADING && !updateStarted) {
+                val bytesDownloaded = state.bytesDownloaded()
+                val totalBytesToDownload = state.totalBytesToDownload()
 
                 binding.rootLayout.displaySnackbar(
                     "Downloading update...",
@@ -415,7 +421,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     "An update has just been downloaded from Google Play",
                     Snackbar.LENGTH_INDEFINITE
                 ).apply {
-                    setAction("INSTALL") { appUpdateManager.completeUpdate() }
+                    setAction("RESTART") { appUpdateManager.completeUpdate() }
                     show()
                 }
 
@@ -439,6 +445,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
 
             if ((appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                        && appUpdateInfo.updatePriority() >= HIGH_PRIORITY_UPDATE
                         // For a flexible update, use AppUpdateType.FLEXIBLE
                         && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE))) {
 
@@ -451,17 +458,17 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     this,
                     REQUEST_CODE_UPDATE)
 
-                // If update is already download but, not installed
-                if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+            }
 
-                    Snackbar.make(binding.rootLayout,
-                        "An update has been downloaded from Google Play",
-                        Snackbar.LENGTH_INDEFINITE
-                    ).apply {
-                        setAction("INSTALL") { appUpdateManager.completeUpdate() }
-                        show()
-                    }
+            // If update is already download but, not installed
+            if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
 
+                Snackbar.make(binding.rootLayout,
+                    "An update has been downloaded from Google Play",
+                    Snackbar.LENGTH_INDEFINITE
+                ).apply {
+                    setAction("RESTART") { appUpdateManager.completeUpdate() }
+                    show()
                 }
 
             }
