@@ -4,7 +4,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         tools:context=".activity.AppIntroActivity">
 
-    <RelativeLayout
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
@@ -13,18 +13,14 @@
         <androidx.viewpager.widget.ViewPager
                 android:id="@+id/view_pager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
 
-        <!--<LinearLayout
-                android:id="@+id/layout_dots"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:gravity="top|center_horizontal"
-                android:orientation="horizontal" />-->
         <LinearLayout
                 android:layout_width="match_parent"
                 android:gravity="center"
                 android:layout_alignParentBottom="true"
+                android:layout_marginBottom="16dp"
                 android:layout_height="?attr/actionBarSize">
             <com.rd.PageIndicatorView
                     android:id="@+id/page_indicator"
@@ -38,8 +34,8 @@
                     app:piv_unselectedColor="@color/overlay_light_30"
                     app:piv_viewPager="@id/view_pager"
                     app:piv_padding="10dp"
-                    app:piv_radius="5dp" />
+                    app:piv_radius="4dp" />
         </LinearLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 </layout>

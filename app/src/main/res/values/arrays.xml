@@ -1031,4 +1031,24 @@
         <item>Sienna</item>
     </string-array>
 
+    <string-array name="wizard_titles">
+        <item>Material Colors</item>
+        <item>Gradients</item>
+        <item>Customization</item>
+        <item>Dark Theme</item>
+        <item>Different Colors</item>
+        <item>Color Picker</item>
+        <item>Bookmark Color</item>
+    </string-array>
+
+    <string-array name="wizard_descriptions">
+        <item>A collection of true Material Colors with their shades.</item>
+        <item>A huge collection of beautiful gradients.</item>
+        <item>You can make your own custom colors and gradients.</item>
+        <item>Switch to dark theme and get the whiteness out of your sight.</item>
+        <item>A huge collection of different colors like FlatUI colors, Social colors and many more.</item>
+        <item>Extract colors from any images.</item>
+        <item>Bookmark your favorite color for later use.</item>
+    </string-array>
+
 </resources>

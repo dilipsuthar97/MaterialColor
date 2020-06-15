@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>support_email</key>
+        <value>developer.suthardilip696@gmail.com</value>
+    </entry>
+    <entry>
+        <key>portfolio_url</key>
+        <value>https://dilipsuthar97.github.io/</value>
+    </entry>
+    <entry>
+        <key>default_theme</key>
+        <value>light</value>
+    </entry>
+</defaultsMap>

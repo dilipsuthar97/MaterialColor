@@ -5,6 +5,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.google.firebase.firebase-perf'
 
 android {
     compileSdkVersion 29
@@ -22,6 +23,14 @@ android {
             minifyEnabled true
             //shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            FirebasePerformance {
+                // Set this flag to 'false' to disable @AddTrace annotation processing and
+                // automatic HTTP/S network request monitoring
+                // for a specific build variant at compile time.
+                instrumentationEnabled false
+            }
         }
     }
     buildTypes.each {
@@ -51,7 +60,9 @@ dependencies {
 
     // Firebase
     implementation 'com.google.firebase:firebase-analytics-ktx:17.4.3'          // Analytics
-    implementation 'com.google.firebase:firebase-crashlytics:17.0.1'             // Crashlytics
+    implementation 'com.google.firebase:firebase-crashlytics:17.0.1'            // Crashlytics
+    implementation 'com.google.firebase:firebase-perf:19.0.7'                   // Performance
+    implementation 'com.google.firebase:firebase-config-ktx:19.1.4'             // Remote Config
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'

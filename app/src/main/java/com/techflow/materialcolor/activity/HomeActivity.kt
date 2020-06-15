@@ -46,11 +46,13 @@ import com.google.android.play.core.ktx.updatePriority
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.techflow.materialcolor.MaterialColor.AdType
 import com.techflow.materialcolor.MaterialColor
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivityHomeBinding
 import com.techflow.materialcolor.fragment.*
+import com.techflow.materialcolor.helpers.RemoteConfigHelper
 import com.techflow.materialcolor.helpers.displaySnackbar
 import com.techflow.materialcolor.helpers.displayToast
 import com.techflow.materialcolor.helpers.isDebug
@@ -109,6 +111,9 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
         sharedPref = SharedPref.getInstance(this)
         firebaseAnalytics = Firebase.analytics
+
+        // Activate remote config
+        RemoteConfigHelper.getInstance().activate()
 
         initToolbar()
         initComponent()
@@ -403,8 +408,8 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
             // Show update downloading...
             if (state.installStatus() == InstallStatus.DOWNLOADING && !updateStarted) {
-                val bytesDownloaded = state.bytesDownloaded()
-                val totalBytesToDownload = state.totalBytesToDownload()
+                /*val bytesDownloaded = state.bytesDownloaded()
+                val totalBytesToDownload = state.totalBytesToDownload()*/
 
                 binding.rootLayout.displaySnackbar(
                     "Downloading update...",
