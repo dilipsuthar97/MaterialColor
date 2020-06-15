@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
+import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.google.android.material.button.MaterialButton
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivityAppIntroBinding
@@ -28,19 +29,8 @@ class AppIntroActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     // Static
     companion object {
-        private const val MAX_STEP = 4
-        private val title_array = arrayOf(
-            "Ready to Travel",
-            "Pick the Ticket",
-            "Flight to Destination",
-            "Enjoy Holiday"
-        )
-        private val description_array = arrayOf(
-            "Choose your destination, plan Your trip. Pick the best place for Your holiday",
-            "Select the day, pick Your ticket. We give you the best prices. We guarantee!",
-            "Safe and Comfort flight is our priority. Professional crew and services.",
-            "Enjoy your holiday, Don't forget to feel the moment and take a photo!"
-        )
+        private lateinit var wizard_titles: Array<String>
+        private lateinit var wizard_descs: Array<String>
     }
 
     private lateinit var bind: ActivityAppIntroBinding
@@ -50,8 +40,15 @@ class AppIntroActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         super.onCreate(savedInstanceState)
         bind = DataBindingUtil.setContentView(this, R.layout.activity_app_intro)
 
+        initComponents()
+    }
+
+    private fun initComponents() {
+        wizard_titles = resources.getStringArray(R.array.wizard_titles)
+        wizard_descs = resources.getStringArray(R.array.wizard_descriptions)
+
         /*bottomProgressDots(0)*/
-        bind.pageIndicator.count = MAX_STEP
+        bind.pageIndicator.count = wizard_titles.size
         bind.pageIndicator.selection = 0
         if (ThemeUtils.getTheme(this) == ThemeUtils.LIGHT) {
             bind.pageIndicator.unselectedColor = ContextCompat.getColor(this, R.color.overlay_dark_30)
@@ -104,11 +101,11 @@ class AppIntroActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             val layoutInflater = activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
             val view = layoutInflater.inflate(R.layout.item_app_intro_wizard, container, false)
-            view.findViewById<TextView>(R.id.title).text = title_array[position]
-            view.findViewById<TextView>(R.id.description).text = description_array[position]
+            view.findViewById<TextView>(R.id.title).text = wizard_titles[position]
+            view.findViewById<TextView>(R.id.description).text = wizard_descs[position]
 
             val btnNext = view.findViewById<MaterialButton>(R.id.btn_next)
-            if (position == title_array.size - 1) {
+            if (position == wizard_titles.size - 1) {
                 btnNext.text = "Get started"
             } else {
                 btnNext.text = "Next"
@@ -116,7 +113,7 @@ class AppIntroActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
             btnNext.setOnClickListener {
                 val current = viewPager.currentItem + 1
-                if (current < MAX_STEP) {
+                if (current < wizard_titles.size) {
                     viewPager.currentItem = current
                 } else {
                     activity.startActivity(Intent(activity, HomeActivity::class.java))
@@ -129,7 +126,7 @@ class AppIntroActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         }
 
         override fun getCount(): Int {
-            return MAX_STEP
+            return wizard_titles.size
         }
 
         override fun isViewFromObject(view: View, `object`: Any): Boolean {

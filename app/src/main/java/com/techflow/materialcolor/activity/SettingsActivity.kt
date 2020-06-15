@@ -20,6 +20,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
+import com.techflow.materialcolor.BuildConfig
 import com.techflow.materialcolor.MaterialColor
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivitySettingsBinding
@@ -308,15 +309,17 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
 
                 MaterialDialog(this).show {
                     cornerRadius(16f)
+                    cancelable(false)
                     title(text = "Ad removed success")
                     message(text = "You don't see ads anymore. All ads are removed permanently." +
                             "\nDon't worry when you uninstall the app your purchase has been saved" +
                             "and after reinstall the app you have to check your purchase by tapping Pay button." +
                             "\n\nThanks for purchase :)")
-                    positiveButton(text = "RESTART APP") {
+                    positiveButton(text = "RESTART") {
                         Tools.restartApp(this@SettingsActivity)
                         displayToast("Restarting app")
                     }
+                    negativeButton(text = "OK") {}
                 }
 
                 // Disable ad showing
@@ -338,12 +341,14 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
 
                 MaterialDialog(this).show {
                     cornerRadius(16f)
+                    cancelable(false)
                     title(text = "Item already owned")
                     message(text = "You already purchased this.\nyou don't see ads anymore, Restart app now..")
                     positiveButton(text = "RESTART") {
                         displayToast("Restarting app")
                         Tools.restartApp(this@SettingsActivity)
                     }
+                    negativeButton(text = "OK") {}
                 }
 
             }

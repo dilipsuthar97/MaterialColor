@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "890699105865-i15jbeb6qi71ofta5t2nero466j9ana2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.techflow.materialcolor",
+            "certificate_hash": "a52b771d4cb3b1dac20226e6b36f92999a433f26"
+          }
+        },
+        {
           "client_id": "890699105865-cj4985tk52deih1a180m3lrgg6k9fd4t.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -29,7 +37,7 @@
       ],
       "api_key": [
         {
-          "current_key": ""
+          "current_key": "AIzaSyDwdsFVVVwHgcW15jLxE3uLx-okNFvP8pc"
         }
       ],
       "services": {
