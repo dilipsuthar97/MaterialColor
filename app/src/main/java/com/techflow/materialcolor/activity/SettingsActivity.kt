@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageButton
 import androidx.core.app.ShareCompat
 import androidx.databinding.DataBindingUtil
 import com.afollestad.materialdialogs.MaterialDialog
@@ -24,9 +25,7 @@ import com.techflow.materialcolor.BuildConfig
 import com.techflow.materialcolor.MaterialColor
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivitySettingsBinding
-import com.techflow.materialcolor.helpers.displayToast
-import com.techflow.materialcolor.helpers.isDebug
-import com.techflow.materialcolor.helpers.openWebView
+import com.techflow.materialcolor.helpers.*
 import com.techflow.materialcolor.utils.*
 
 /**
@@ -67,19 +66,19 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
         bind.btnRemoveAds.setOnClickListener(this)
         bind.btnRate.setOnClickListener(this)
         bind.btnShare.setOnClickListener(this)
-        bind.btnDm.setOnClickListener(this)
         bind.fabSend.setOnClickListener(this)
         bind.btnAbout.setOnClickListener(this)
         bind.btnMoreApps.setOnClickListener(this)
         bind.btnAboutMaterialColor.setOnClickListener(this)
         bind.btnMaterialTool.setOnClickListener(this)
         bind.btnPolicy.setOnClickListener(this)
+        bind.btnThirdPartyLicense.setOnClickListener(this)
         bind.labelResetTutorial.setOnClickListener(this)
 
         // Theme setting
         bind.switchChangeTheme.isChecked = ThemeUtils.getTheme(this) == ThemeUtils.DARK
 
-        bind.switchChangeTheme.setOnCheckedChangeListener { compoundButton, isChecked ->
+        bind.switchChangeTheme.setOnCheckedChangeListener { _, isChecked ->
             firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_DARK_MODE, null)
 
             if (isChecked) ThemeUtils.setTheme(this, ThemeUtils.DARK)
@@ -91,12 +90,14 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
         bind.switchBottomSheetConfig.isChecked =
             SharedPref.getInstance(this).getBoolean(StorageKey.BOTTOM_SHEET_CONFIG, false)
 
-        bind.switchBottomSheetConfig.setOnCheckedChangeListener { buttonView, isChecked ->
+        bind.switchBottomSheetConfig.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked)
                 SharedPref.getInstance(this).saveData(StorageKey.BOTTOM_SHEET_CONFIG, true)
             else
                 SharedPref.getInstance(this).saveData(StorageKey.BOTTOM_SHEET_CONFIG, false)
         }
+
+        bind.txtAppversion.text = getAppVersion()
     }
 
     override fun onClick(view: View?) {
@@ -129,15 +130,6 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
                 if (shareIntent.resolveActivity(this.packageManager) != null)
                     startActivity(shareIntent)
             }
-            R.id.btn_dm -> {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/dilipsuthar97_dvlpr/?hl=en"))
-                try {
-                    intent.setPackage("com.instagram.android")
-                    startActivity(intent)
-                } catch (e: ActivityNotFoundException) {
-                    startActivity(intent)
-                }
-            }
             R.id.fab_send -> {
                 val title = bind.etFeedbackTitle.text.toString()
                 val msg = bind.etFeedbackMsg.text.toString()
@@ -151,7 +143,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
                     val i = Intent().apply {
                         action = Intent.ACTION_SEND
                         type = "message/rfc822"
-                        putExtra(Intent.EXTRA_EMAIL, arrayOf("techflow.developer97@gmail.com"))
+                        putExtra(Intent.EXTRA_EMAIL, arrayOf(RemoteConfigHelper.getInstance().remoteConfig.getString(RemoteConfigHelper.KEY_SUPPORT_EMAIL)))
                         putExtra(Intent.EXTRA_SUBJECT, "Feedback: MaterialColor - $title")
                         putExtra(Intent.EXTRA_TEXT, "Title: $title\nFeedback: $msg")
                     }
@@ -177,6 +169,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
                 firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_READ_POLICY, null)
                 openWebView("https://github.com/dilipsuthar1997/PrivacyPolicy/blob/master/MaterialColor%20Privacy%20Policy.md")
             }
+            R.id.btn_third_party_license -> startActivity(Intent(this, LicensesActivity::class.java))
             R.id.label_reset_tutorial -> {
                 resetTutorial(SharedPref.getInstance(this))
                 displayToast("Tutorial reset successful :)")
@@ -215,8 +208,14 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
 
         view.findViewById<MaterialButton>(R.id.btn_about_me).setOnClickListener {
             firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_ABOUT_ME, null)
-            openWebView("https://dilipsuthar97.github.io/")
-            dialog.dismiss()
+            openWebView(RemoteConfigHelper.getInstance().remoteConfig.getString(RemoteConfigHelper.KEY_PORTFOLIO_URL))
+        }
+
+        view.findViewById<ImageButton>(R.id.btn_github).setOnClickListener {
+            openWebView("https://github.com/dilipsuthar97")
+        }
+        view.findViewById<ImageButton>(R.id.btn_twitter).setOnClickListener {
+            openWebView("https://twitter.com/dilipsuthar97")
         }
     }
 

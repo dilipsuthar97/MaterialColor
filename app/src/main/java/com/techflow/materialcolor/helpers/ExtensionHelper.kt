@@ -2,6 +2,8 @@ package com.techflow.materialcolor.helpers
 
 import android.content.Context
 import android.content.pm.ApplicationInfo
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -128,4 +130,21 @@ fun Context.showPopup(view: View, menuRes: Int, listener: PopupMenu.OnMenuItemCl
     popup.menuInflater.inflate(menuRes, popup.menu)
     if (listener != null) popup.setOnMenuItemClickListener(listener)
     popup.show()
+}
+
+/**
+ * Get app's current version
+ *
+ * @return String return current ap version
+ */
+fun Context.getAppVersion(): String? {
+    val packageManager = packageManager
+    var packageInfo: PackageInfo? = null
+    try {
+        packageInfo = packageManager.getPackageInfo(packageName, 0)
+    } catch (e: PackageManager.NameNotFoundException) {
+        e.printStackTrace()
+    }
+
+    return packageInfo?.versionName ?: "0.0.0"
 }

@@ -32,7 +32,7 @@ class RemoteConfigHelper {
     init {
         val configSettings = remoteConfigSettings {
             minimumFetchIntervalInSeconds = 3600
-            setDeveloperModeEnabled(true)
+            setDeveloperModeEnabled(true)   //TODO: Disable in production
         }
         remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)
         remoteConfig.setConfigSettingsAsync(configSettings)

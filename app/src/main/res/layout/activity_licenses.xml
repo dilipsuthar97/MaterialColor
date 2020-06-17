@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".activity.LicensesActivity">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/colorSecondary"
+            android:orientation="vertical">
+
+        <include
+                android:id="@+id/toolbar"
+                layout="@layout/toolbar_default" />
+
+        <TextView
+                android:id="@+id/txt_licenses"
+                android:layout_width="match_parent"
+                android:paddingHorizontal="16dp"
+                android:scrollbars="vertical"
+                android:layout_height="match_parent"
+                android:textColor="?attr/colorTextPrimary" />
+    </LinearLayout>
+</layout>
