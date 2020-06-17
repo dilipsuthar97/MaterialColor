@@ -16,17 +16,40 @@
             android:roundIcon="@mipmap/ic_launcher"
             android:supportsRtl="true"
             android:theme="@style/MaterialColor.Base.Light">
-        <activity android:name=".activity.AppIntroActivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.MetroColorsActivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.SocialColorsActivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.FlatUIColorsActivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.SupportDevelopmentActivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.DesignToolActivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.CustomGradientActivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.SettingsActivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.ColorActivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.CustomColorActivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.HomeActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.LicensesActivity"></activity>
+        <activity
+                android:name=".activity.AppIntroActivity"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".activity.MetroColorsActivity"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".activity.SocialColorsActivity"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".activity.FlatUIColorsActivity"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".activity.SupportDevelopmentActivity"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".activity.DesignToolActivity"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".activity.CustomGradientActivity"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".activity.SettingsActivity"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".activity.ColorActivity"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".activity.CustomColorActivity"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".activity.HomeActivity"
+                android:screenOrientation="portrait" />
         <activity android:name=".activity.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,8 +58,8 @@
             </intent-filter>
         </activity>
         <activity
-                android:screenOrientation="portrait"
                 android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+                android:screenOrientation="portrait"
                 android:theme="@style/Base.Theme.AppCompat" />
 
         <meta-data

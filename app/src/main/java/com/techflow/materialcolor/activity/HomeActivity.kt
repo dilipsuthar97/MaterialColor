@@ -112,9 +112,6 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         sharedPref = SharedPref.getInstance(this)
         firebaseAnalytics = Firebase.analytics
 
-        // Activate remote config
-        RemoteConfigHelper.getInstance().activate()
-
         initToolbar()
         initComponent()
         initIntro()

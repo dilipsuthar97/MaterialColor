@@ -27,7 +27,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    app:piv_animationType="drop"
+                    app:piv_animationType="worm"
                     app:piv_dynamicCount="true"
                     app:piv_interactiveAnimation="true"
                     app:piv_selectedColor="?attr/colorPrimary"

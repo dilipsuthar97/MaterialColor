@@ -25,9 +25,18 @@ The app Material Color Palette allows developers and programmers to get their re
 </p>
 
 ## :muscle: Support Development
-<a href="https://www.buymeacoffee.com/dilipsuthar97">
-    <img src="https://raw.githubusercontent.com/ravjanisz/imagecrypt/master/docs/assets/bmc.png" alt="Buy me a coffee ☕">
-</a>
+
+There are few ways you can do it:
+
+-  Starring and sharing the projects you like 🚀
+-  Please follow [dilipsuthar97](https://github.com/dilipsuthar97) on GitHub.
+
+<a href="https://www.buymeacoffee.com/dilipsuthar97" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee ☕" style="height: auto !important;width: auto !important;" ></a>
+
+Thanks! ❤️
+<br/>
+[dilipsuthar97.github.io](https://dilipsuthar97.github.io)
+<br/>
 
 ## :iphone: Social
 [![Twitter](https://img.shields.io/twitter/follow/dilipsuthar97?label=Follow&style=social)](https://twitter.com/dilipsuthar97)
@@ -35,7 +44,7 @@ The app Material Color Palette allows developers and programmers to get their re
 
 ## :scroll: License
 ```
-Copyright 2020 Dilip Suthar
+Copyright 2019 Dilip Suthar
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -53,4 +62,4 @@ limitations under the License.
 ## :copyright: Legal
 If you're going to use this code, please disclose the source (me)! Thank You!
 
-Copyright © 2020 Dilip Suthar (dilipsuthar97)
+Copyright © 2019 Dilip Suthar (dilipsuthar97)

@@ -6,6 +6,7 @@ import android.os.Handler
 import android.widget.TextView
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.techflow.materialcolor.R
+import com.techflow.materialcolor.helpers.RemoteConfigHelper
 import com.techflow.materialcolor.helpers.isDebug
 import com.techflow.materialcolor.utils.SharedPref
 import com.techflow.materialcolor.utils.StorageKey
@@ -38,6 +39,9 @@ class WelcomeActivity : BaseActivity() {
 
         // Disable crashlytics in DEBUG mode
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!isDebug())
+
+        // Activate remote config
+        RemoteConfigHelper.getInstance().activate()
 
         findViewById<TextView>(R.id.tv_bottom_msg).text = (StringBuilder()
             .append("Made with ")
