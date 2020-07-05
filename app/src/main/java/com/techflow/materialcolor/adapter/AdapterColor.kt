@@ -4,12 +4,10 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.PorterDuff
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.getkeepsafe.taptargetview.TapTarget
@@ -17,9 +15,7 @@ import com.getkeepsafe.taptargetview.TapTargetSequence
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.db.AppDatabase
 import com.techflow.materialcolor.helpers.AppExecutorHelper
-import com.techflow.materialcolor.helpers.displayToast
 import com.techflow.materialcolor.helpers.isDark
-import com.techflow.materialcolor.helpers.showPopup
 import com.techflow.materialcolor.model.Color
 import com.techflow.materialcolor.utils.*
 import kotlin.collections.ArrayList
@@ -192,7 +188,19 @@ class AdapterColor constructor(
                                 .descriptionTextSize(18)
                                 .descriptionTextColor(R.color.white)
                                 .cancelable(false)
-                                .targetRadius(50))
+                                .targetRadius(50),
+
+                            TapTarget.forView(viewColor, "RGB and HSV color codes", "Long press here to open popup menu for RGB and HSV selection. It will work for every color code on every screen.")
+                                .outerCircleColor(R.color.colorPrimary)
+                                .outerCircleAlpha(0.95f)
+                                .targetCircleColor(R.color.white)
+                                .titleTextSize(20)
+                                .titleTextColor(R.color.white)
+                                .descriptionTextSize(18)
+                                .descriptionTextColor(R.color.white)
+                                .cancelable(false)
+                                .targetRadius(50)
+                        )
                         .start()
 
                     sharedPref.saveData(StorageKey.ColorActFR, false)

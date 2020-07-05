@@ -55,7 +55,7 @@ class MaterialColor : Application() {
     }
 
     override fun onCreate() {
-        when(ThemeUtils.getTheme(this)) {
+        when (ThemeUtils.getTheme(this)) {
             ThemeUtils.LIGHT -> setTheme(R.style.MaterialColor_Base_Light)
             ThemeUtils.DARK -> setTheme(R.style.MaterialColor_Base_Dark)
         }

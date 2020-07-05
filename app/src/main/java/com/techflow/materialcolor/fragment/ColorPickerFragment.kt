@@ -28,7 +28,6 @@ import com.techflow.materialcolor.adapter.AdapterColorFromImage
 import com.techflow.materialcolor.helpers.AppExecutorHelper
 import com.techflow.materialcolor.helpers.PermissionHelper
 import com.techflow.materialcolor.utils.*
-import java.util.*
 
 /**
  * Modified by DILIP SUTHAR on 29/08/19

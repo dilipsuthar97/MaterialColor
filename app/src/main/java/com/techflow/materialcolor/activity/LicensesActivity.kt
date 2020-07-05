@@ -1,7 +1,6 @@
 package com.techflow.materialcolor.activity
 
 import android.os.Bundle
-import android.text.method.ScrollingMovementMethod
 import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.appbar.MaterialToolbar
@@ -37,7 +36,7 @@ class LicensesActivity : BaseActivity() {
     private fun initToolbar() {
         setSupportActionBar(bind.toolbar as MaterialToolbar)
         val actionBar = supportActionBar!!
-        actionBar.title = "Settings"
+        actionBar.title = "Third Party Licenses"
         actionBar.setDisplayHomeAsUpEnabled(true)
         actionBar.setHomeButtonEnabled(true)
         (bind.toolbar as MaterialToolbar).elevation = 3.0F
@@ -52,6 +51,7 @@ class LicensesActivity : BaseActivity() {
         val licensesData = StringBuilder()
         var reader: BufferedReader? = null
 
+        // Read data from txt file
         try {
             reader = BufferedReader(InputStreamReader(resources.openRawResource(R.raw.licenses)))
             var mLine: String?
@@ -73,7 +73,6 @@ class LicensesActivity : BaseActivity() {
         }
 
         bind.txtLicenses.text = licensesData
-        bind.txtLicenses.movementMethod = ScrollingMovementMethod()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

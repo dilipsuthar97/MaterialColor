@@ -14,12 +14,16 @@
                 android:id="@+id/toolbar"
                 layout="@layout/toolbar_default" />
 
-        <TextView
-                android:id="@+id/txt_licenses"
+        <ScrollView
                 android:layout_width="match_parent"
-                android:paddingHorizontal="16dp"
-                android:scrollbars="vertical"
                 android:layout_height="match_parent"
-                android:textColor="?attr/colorTextPrimary" />
+                android:scrollbars="vertical">
+            <TextView
+                    android:id="@+id/txt_licenses"
+                    android:layout_width="match_parent"
+                    android:paddingHorizontal="16dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorTextPrimary" />
+        </ScrollView>
     </LinearLayout>
 </layout>
