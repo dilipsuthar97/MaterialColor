@@ -1,28 +1,35 @@
 package com.techflow.materialcolor.helpers
 
 import android.content.Context
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.appcompat.widget.PopupMenu
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
-import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.snackbar.Snackbar
 import com.techflow.materialcolor.R
 
 /**
  * @func check if color's luminance value is dark or light
  * @param this The boolean value to check predicate
+ *
+ * @return Boolean
  */
 fun Int.isDark(): Boolean = ColorUtils.calculateLuminance(this) <= 0.5
 
 /**
  * @func It compare boolean value with another boolean value
  * @param value The secondary boolean value to check equality
+ *
+ * @return Boolean
  */
 infix fun Boolean.eq(value: Boolean): Boolean = this == value
 
@@ -41,13 +48,18 @@ fun Context.displayToast(@StringRes message: Int) {
 /**
  * @func display toast
  * @param message string value to display message
+ *
+ * @return Toast object
  */
-fun Context.displayToast(message: String, duration: Int = Toast.LENGTH_SHORT) {
-    Toast.makeText(
+fun Context.displayToast(message: String, duration: Int = Toast.LENGTH_SHORT): Toast {
+     val toast = Toast.makeText(
         this,
         message,
         duration
-    ).show()
+    )
+    toast.show()
+
+    return toast
 }
 
 /**
@@ -86,7 +98,52 @@ fun Context.openWebView(url: String) {
 
 /**
  * @func check weather the device is tablet or phone
+ *
+ * @return Boolean
  */
 fun Context.isTablet(): Boolean {
     return (this.resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE
+}
+
+/**
+ * @func check weather app is in debug mode or not
+ *
+ * @return Boolean
+ */
+fun Context.isDebug(): Boolean {
+    try {
+        return (applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) !== 0
+    } catch (ignored: Exception) {
+    }
+    return false
+}
+
+/**
+ * Show popup menu
+ * @param view view for display popup with respect to
+ * @param menuRes int resId of menu file
+ * @param listener Popup menu listener interface
+ */
+fun Context.showPopup(view: View, menuRes: Int, listener: PopupMenu.OnMenuItemClickListener?) {
+    val popup = PopupMenu(this, view)
+    popup.menuInflater.inflate(menuRes, popup.menu)
+    if (listener != null) popup.setOnMenuItemClickListener(listener)
+    popup.show()
+}
+
+/**
+ * Get app's current version
+ *
+ * @return String return current ap version
+ */
+fun Context.getAppVersion(): String? {
+    val packageManager = packageManager
+    var packageInfo: PackageInfo? = null
+    try {
+        packageInfo = packageManager.getPackageInfo(packageName, 0)
+    } catch (e: PackageManager.NameNotFoundException) {
+        e.printStackTrace()
+    }
+
+    return packageInfo?.versionName ?: "0.0.0"
 }

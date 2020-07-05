@@ -1,53 +1,4 @@
-package com.techflow.materialcolor.activity
-
-import android.os.Bundle
-import com.techflow.materialcolor.utils.Tools
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
-import android.content.pm.ApplicationInfo
-import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import androidx.appcompat.widget.Toolbar
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
-import com.afollestad.materialdialogs.LayoutMode
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.bottomsheets.BottomSheet
-import com.afollestad.materialdialogs.customview.customView
-import com.afollestad.materialdialogs.customview.getCustomView
-import com.facebook.ads.*
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.play.core.appupdate.AppUpdateManagerFactory
-import com.google.android.play.core.install.InstallStateUpdatedListener
-import com.google.android.play.core.install.model.AppUpdateType
-import com.google.android.play.core.install.model.InstallStatus
-import com.google.android.play.core.install.model.UpdateAvailability
-import com.google.firebase.analytics.FirebaseAnalytics
-import com.techflow.materialcolor.MaterialColor.AdType
-import com.techflow.materialcolor.MaterialColor
-import com.techflow.materialcolor.R
-import com.techflow.materialcolor.databinding.ActivityHomeBinding
-import com.techflow.materialcolor.fragment.*
-import com.techflow.materialcolor.helpers.displaySnackbar
-import com.techflow.materialcolor.helpers.displayToast
-import com.techflow.materialcolor.helpers.isTablet
-import com.techflow.materialcolor.utils.Preferences
-import com.techflow.materialcolor.utils.SharedPref
-import com.techflow.materialcolor.utils.ThemeUtils
-import timber.log.Timber
-
-/**
- * @author Dilip Suthar
- * Modified by Dilip Suthar on 15/12/2019
- */
-
-/**
+/*
  *  Copyright 2020 Dilip Suthar
 
     Licensed under the Apache License, Version 2.0 (the "License");
@@ -62,22 +13,72 @@ import timber.log.Timber
     See the License for the specific language governing permissions and
     limitations under the License.
  */
+
+package com.techflow.materialcolor.activity
+
+import android.os.Bundle
+import com.techflow.materialcolor.utils.Tools
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.ImageButton
+import android.widget.LinearLayout
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import com.afollestad.materialdialogs.LayoutMode
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.bottomsheets.BottomSheet
+import com.afollestad.materialdialogs.customview.customView
+import com.afollestad.materialdialogs.customview.getCustomView
+import com.facebook.ads.*
+import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.InstallStateUpdatedListener
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.InstallStatus
+import com.google.android.play.core.install.model.UpdateAvailability
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
+import com.techflow.materialcolor.MaterialColor.AdType
+import com.techflow.materialcolor.MaterialColor
+import com.techflow.materialcolor.R
+import com.techflow.materialcolor.databinding.ActivityHomeBinding
+import com.techflow.materialcolor.fragment.*
+import com.techflow.materialcolor.helpers.displaySnackbar
+import com.techflow.materialcolor.helpers.displayToast
+import com.techflow.materialcolor.helpers.isDebug
+import com.techflow.materialcolor.utils.StorageKey
+import com.techflow.materialcolor.utils.SharedPref
+import com.techflow.materialcolor.utils.ThemeUtils
+
+/**
+ * @author Dilip Suthar
+ * Modified by Dilip Suthar on 29/05/2020
+ */
 class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
     private val TAG = HomeActivity::class.java.simpleName
+    private val HIGH_PRIORITY_UPDATE = 5
 
-    val BACK_STACK_ROOT_NAME = "root_fragment"
     val REQUEST_CODE_UPDATE = 201
 
     // STATIC
     companion object {
+        lateinit var firebaseAnalytics: FirebaseAnalytics
+
         // Audience network
         private lateinit var interstitialAd: InterstitialAd
 
         fun showInterstitialAd(context: Context) {
 
-            if (!MaterialColor.isDebug(MaterialColor.getInstance())) {
+            if (!MaterialColor.getInstance().isDebug()) {
                 if (SharedPref.getInstance(context).actionShowInterstitialAd()) {
-                    Timber.d(HomeActivity::class.java.simpleName, "serving ads")
+                    Log.d(HomeActivity::class.java.simpleName, "serving ads")
                     if (interstitialAd.isAdLoaded)
                         interstitialAd.show()
                     else if (Tools.hasNetwork(context))
@@ -98,8 +99,6 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
     private lateinit var bookmarkedColorFragment: BookmarkedColorFragment
     private lateinit var activeFragment: Fragment
 
-    private lateinit var firebaseAnalytics: FirebaseAnalytics
-
     private lateinit var bottomSheet: MaterialDialog
 
     private var adView: AdView? = null
@@ -108,14 +107,14 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
         sharedPref = SharedPref.getInstance(this)
-        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
+        firebaseAnalytics = Firebase.analytics
 
         initToolbar()
         initComponent()
         initIntro()
         initBottomNavigation()
         initMenuSheet()
-        if (!MaterialColor.isDebug(this)) initAd()
+        if (!this.isDebug()) initAd()
         initInAppUpdate()   // Init in-app update
     }
 
@@ -127,7 +126,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
     override fun onPause() {
         super.onPause()
-        if (!sharedPref.getBoolean(Preferences.BOTTOM_SHEET_CONFIG, false))
+        if (!sharedPref.getBoolean(StorageKey.BOTTOM_SHEET_CONFIG, false))
             bottomSheet.cancel()
     }
 
@@ -140,18 +139,6 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
     }
 
     override fun onBackPressed() {
-        // Back stack code
-        /*val manager = supportFragmentManager
-        val fragmentList = manager.fragments
-        if (fragmentList.size - 1 >= 0) {
-            Log.d(TAG, manager.backStackEntryCount.toString())
-            val fragment = manager.fragments.last()
-            manager.beginTransaction().replace(R.id.fragment, fragment)
-            manager.popBackStack()
-        }
-        else
-            appCloser()*/
-
         if (activeFragment != homeFragment) {
 
             binding.justBar.setSelected(0)
@@ -177,7 +164,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        if (key!! == Preferences.THEME)
+        if (key!! == StorageKey.THEME)
             recreate()
     }
 
@@ -185,7 +172,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
      * @func init toolbar config
      */
     private fun initToolbar() {
-        setSupportActionBar(binding.toolbar as Toolbar)
+        setSupportActionBar(binding.toolbar as MaterialToolbar)
         supportActionBar?.title = resources.getString(R.string.app_name)
     }
 
@@ -205,7 +192,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
      * @func init app intro for first use
      */
     private fun initIntro() {
-        if (sharedPref.getBoolean(Preferences.isFirstRun, true)) {
+        if (sharedPref.getBoolean(StorageKey.isFirstRun, true)) {
             Snackbar.make(binding.rootLayout, "Long press on card to copy code", Snackbar.LENGTH_INDEFINITE).apply {
                 setAction("NEXT") {
                     Snackbar.make(binding.rootLayout, "Tap on card to see different shades", Snackbar.LENGTH_INDEFINITE).apply {
@@ -216,7 +203,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                 show()
             }
 
-            sharedPref.saveData(Preferences.isFirstRun, false)
+            sharedPref.saveData(StorageKey.isFirstRun, false)
         }
     }
 
@@ -227,7 +214,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         binding.justBar.setOnBarItemClickListener { barItem, position ->
 
             // Load ad
-            if (SharedPref.getInstance(this).getBoolean(Preferences.SHOW_AD, true))
+            if (SharedPref.getInstance(this).getBoolean(StorageKey.SHOW_AD, true))
                 showInterstitialAd(this)
 
             when(barItem.id) {
@@ -260,16 +247,12 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
      * @param fragment fragment value
      */
     private fun displayFragment(fragment: Fragment?) {
-        //val backStackName = fragment?.javaClass?.name
         val fragmentManager = supportFragmentManager
         if (fragment != null) {
             activeFragment = fragment
 
             val transaction = fragmentManager.beginTransaction()
             transaction.setCustomAnimations(R.anim.anim_fragment_enter, R.anim.anim_fragment_exit)
-            /*transaction.add(R.id.fragment, fragment, fragment.tag)
-            transaction.replace(R.id.fragment, fragment, BACK_STACK_ROOT_NAME)
-            transaction.addToBackStack(BACK_STACK_ROOT_NAME)*/
             transaction.replace(R.id.host_fragment, fragment)
             transaction.commit()
         }
@@ -304,6 +287,21 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             startActivity(Intent(this, DesignToolActivity::class.java))
         }
 
+        view.findViewById<LinearLayout>(R.id.btn_flat_ui_colors).setOnClickListener {
+            firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_FLAT_UI_COLORS, null)
+            startActivity(Intent(this, FlatUIColorsActivity::class.java))
+        }
+
+        view.findViewById<LinearLayout>(R.id.btn_social_colors).setOnClickListener {
+            firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_SOCIAL_COLORS, null)
+            startActivity(Intent(this, SocialColorsActivity::class.java))
+        }
+
+        view.findViewById<LinearLayout>(R.id.btn_metro_colors).setOnClickListener {
+            firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_METRO_COLORS, null)
+            startActivity(Intent(this, MetroColorsActivity::class.java))
+        }
+
         view.findViewById<MaterialButton>(R.id.btn_support_development).setOnClickListener {
             firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_SUPPORT_DEVELOPMENT, null)
             startActivity(Intent(this, SupportDevelopmentActivity::class.java))
@@ -324,7 +322,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
     }
 
     /**
-     * @func init audience network config for ad
+     * @func init audience network config for ad ---------------------------------------------------
      */
     private fun initAd() {
         Log.d(TAG, "initAd: called")
@@ -365,7 +363,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         // Banner Ad
         adView = AdView(this, MaterialColor.getAdId(AdType.BANNER), AdSize.BANNER_HEIGHT_50)
         if (Tools.hasNetwork(this))
-            if (SharedPref.getInstance(this).getBoolean(Preferences.SHOW_AD, true))
+            if (SharedPref.getInstance(this).getBoolean(StorageKey.SHOW_AD, true))
                 adView?.loadAd()
 
         adView?.setAdListener(object : AdListener {
@@ -380,7 +378,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
             override fun onError(p0: Ad?, p1: AdError?) {
                 if (Tools.hasNetwork(this@HomeActivity))
-                    if (SharedPref.getInstance(this@HomeActivity).getBoolean(Preferences.SHOW_AD, true))
+                    if (SharedPref.getInstance(this@HomeActivity).getBoolean(StorageKey.SHOW_AD, true))
                         adView?.loadAd()
             }
 
@@ -393,17 +391,19 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
 
     /**
-     * @func in-app update functionality ---------------------------------------------------------
+     * @func in-app update functionality -----------------------------------------------------------
      */
     private var updateStarted = false
     private fun initInAppUpdate() {
         val appUpdateManager = AppUpdateManagerFactory.create(this)
-            val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
 
         val listener = InstallStateUpdatedListener { state ->
 
             // Show update downloading...
             if (state.installStatus() == InstallStatus.DOWNLOADING && !updateStarted) {
+                /*val bytesDownloaded = state.bytesDownloaded()
+                val totalBytesToDownload = state.totalBytesToDownload()*/
 
                 binding.rootLayout.displaySnackbar(
                     "Downloading update...",
@@ -420,7 +420,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     "An update has just been downloaded from Google Play",
                     Snackbar.LENGTH_INDEFINITE
                 ).apply {
-                    setAction("INSTALL") { appUpdateManager.completeUpdate() }
+                    setAction("RESTART") { appUpdateManager.completeUpdate() }
                     show()
                 }
 
@@ -444,6 +444,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
 
             if ((appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                        && appUpdateInfo.updatePriority() >= HIGH_PRIORITY_UPDATE
                         // For a flexible update, use AppUpdateType.FLEXIBLE
                         && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE))) {
 
@@ -456,17 +457,17 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     this,
                     REQUEST_CODE_UPDATE)
 
-                // If update is already download but, not installed
-                if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+            }
 
-                    Snackbar.make(binding.rootLayout,
-                        "An update has been downloaded from Google Play",
-                        Snackbar.LENGTH_INDEFINITE
-                    ).apply {
-                        setAction("INSTALL") { appUpdateManager.completeUpdate() }
-                        show()
-                    }
+            // If update is already download but, not installed
+            if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
 
+                Snackbar.make(binding.rootLayout,
+                    "An update has been downloaded from Google Play",
+                    Snackbar.LENGTH_INDEFINITE
+                ).apply {
+                    setAction("RESTART") { appUpdateManager.completeUpdate() }
+                    show()
                 }
 
             }

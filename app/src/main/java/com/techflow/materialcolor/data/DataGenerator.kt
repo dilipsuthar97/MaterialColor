@@ -4,6 +4,7 @@ import android.content.Context
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.model.Color
 import com.techflow.materialcolor.model.Gradient
+import com.techflow.materialcolor.utils.ColorUtils
 
 /**
  * Data generator static class
@@ -32,6 +33,40 @@ object DataGenerator {
         return items
     }
 
+    fun getFlatUIColorData(ctx: Context): ArrayList<Color> {
+        val items = ArrayList<Color>()
+        val colorNames = ctx.resources.getStringArray(R.array.flat_ui_colors_name)
+        val colorCodes = ctx.resources.getStringArray(R.array.flat_ui_colors)
+        val colors = ColorUtils.getParsedColors(colorCodes)
+        for (i in colorNames.indices) {
+            items.add(Color(Color.TYPE_COLOR_SHADE, colors[i], colorNames[i], colorCodes[i]))
+        }
+        return items
+    }
+
+    fun getSocialColorData(ctx: Context): ArrayList<Color> {
+        val items = ArrayList<Color>()
+        val colorNames = ctx.resources.getStringArray(R.array.social_colors_name)
+        val colorCodes = ctx.resources.getStringArray(R.array.social_colors)
+        val colors = ColorUtils.getParsedColors(colorCodes)
+        for (i in colorNames.indices) {
+            items.add(Color(Color.TYPE_COLOR_SHADE, colors[i], colorNames[i], colorCodes[i]))
+        }
+        return items
+    }
+
+    fun getMetroColorData(ctx: Context): ArrayList<Color> {
+        val items = ArrayList<Color>()
+        val colorNames = ctx.resources.getStringArray(R.array.metro_colors_name)
+        val colorCodes = ctx.resources.getStringArray(R.array.metro_colors)
+        val colors = ColorUtils.getParsedColors(colorCodes)
+        for (i in colorNames.indices) {
+            items.add(Color(Color.TYPE_COLOR_SHADE, colors[i], colorNames[i], colorCodes[i]))
+        }
+        return items
+    }
+
+    /** ---------- All material color shades ---------- */
     fun getRedColorData(ctx: Context): ArrayList<Color> {
         val items = ArrayList<Color>()
         val colorNames = ctx.resources.getStringArray(R.array.color_names_shades_with_A)

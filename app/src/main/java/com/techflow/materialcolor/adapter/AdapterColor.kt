@@ -13,14 +13,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetSequence
 import com.techflow.materialcolor.R
-import com.techflow.materialcolor.database.AppDatabase
+import com.techflow.materialcolor.db.AppDatabase
 import com.techflow.materialcolor.helpers.AppExecutorHelper
 import com.techflow.materialcolor.helpers.isDark
 import com.techflow.materialcolor.model.Color
-import com.techflow.materialcolor.utils.AnimUtils
-import com.techflow.materialcolor.utils.Preferences
-import com.techflow.materialcolor.utils.SharedPref
+import com.techflow.materialcolor.utils.*
+import kotlin.collections.ArrayList
 
+/**
+ * @author Dilip Suthar
+ * Modified by Dilip Suthar on 29/05/2020
+ */
 class AdapterColor constructor(
     private val context: Context,
     private val activity: Activity,
@@ -64,9 +67,9 @@ class AdapterColor constructor(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when {
-            colorList[position].type == Color.TYPE_COLOR -> Color.TYPE_COLOR
-            colorList[position].type == Color.TYPE_COLOR_SHADE -> Color.TYPE_COLOR_SHADE
+        return when (colorList[position].type) {
+            Color.TYPE_COLOR -> Color.TYPE_COLOR
+            Color.TYPE_COLOR_SHADE -> Color.TYPE_COLOR_SHADE
             else -> Color.TYPE_AD
         }
     }
@@ -81,6 +84,7 @@ class AdapterColor constructor(
         private val tvColorCode: TextView = view.findViewById(R.id.tv_color_code)
         private val btnTap: View = view.findViewById(R.id.btn_tap)
         private lateinit var btnBookmark: ImageButton
+        private lateinit var btnMore: ImageButton
 
         fun setData(colorCard: Color,
                     context: Context,
@@ -93,7 +97,7 @@ class AdapterColor constructor(
             tvColorCode.text = colorCard.colorCode
             viewColor.setBackgroundColor(colorCard.color)
 
-            if (itemViewType == Color.TYPE_COLOR_SHADE) {
+            if (itemViewType == Color.TYPE_COLOR_SHADE) {  // When color is type of shade
 
                 btnBookmark = holder.itemView.findViewById(R.id.btn_bookmark)
                 var color: Color? = null
@@ -128,6 +132,12 @@ class AdapterColor constructor(
                     btnBookmark.setColorFilter(ContextCompat.getColor(context, R.color.colorTextPrimary), PorterDuff.Mode.SRC_ATOP)
                 }
 
+            } else if (itemViewType == Color.TYPE_COLOR) {
+                btnMore = holder.itemView.findViewById(R.id.btn_more) as ImageButton
+                btnMore.setOnClickListener {
+                    AnimUtils.bounceAnim(it)
+                    ColorUtils.executeColorCodePopupMenu(context, colorCard.colorCode, it)
+                }
             }
         }
 
@@ -146,7 +156,7 @@ class AdapterColor constructor(
             val sharedPref = SharedPref.getInstance(context)
 
             if (itemViewType == Color.TYPE_COLOR) {
-                if (sharedPref.getBoolean(Preferences.HomeFragFR, true) && pos == 1) {
+                if (sharedPref.getBoolean(StorageKey.HomeFragFR, true) && pos == 1) {
                     TapTargetSequence(activity)
                         .targets(
                             TapTarget.forView(tvColorName, "Material Color", "By tapping here you can see the different shades for this color.")
@@ -161,12 +171,12 @@ class AdapterColor constructor(
                                 .targetRadius(50))
                         .start()
 
-                    sharedPref.saveData(Preferences.HomeFragFR, false)
+                    sharedPref.saveData(StorageKey.HomeFragFR, false)
                 }
 
             } else {
 
-                if (sharedPref.getBoolean(Preferences.ColorActFR, true) && pos == 1) {
+                if (sharedPref.getBoolean(StorageKey.ColorActFR, true) && pos == 1) {
                     TapTargetSequence(activity)
                         .targets(
                             TapTarget.forView(viewColor, "Color shades", "Tap here to copy the color code.")
@@ -178,10 +188,22 @@ class AdapterColor constructor(
                                 .descriptionTextSize(18)
                                 .descriptionTextColor(R.color.white)
                                 .cancelable(false)
-                                .targetRadius(50))
+                                .targetRadius(50),
+
+                            TapTarget.forView(viewColor, "RGB and HSV color codes", "Long press here to open popup menu for RGB and HSV selection. It will work for every color code on every screen.")
+                                .outerCircleColor(R.color.colorPrimary)
+                                .outerCircleAlpha(0.95f)
+                                .targetCircleColor(R.color.white)
+                                .titleTextSize(20)
+                                .titleTextColor(R.color.white)
+                                .descriptionTextSize(18)
+                                .descriptionTextColor(R.color.white)
+                                .cancelable(false)
+                                .targetRadius(50)
+                        )
                         .start()
 
-                    sharedPref.saveData(Preferences.ColorActFR, false)
+                    sharedPref.saveData(StorageKey.ColorActFR, false)
                 }
             }
         }

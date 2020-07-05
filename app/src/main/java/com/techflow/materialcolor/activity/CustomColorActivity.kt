@@ -4,15 +4,12 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.SeekBar
-import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
-import com.balysv.materialripple.MaterialRippleLayout
+import com.google.android.material.appbar.MaterialToolbar
+import com.techflow.materialcolor.MaterialColor
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivityCustomColorBinding
-import com.techflow.materialcolor.utils.Preferences
-import com.techflow.materialcolor.utils.SharedPref
-import com.techflow.materialcolor.utils.ThemeUtils
-import com.techflow.materialcolor.utils.Tools
+import com.techflow.materialcolor.utils.*
 import it.sephiroth.android.library.xtooltip.ClosePolicy
 import it.sephiroth.android.library.xtooltip.Tooltip
 
@@ -34,13 +31,13 @@ class CustomColorActivity : BaseActivity() {
         bind = DataBindingUtil.setContentView(this, R.layout.activity_custom_color)
         sharedPref = SharedPref.getInstance(this)
 
-        red = sharedPref.getInt(Preferences.RED, 125)
-        green = sharedPref.getInt(Preferences.GREEN, 125)
-        blue = sharedPref.getInt(Preferences.BLUE, 125)
+        red = sharedPref.getInt(StorageKey.RED, 125)
+        green = sharedPref.getInt(StorageKey.GREEN, 125)
+        blue = sharedPref.getInt(StorageKey.BLUE, 125)
 
         initToolbar()
         initComponent()
-        if (SharedPref.getInstance(this).getBoolean(Preferences.CustomColorActFR, true))
+        if (SharedPref.getInstance(this).getBoolean(StorageKey.CustomColorActFR, true))
             showTooltip()
     }
 
@@ -53,12 +50,12 @@ class CustomColorActivity : BaseActivity() {
      * @func init toolbar config
      */
     private fun initToolbar() {
-        setSupportActionBar(bind.toolbar as Toolbar)
+        setSupportActionBar(bind.toolbar as MaterialToolbar)
         supportActionBar?.title = "Palette creator"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
-        (bind.toolbar as Toolbar).setNavigationIcon(R.drawable.ic_arrow_back)
-        Tools.changeNavigationIconColor(bind.toolbar as Toolbar, ThemeUtils.getThemeAttrColor(this, R.attr.colorTextPrimary))
+        (bind.toolbar as MaterialToolbar).setNavigationIcon(R.drawable.ic_arrow_back)
+        Tools.changeNavigationIconColor(bind.toolbar as MaterialToolbar, ThemeUtils.getThemeAttrColor(this, R.attr.colorTextPrimary))
     }
 
     /**
@@ -82,7 +79,7 @@ class CustomColorActivity : BaseActivity() {
             }
 
             override fun onStopTrackingTouch(p0: SeekBar?) {
-                sharedPref.saveData(Preferences.RED, p0?.progress ?: 0)
+                sharedPref.saveData(StorageKey.RED, p0?.progress ?: 0)
             }
         })
 
@@ -96,7 +93,7 @@ class CustomColorActivity : BaseActivity() {
             }
 
             override fun onStopTrackingTouch(p0: SeekBar?) {
-                sharedPref.saveData(Preferences.GREEN, p0?.progress ?: 0)
+                sharedPref.saveData(StorageKey.GREEN, p0?.progress ?: 0)
             }
         })
 
@@ -110,31 +107,26 @@ class CustomColorActivity : BaseActivity() {
             }
 
             override fun onStopTrackingTouch(p0: SeekBar?) {
-                sharedPref.saveData(Preferences.BLUE, p0?.progress ?: 0)
+                sharedPref.saveData(StorageKey.BLUE, p0?.progress ?: 0)
             }
         })
 
         bind.lytHex.setOnClickListener {
+            HomeActivity.firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_COPY_HEX_CODE, null)
             Tools.copyToClipboard(this, hexCode, "HEX code $hexCode")
+        }
+        bind.lytHex.setOnLongClickListener {
+            ColorUtils.executeColorCodePopupMenu(this, hexCode, it)
+            true
         }
 
         bind.lytRgb.setOnClickListener {
             val rgbCode = "( $red, $green, $blue )"
+            HomeActivity.firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_COPY_RGB_CODE, null)
             Tools.copyToClipboard(this, rgbCode, "RGB code $rgbCode")
         }
 
     }
-
-    /**
-     * @func convert color's rgb value into hex code
-     * @param r red color value
-     * @param g green color value
-     * @param b blue color value
-     *
-     * @return string value of hex code
-     */
-    private fun rgbToHex(r: Int, g: Int, b: Int): String =
-        "#${Integer.toHexString(r)}${Integer.toHexString(g)}${Integer.toHexString(b)}"
 
     /**
      * @func set color results into UI
@@ -144,7 +136,7 @@ class CustomColorActivity : BaseActivity() {
      */
     private fun setResult(r: Int, g: Int, b: Int) {
         bind.tvRgbCode.text = "( $r, $g, $b )"
-        hexCode = rgbToHex(r, g, b)
+        hexCode = ColorUtils.rgbToHex(r, g, b)
         bind.tvHexCode.text = hexCode
 
         bind.tvRed.text = r.toString()
@@ -192,7 +184,7 @@ class CustomColorActivity : BaseActivity() {
 
                 tooltip?.doOnHidden {
                     SharedPref.getInstance(this)
-                        .saveData(Preferences.CustomColorActFR, false)
+                        .saveData(StorageKey.CustomColorActFR, false)
                 }
                     ?.show(bind.lytRgb, Tooltip.Gravity.TOP, true)
 
