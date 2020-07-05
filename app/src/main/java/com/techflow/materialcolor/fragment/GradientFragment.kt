@@ -50,17 +50,17 @@ class GradientFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initComponent(view)
+        initComponent()
     }
 
     /**
      * @func init all component's config
      */
-    private fun initComponent(view: View) {
+    private fun initComponent() {
         binding.recyclerView.setHasFixedSize(true)
         binding.recyclerView.layoutManager =
             if (context?.isTablet()!!) GridLayoutManager(context, 2) else LinearLayoutManager(context)
-        val listGradient = DataGenerator.getGradientsData(context!!)
+        val listGradient = DataGenerator.getGradientsData(requireContext())
 
         // For smooth scrolling to a specific position & visible item to top of recycler view
         smoothScroller = object : LinearSmoothScroller(context) {
@@ -84,14 +84,14 @@ class GradientFragment : Fragment() {
             }
         }*/
 
-        val adapter = AdapterGradient(listGradient, context!!, activity!!)
+        val adapter = AdapterGradient(listGradient, requireContext(), requireActivity())
         binding.recyclerView.adapter = adapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.menu_fragment_gradient, menu)
-        Tools.changeMenuIconColor(menu, ThemeUtils.getThemeAttrColor(context!!, R.attr.colorTextPrimary))
+        Tools.changeMenuIconColor(menu, ThemeUtils.getThemeAttrColor(requireContext(), R.attr.colorTextPrimary))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -3,7 +3,7 @@ package com.techflow.materialcolor.utils
 /**
  * Modified by Dilip Suthar on 17/12/19
  */
-object Preferences {
+object StorageKey {
     const val RED = "red"
     const val GREEN = "green"
     const val BLUE = "blue"

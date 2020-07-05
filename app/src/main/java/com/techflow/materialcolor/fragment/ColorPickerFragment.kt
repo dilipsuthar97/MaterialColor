@@ -2,6 +2,7 @@ package com.techflow.materialcolor.fragment
 
 import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
@@ -17,7 +18,6 @@ import com.techflow.materialcolor.R
 
 import com.techflow.materialcolor.databinding.FragmentColorPickerBinding
 import com.techflow.materialcolor.model.ColorFromImage
-import com.techflow.materialcolor.utils.AnimUtils
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import com.afollestad.materialdialogs.MaterialDialog
@@ -25,11 +25,9 @@ import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetView
 import com.techflow.materialcolor.activity.HomeActivity
 import com.techflow.materialcolor.adapter.AdapterColorFromImage
+import com.techflow.materialcolor.helpers.AppExecutorHelper
 import com.techflow.materialcolor.helpers.PermissionHelper
-import com.techflow.materialcolor.utils.Preferences
-import com.techflow.materialcolor.utils.SharedPref
-import com.techflow.materialcolor.utils.Tools
-import java.util.*
+import com.techflow.materialcolor.utils.*
 
 /**
  * Modified by DILIP SUTHAR on 29/08/19
@@ -64,17 +62,17 @@ class ColorPickerFragment : Fragment() {
 
         binding.btnImgChooser.setOnClickListener {
             // Load ad
-            if (SharedPref.getInstance(context!!).getBoolean(Preferences.SHOW_AD, true))
-                HomeActivity.showInterstitialAd(context!!)
+            if (SharedPref.getInstance(requireContext()).getBoolean(StorageKey.SHOW_AD, true))
+                HomeActivity.showInterstitialAd(requireContext())
 
             AnimUtils.bounceAnim(it)
             when {
-                PermissionHelper.isPermissionsGranted(context!!, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)) ->
+                PermissionHelper.isGranted(requireContext(), arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)) ->
                     openImagePicker()
-                ActivityCompat.shouldShowRequestPermissionRationale(activity!!, Manifest.permission.READ_EXTERNAL_STORAGE) ->
+                ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) ->
                     showPermissionDeniedDialog()
                 else ->
-                    PermissionHelper.requestPermissions(activity!!, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE))
+                    PermissionHelper.requestInFragment(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE))
             }
         }
     }
@@ -83,13 +81,13 @@ class ColorPickerFragment : Fragment() {
      * @func show permission denied dialog
      */
     private fun showPermissionDeniedDialog() {
-        MaterialDialog(context!!).show {
+        MaterialDialog(requireContext()).show {
             cornerRadius(16f)
             title(text = "Permission denied previously")
             message(text = "Without the STORAGE permission the app is unable to load image. Are you sure you want to deny this permission?")
             positiveButton(text = "I'm sure") {}
             negativeButton(text = "Retry") {
-                PermissionHelper.requestPermissions(activity!!, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE))
+                PermissionHelper.requestInFragment(this@ColorPickerFragment, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE))
             }
         }
     }
@@ -101,7 +99,7 @@ class ColorPickerFragment : Fragment() {
         CropImage.activity()
             .setGuidelines(CropImageView.Guidelines.ON_TOUCH)
             .setAspectRatio(2, 1)
-            .start(context!!, this)
+            .start(requireContext(), this)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -118,6 +116,24 @@ class ColorPickerFragment : Fragment() {
         }
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == PermissionHelper.getRequestCode()) {
+            for ((i, p) in permissions.withIndex()) {
+                val permission = permissions[i]
+                val grantResult = grantResults[i]
+
+                if (permission == Manifest.permission.READ_EXTERNAL_STORAGE) {
+                    if (grantResult == PackageManager.PERMISSION_GRANTED) openImagePicker()
+                    else showPermissionDeniedDialog()
+                }
+            }
+        }
+    }
+
     /**
      * @func extract colors from choosen image
      */
@@ -129,48 +145,50 @@ class ColorPickerFragment : Fragment() {
             Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
         }
 
-        Palette.from(bitmap).generate {
-            val palettes = mutableListOf<ColorFromImage>()
-            with(it!!) {
-                for (i in 0..5) {
-                    var color: Int
-                    when (i) {
-                        0 -> {
-                            color = getVibrantColor(0)
-                            if (color != 0) palettes.add(ColorFromImage(color, getHexCode(color)))
-                        }
-                        1 -> {
-                            color = getLightVibrantColor(0)
-                            if (color != 0) palettes.add(ColorFromImage(color, getHexCode(color)))
-                        }
-                        2 -> {
-                            color = getDarkVibrantColor(0)
-                            if (color != 0) palettes.add(ColorFromImage(color, getHexCode(color)))
-                        }
-                        3 -> {
-                            color = getMutedColor(0)
-                            if (color != 0) palettes.add(ColorFromImage(color, getHexCode(color)))
-                        }
-                        4 -> {
-                            color = getLightMutedColor(0)
-                            if (color != 0) palettes.add(ColorFromImage(color, getHexCode(color)))
-                        }
-                        5 -> {
-                            color = getDarkMutedColor(0)
-                            if (color != 0) palettes.add(ColorFromImage(color, getHexCode(color)))
+        AppExecutorHelper.getInstance()?.multiThreadIO()?.execute {
+            Palette.from(bitmap).generate {
+                val palettes = mutableListOf<ColorFromImage>()
+                with(it!!) {
+                    for (i in 0..5) {
+                        var color: Int
+                        when (i) {
+                            0 -> {
+                                color = getVibrantColor(0)
+                                if (color != 0) palettes.add(ColorFromImage(color, ColorUtils.getHexCode(color)))
+                            }
+                            1 -> {
+                                color = getLightVibrantColor(0)
+                                if (color != 0) palettes.add(ColorFromImage(color, ColorUtils.getHexCode(color)))
+                            }
+                            2 -> {
+                                color = getDarkVibrantColor(0)
+                                if (color != 0) palettes.add(ColorFromImage(color, ColorUtils.getHexCode(color)))
+                            }
+                            3 -> {
+                                color = getMutedColor(0)
+                                if (color != 0) palettes.add(ColorFromImage(color, ColorUtils.getHexCode(color)))
+                            }
+                            4 -> {
+                                color = getLightMutedColor(0)
+                                if (color != 0) palettes.add(ColorFromImage(color, ColorUtils.getHexCode(color)))
+                            }
+                            5 -> {
+                                color = getDarkMutedColor(0)
+                                if (color != 0) palettes.add(ColorFromImage(color, ColorUtils.getHexCode(color)))
+                            }
                         }
                     }
                 }
-            }
 
-            Tools.inVisibleViews(binding.imgDummy, type = Tools.InvisibilityType.GONE)
-            Tools.visibleViews(binding.lytColorPalette)
+                Tools.inVisibleViews(binding.imgDummy, type = Tools.InvisibilityType.GONE)
+                Tools.visibleViews(binding.lytColorPalette)
 
-            val adapterColorFromImage = AdapterColorFromImage(palettes, context!!)
-            with(binding.recyclerView) {
-                layoutManager = LinearLayoutManager(context)
-                setHasFixedSize(true)
-                adapter = adapterColorFromImage
+                val adapterColorFromImage = AdapterColorFromImage(palettes, requireContext())
+                with(binding.recyclerView) {
+                    layoutManager = LinearLayoutManager(context)
+                    setHasFixedSize(true)
+                    adapter = adapterColorFromImage
+                }
             }
         }
     }
@@ -179,9 +197,9 @@ class ColorPickerFragment : Fragment() {
      * @func show app intro for first use
      */
     private fun showTutorial() {
-        with(SharedPref.getInstance(context!!)) {
-            if (getBoolean(Preferences.ColorPickerFragFR, true)) {
-                TapTargetView.showFor(activity!!,
+        with(SharedPref.getInstance(requireContext())) {
+            if (getBoolean(StorageKey.ColorPickerFragFR, true)) {
+                TapTargetView.showFor(requireActivity(),
                     TapTarget.forView(
                         binding.btnImgChooser,
                         "Tap here!",
@@ -197,19 +215,8 @@ class ColorPickerFragment : Fragment() {
                         .targetRadius(90)
                 )
 
-                saveData(Preferences.ColorPickerFragFR, false)
+                saveData(StorageKey.ColorPickerFragFR, false)
             }
         }
-    }
-
-    /**
-     * @func convert color's int value into hex code
-     * @param color int value of color
-     *
-     * @return return string value of hex code
-     */
-    private fun getHexCode(color: Int): String {
-        return "#${Integer.toHexString(color).toUpperCase(Locale.getDefault()).substring(2)}"  // Without alpha
-        //return "#${Integer.toHexString(color).toUpperCase()}"  // With alpha
     }
 }

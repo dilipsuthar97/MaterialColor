@@ -13,7 +13,7 @@
             android:layout_marginStart="16dp"
             android:text="More"
             android:textColor="?attr/colorTextPrimary"
-            android:textSize="20sp"
+            android:textSize="22sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -22,6 +22,7 @@
             android:id="@+id/btn_settings"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_marginEnd="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_settings"
             android:tint="?attr/colorPrimary"
@@ -49,27 +50,24 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center_vertical"
-                android:paddingStart="8dp"
+                android:paddingStart="16dp"
                 android:paddingEnd="0dp"
                 tools:layout_editor_absoluteX="5dp">
+
+            <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Color Maker"
+                    android:textColor="?attr/colorTextPrimary"
+                    android:textSize="18sp" />
 
             <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_palette"
+                    android:src="@drawable/ic_chevron_right"
                     android:padding="12dp"
-                    android:tint="@color/orange_500" />
-
-            <View
-                    android:layout_width="16dp"
-                    android:layout_height="0dp" />
-
-            <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Custom Color Maker"
-                    android:textColor="?attr/colorTextPrimary"
-                    android:textSize="18sp" />
+                    android:tint="?attr/colorTextSecondary"/>
         </LinearLayout>
 
         <LinearLayout
@@ -80,26 +78,24 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center_vertical"
-                android:paddingStart="8dp"
+                android:paddingStart="16dp"
                 android:paddingEnd="0dp"
                 tools:layout_editor_absoluteX="5dp">
+
+            <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Gradient Maker"
+                    android:textColor="?attr/colorTextPrimary"
+                    android:textSize="18sp" />
 
             <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_gradient_maker"
-                    android:tint="@color/green_500" />
-
-            <View
-                    android:layout_width="16dp"
-                    android:layout_height="0dp" />
-
-            <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Gradient Maker"
-                    android:textColor="?attr/colorTextPrimary"
-                    android:textSize="18sp" />
+                    android:src="@drawable/ic_chevron_right"
+                    android:padding="12dp"
+                    android:tint="?attr/colorTextSecondary"/>
         </LinearLayout>
 
         <LinearLayout
@@ -110,26 +106,90 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center_vertical"
-                android:paddingStart="8dp"
+                android:paddingStart="16dp"
                 android:paddingEnd="0dp"
                 tools:layout_editor_absoluteX="5dp">
+
+            <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Material Design Tool"
+                    android:textColor="?attr/colorTextPrimary"
+                    android:textSize="18sp" />
 
             <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_material_design_tool"
-                    android:tint="@color/blue_500" />
+                    android:src="@drawable/ic_chevron_right"
+                    android:padding="12dp"
+                    android:tint="?attr/colorTextSecondary"/>
+        </LinearLayout>
 
-            <View
-                    android:layout_width="16dp"
-                    android:layout_height="0dp" />
+        <LinearLayout
+                android:id="@+id/btn_flat_ui_colors"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="0dp"
+                tools:layout_editor_absoluteX="5dp">
 
             <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Material Design Tool"
+                    android:layout_weight="1"
+                    android:text="Flat UI Colors"
                     android:textColor="?attr/colorTextPrimary"
                     android:textSize="18sp" />
+
+            <View
+                    android:layout_width="7dp"
+                    android:layout_height="7dp"
+                    android:background="@drawable/shape_round"/>
+
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_chevron_right"
+                    android:padding="12dp"
+                    android:tint="?attr/colorTextSecondary"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/btn_social_colors"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="0dp"
+                tools:layout_editor_absoluteX="5dp">
+
+            <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Social Colors"
+                    android:textColor="?attr/colorTextPrimary"
+                    android:textSize="18sp" />
+
+            <View
+                    android:layout_width="7dp"
+                    android:layout_height="7dp"
+                    android:background="@drawable/shape_round"/>
+
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_chevron_right"
+                    android:padding="12dp"
+                    android:tint="?attr/colorTextSecondary"/>
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton

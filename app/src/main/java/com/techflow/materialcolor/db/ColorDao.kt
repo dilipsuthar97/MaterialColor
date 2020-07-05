@@ -1,4 +1,4 @@
-package com.techflow.materialcolor.database
+package com.techflow.materialcolor.db
 
 import androidx.lifecycle.LiveData
 import androidx.room.*

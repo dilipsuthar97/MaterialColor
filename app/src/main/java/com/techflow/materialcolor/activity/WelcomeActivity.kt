@@ -4,7 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.widget.TextView
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.techflow.materialcolor.R
+import com.techflow.materialcolor.helpers.RemoteConfigHelper
+import com.techflow.materialcolor.helpers.isDebug
+import com.techflow.materialcolor.utils.SharedPref
+import com.techflow.materialcolor.utils.StorageKey
+
 /**
  * Created by Dilip Suthar on 16/02/19
  */
@@ -31,6 +37,12 @@ class WelcomeActivity : BaseActivity() {
         setContentView(R.layout.activity_welcome)
         initComponent()
 
+        // Disable crashlytics in DEBUG mode (Automatic)
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!isDebug())
+
+        // Activate remote config
+        RemoteConfigHelper.getInstance().activate()
+
         findViewById<TextView>(R.id.tv_bottom_msg).text = (StringBuilder()
             .append("Made with ")
             .append(String(Character.toChars(0x2764)))
@@ -43,8 +55,12 @@ class WelcomeActivity : BaseActivity() {
      */
     private fun initComponent() {
         Handler().postDelayed({
-            startActivity(Intent(this, HomeActivity::class.java))
+            if (SharedPref.getInstance(this).getBoolean(StorageKey.isFirstRun, true))
+                startActivity(Intent(this, AppIntroActivity::class.java))
+            else
+                startActivity(Intent(this, HomeActivity::class.java))
+
             finish()
-        }, 800)
+        }, 500)
     }
 }

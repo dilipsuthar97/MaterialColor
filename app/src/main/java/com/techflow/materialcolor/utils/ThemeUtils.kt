@@ -6,8 +6,8 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
-import androidx.core.content.ContextCompat
 import com.techflow.materialcolor.R
+import com.techflow.materialcolor.helpers.RemoteConfigHelper
 
 /**
  * Modified by Dilip Suthar 15/12/19
@@ -25,8 +25,9 @@ object ThemeUtils {
      * @return return string value for theme type
      */
     fun getTheme(context: Context): String {
-        val sharedPreferences = SharedPref.getInstance(context)
-        return sharedPreferences.getString(Preferences.THEME, LIGHT)!!
+        // Default theme value is coming from remote config
+        val defaultTheme = RemoteConfigHelper.getInstance().remoteConfig.getString(RemoteConfigHelper.KEY_DEFAULT_THEME)
+        return SharedPref.getInstance(context).getString(StorageKey.THEME, defaultTheme)!!
     }
 
     /**
@@ -37,8 +38,8 @@ object ThemeUtils {
     fun setTheme(context: Context, theme: String) {
         val sharedPreferences = SharedPref.getInstance(context)
         when (theme) {
-            LIGHT -> sharedPreferences.saveData(Preferences.THEME, LIGHT)
-            DARK -> sharedPreferences.saveData(Preferences.THEME, DARK)
+            LIGHT -> sharedPreferences.saveData(StorageKey.THEME, LIGHT)
+            DARK -> sharedPreferences.saveData(StorageKey.THEME, DARK)
         }
     }
 
