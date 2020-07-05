@@ -6,9 +6,10 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
+import com.techflow.materialcolor.MaterialColor
 import com.techflow.materialcolor.R
 
-class RemoteConfigHelper {
+class RemoteConfigHelper() {
     private val TAG = RemoteConfigHelper::class.java.simpleName
 
     var remoteConfig: FirebaseRemoteConfig = Firebase.remoteConfig
@@ -32,7 +33,6 @@ class RemoteConfigHelper {
     init {
         val configSettings = remoteConfigSettings {
             minimumFetchIntervalInSeconds = 3600
-            setDeveloperModeEnabled(true)   //TODO: Disable in production
         }
         remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)
         remoteConfig.setConfigSettingsAsync(configSettings)

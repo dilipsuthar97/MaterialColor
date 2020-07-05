@@ -4,10 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.techflow.materialcolor.db.AppDatabase
 import com.techflow.materialcolor.model.Color
+
 /**
  * Created by Dilip on 03/12/19
  */
-class BookmarkedColorViewModel constructor(appDatabase: AppDatabase): ViewModel() {
+class BookmarkedColorViewModel constructor(appDatabase: AppDatabase) : ViewModel() {
 
     private var bookmarkedColors: LiveData<List<Color>>? = null
 

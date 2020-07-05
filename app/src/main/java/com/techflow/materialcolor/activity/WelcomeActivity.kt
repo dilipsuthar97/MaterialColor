@@ -37,7 +37,7 @@ class WelcomeActivity : BaseActivity() {
         setContentView(R.layout.activity_welcome)
         initComponent()
 
-        // Disable crashlytics in DEBUG mode
+        // Disable crashlytics in DEBUG mode (Automatic)
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!isDebug())
 
         // Activate remote config

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="sku_remove_ads">
+        <item>ID</item>
+    </string-array>
+
+    <string-array name="sku_support_development">
+        <item>ID</item>
+        <item>ID</item>
+        <item>ID</item>
+        <item>ID</item>
+        <item>ID</item>
+    </string-array>
+</resources>

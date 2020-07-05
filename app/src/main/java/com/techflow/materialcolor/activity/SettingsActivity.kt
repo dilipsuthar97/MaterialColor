@@ -21,17 +21,18 @@ import com.google.android.material.button.MaterialButton
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
-import com.techflow.materialcolor.BuildConfig
 import com.techflow.materialcolor.MaterialColor
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivitySettingsBinding
 import com.techflow.materialcolor.helpers.*
 import com.techflow.materialcolor.utils.*
+import kotlin.collections.ArrayList
 
 /**
  * @author Dilip Suthar
  */
-class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedListener, BillingClientStateListener {
+class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedListener,
+    BillingClientStateListener {
     private val TAG = SettingsActivity::class.java.simpleName
 
     private lateinit var bind: ActivitySettingsBinding
@@ -120,7 +121,8 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
                 startActivity(intent)
             }
             R.id.btn_share -> {
-                val msg = "MaterialColor is an amazing color tool app, you should try it.\nDownload it from Play Store using below link."
+                val msg =
+                    "MaterialColor is an amazing color tool app, you should try it.\nDownload it from Play Store using below link."
 
                 val shareIntent = ShareCompat.IntentBuilder.from(this)
                     .setText("$msg\n\n$appUrl")
@@ -143,7 +145,14 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
                     val i = Intent().apply {
                         action = Intent.ACTION_SEND
                         type = "message/rfc822"
-                        putExtra(Intent.EXTRA_EMAIL, arrayOf(RemoteConfigHelper.getInstance().remoteConfig.getString(RemoteConfigHelper.KEY_SUPPORT_EMAIL)))
+                        putExtra(
+                            Intent.EXTRA_EMAIL,
+                            arrayOf(
+                                RemoteConfigHelper.getInstance().remoteConfig.getString(
+                                    RemoteConfigHelper.KEY_SUPPORT_EMAIL
+                                )
+                            )
+                        )
                         putExtra(Intent.EXTRA_SUBJECT, "Feedback: MaterialColor - $title")
                         putExtra(Intent.EXTRA_TEXT, "Title: $title\nFeedback: $msg")
                     }
@@ -162,14 +171,25 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
             R.id.btn_about -> {
                 showAboutDialog()
             }
-            R.id.btn_more_apps -> { openWebView("https://play.google.com/store/apps/dev?id=5025665333769403890") }
-            R.id.btn_about_material_color -> { openWebView("https://material.io/design/color/the-color-system.html#color-theme-creation") }
-            R.id.btn_material_tool -> { openWebView("https://material.io/tools/color/#!/?view.left=0&view.right=0") }
+            R.id.btn_more_apps -> {
+                openWebView("https://play.google.com/store/apps/dev?id=5025665333769403890")
+            }
+            R.id.btn_about_material_color -> {
+                openWebView("https://material.io/design/color/the-color-system.html#color-theme-creation")
+            }
+            R.id.btn_material_tool -> {
+                openWebView("https://material.io/tools/color/#!/?view.left=0&view.right=0")
+            }
             R.id.btn_policy -> {
                 firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_READ_POLICY, null)
                 openWebView("https://github.com/dilipsuthar1997/PrivacyPolicy/blob/master/MaterialColor%20Privacy%20Policy.md")
             }
-            R.id.btn_third_party_license -> startActivity(Intent(this, LicensesActivity::class.java))
+            R.id.btn_third_party_license -> startActivity(
+                Intent(
+                    this,
+                    LicensesActivity::class.java
+                )
+            )
             R.id.label_reset_tutorial -> {
                 resetTutorial(SharedPref.getInstance(this))
                 displayToast("Tutorial reset successful :)")
@@ -193,7 +213,10 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
         actionBar.setDisplayHomeAsUpEnabled(true)
         actionBar.setHomeButtonEnabled(true)
         (bind.toolbar as MaterialToolbar).setNavigationIcon(R.drawable.ic_arrow_back)
-        Tools.changeNavigationIconColor(bind.toolbar as MaterialToolbar, ThemeUtils.getThemeAttrColor(this, R.attr.colorTextPrimary))
+        Tools.changeNavigationIconColor(
+            bind.toolbar as MaterialToolbar,
+            ThemeUtils.getThemeAttrColor(this, R.attr.colorTextPrimary)
+        )
     }
 
     /**
@@ -201,7 +224,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
      */
     private fun showAboutDialog() {
         val view = View.inflate(this, R.layout.dialog_about, null)
-        val dialog = MaterialDialog(this).show {
+        MaterialDialog(this).show {
             cornerRadius(16f)
             customView(view = view)
         }
@@ -226,7 +249,8 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
         val sharedPref = SharedPref.getInstance(this)
 
         if (sharedPref.getBoolean(StorageKey.SettingActFR, true)) {
-            TapTargetView.showFor(this,
+            TapTargetView.showFor(
+                this,
                 TapTarget.forView(bind.btnRate, "Rate us", "Rate us on Google PlayStore.")
                     .outerCircleColor(R.color.colorPrimary)
                     .outerCircleAlpha(0.95F)
@@ -270,10 +294,13 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
         Log.d(TAG, "setupBillingClient: called")
 
         skuList.clear()
-        skuList.add("")   // TODO: Add in-app purchase product ID
+        // TODO: Add in-app purchase product ID
+        skuList = ArrayList(listOf(*resources.getStringArray(R.array.sku_remove_ads)))
+        Log.i(TAG, skuList.toString())
 
         // Purchase update listener
-        billingClient = BillingClient.newBuilder(this).setListener(this).enablePendingPurchases().build()
+        billingClient =
+            BillingClient.newBuilder(this).setListener(this).enablePendingPurchases().build()
 
         // Billing client state listener
         billingClient.startConnection(this)
@@ -285,11 +312,12 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
     private fun startPurchase() {
         Log.d(TAG, "startPurchase: called")
 
-        if (billingClient.isReady) {
-            billingFlowParams = BillingFlowParams.newBuilder().setSkuDetails(skuDetails).build()
-            billingClient.launchBillingFlow(this, billingFlowParams)
-        }
-        //setupBillingClient()
+        if (Tools.hasNetwork(this)) {
+            if (billingClient.isReady) {
+                billingFlowParams = BillingFlowParams.newBuilder().setSkuDetails(skuDetails).build()
+                billingClient.launchBillingFlow(this, billingFlowParams)
+            }
+        } else displayToast("Make sure you have active internet")
     }
 
     /**
@@ -297,7 +325,10 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
      * @param billingResult BillingResult object
      * @param purchases Mutable list of Purchase object
      */
-    override fun onPurchasesUpdated(billingResult: BillingResult?, purchases: MutableList<Purchase>?) {
+    override fun onPurchasesUpdated(
+        billingResult: BillingResult?,
+        purchases: MutableList<Purchase>?
+    ) {
         Tools.inVisibleViews(bind.progressBar, type = Tools.InvisibilityType.GONE)
         Tools.visibleViews(bind.btnRemoveAds)
 
@@ -310,10 +341,12 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
                     cornerRadius(16f)
                     cancelable(false)
                     title(text = "Ad removed success")
-                    message(text = "You don't see ads anymore. All ads are removed permanently." +
-                            "\nDon't worry when you uninstall the app your purchase has been saved" +
-                            "and after reinstall the app you have to check your purchase by tapping Pay button." +
-                            "\n\nThanks for purchase :)")
+                    message(
+                        text = "You don't see ads anymore. All ads are removed permanently." +
+                                "\nDon't worry when you uninstall the app your purchase has been saved" +
+                                "and after reinstall the app you have to check your purchase by tapping Pay button." +
+                                "\n\nThanks for purchase :)"
+                    )
                     positiveButton(text = "RESTART") {
                         Tools.restartApp(this@SettingsActivity)
                         displayToast("Restarting app")
@@ -379,7 +412,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
                 .setType(BillingClient.SkuType.INAPP)
                 .build()
 
-            billingClient.querySkuDetailsAsync(skuDetailsParam) { billingResult, skuDetailsList ->
+            billingClient.querySkuDetailsAsync(skuDetailsParam) { _/*billingResult*/, skuDetailsList ->
 
                 if (billingResult.responseCode == BillingResponseCode.OK && skuDetailsList.isNotEmpty()) {
 
@@ -388,8 +421,9 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, PurchasesUpdatedL
                         val sku = skuDetails.sku
                         val price = skuDetails.price
 
-                        if ("" == sku) {    // TODO: Add in-app purchase product ID
-                            bind.btnRemoveAds.text = "Check & Pay $price"   // Set product price to button text
+                        if (skuList[0] == sku) {
+                            bind.btnRemoveAds.text =
+                                "Check & Pay $price"   // Set product price to button text
                         }
                     }
                 }

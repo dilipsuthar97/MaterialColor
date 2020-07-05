@@ -10,12 +10,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetSequence
 import com.techflow.materialcolor.R
-import com.techflow.materialcolor.helpers.showPopup
 import com.techflow.materialcolor.model.Gradient
 import com.techflow.materialcolor.utils.*
 

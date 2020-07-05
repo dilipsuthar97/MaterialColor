@@ -3,12 +3,10 @@ package com.techflow.materialcolor.activity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import com.afollestad.materialdialogs.MaterialDialog
 import com.android.billingclient.api.*
 import com.google.android.material.appbar.MaterialToolbar
-import com.techflow.materialcolor.MaterialColor
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivitySupportDevelopmentBinding
 import com.techflow.materialcolor.helpers.displayToast
@@ -18,19 +16,20 @@ import com.techflow.materialcolor.utils.*
 /**
  * @author Dilip Suthar
  */
-class SupportDevelopmentActivity : BaseActivity(), PurchasesUpdatedListener, BillingClientStateListener {
+class SupportDevelopmentActivity : BaseActivity(), PurchasesUpdatedListener,
+    BillingClientStateListener {
     private val TAG = SupportDevelopmentActivity::class.java.simpleName
 
     private lateinit var binding: ActivitySupportDevelopmentBinding
 
+    // Billing
+    private var skuList: ArrayList<String> = ArrayList()
+    private lateinit var billingClient: BillingClient
     private lateinit var coke: SkuDetails
     private lateinit var coffee: SkuDetails
     private lateinit var meal: SkuDetails
     private lateinit var pizza: SkuDetails
     private lateinit var tshirt: SkuDetails
-
-    // Billing
-    private lateinit var billingClient: BillingClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +61,10 @@ class SupportDevelopmentActivity : BaseActivity(), PurchasesUpdatedListener, Bil
             it.setHomeButtonEnabled(true)
         }
         (binding.toolbar as MaterialToolbar).setNavigationIcon(R.drawable.ic_arrow_back)
-        Tools.changeNavigationIconColor(binding.toolbar as MaterialToolbar, ThemeUtils.getThemeAttrColor(this, R.attr.colorTextPrimary))
+        Tools.changeNavigationIconColor(
+            binding.toolbar as MaterialToolbar,
+            ThemeUtils.getThemeAttrColor(this, R.attr.colorTextPrimary)
+        )
     }
 
     /**
@@ -125,14 +127,18 @@ class SupportDevelopmentActivity : BaseActivity(), PurchasesUpdatedListener, Bil
     /**
      * @func setup in-app purchase
      */
-    // TODO: Add in-app purchase product ID
-    private val skuList = arrayListOf("", "", "", "", "")
-
     private fun setupBillingClient() {
         Log.d(TAG, "setupBillingClient: called")
 
+        skuList.clear()
+        // TODO: Add in-app purchase product ID
+        skuList =
+            ArrayList(listOf(*resources.getStringArray(R.array.sku_support_development)))   // TODO: Add in-app purchase product ID
+        Log.i(TAG, skuList.toString())
+
         // Purchase update listener
-        billingClient = BillingClient.newBuilder(this).setListener(this).enablePendingPurchases().build()
+        billingClient =
+            BillingClient.newBuilder(this).setListener(this).enablePendingPurchases().build()
 
         // Billing client state listener
         billingClient.startConnection(this)
@@ -148,7 +154,8 @@ class SupportDevelopmentActivity : BaseActivity(), PurchasesUpdatedListener, Bil
 
         if (Tools.hasNetwork(this)) {
             if (billingClient.isReady) {
-                val billingFlowParams = BillingFlowParams.newBuilder().setSkuDetails(skuDetails).build()
+                val billingFlowParams =
+                    BillingFlowParams.newBuilder().setSkuDetails(skuDetails).build()
                 billingClient.launchBillingFlow(this, billingFlowParams)
             }
         } else
@@ -156,7 +163,7 @@ class SupportDevelopmentActivity : BaseActivity(), PurchasesUpdatedListener, Bil
     }
 
     /**
-     * @func one-time product specific feature
+     * @func multiple-time product specific feature
      */
     private fun allowMultiplePurchases(purchases: MutableList<Purchase>?) {
         val purchase = purchases?.first()
@@ -176,7 +183,10 @@ class SupportDevelopmentActivity : BaseActivity(), PurchasesUpdatedListener, Bil
      * @param billingResult BillingResult object
      * @param purchases Mutable list of Purchase object
      */
-    override fun onPurchasesUpdated(billingResult: BillingResult?, purchases: MutableList<Purchase>?) {
+    override fun onPurchasesUpdated(
+        billingResult: BillingResult?,
+        purchases: MutableList<Purchase>?
+    ) {
         endLoader()
         allowMultiplePurchases(purchases)
 
@@ -188,7 +198,7 @@ class SupportDevelopmentActivity : BaseActivity(), PurchasesUpdatedListener, Bil
                     cornerRadius(16f)
                     title(text = "Success")
                     message(text = "Thank you very much for supporting us :)\nWe'll use it for more better application.")
-                    positiveButton(text = "OK") {  }
+                    positiveButton(text = "OK") { }
                 }
             }
             BillingClient.BillingResponseCode.USER_CANCELED -> displayToast("Transaction canceled :|")
@@ -224,7 +234,7 @@ class SupportDevelopmentActivity : BaseActivity(), PurchasesUpdatedListener, Bil
                 .setType(BillingClient.SkuType.INAPP)
                 .build()
 
-            billingClient.querySkuDetailsAsync(skuDetailsParam) { billingResult, skuDetailsList ->
+            billingClient.querySkuDetailsAsync(skuDetailsParam) { _/*billingResult*/, skuDetailsList ->
 
                 if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && skuDetailsList.isNotEmpty()) {
 
