@@ -12,7 +12,7 @@ class SharedPref constructor(context: Context){
     // Static member & methods
     companion object {
 
-        var instance: SharedPref? = null
+        private var instance: SharedPref? = null
         fun getInstance(context: Context): SharedPref {
             if (instance == null) {
                 instance = SharedPref(context)

@@ -9,6 +9,7 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.techflow.materialcolor.MaterialColor
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivityCustomColorBinding
+import com.techflow.materialcolor.helpers.AnalyticsHelper
 import com.techflow.materialcolor.utils.*
 import it.sephiroth.android.library.xtooltip.ClosePolicy
 import it.sephiroth.android.library.xtooltip.Tooltip
@@ -112,7 +113,7 @@ class CustomColorActivity : BaseActivity() {
         })
 
         bind.lytHex.setOnClickListener {
-            HomeActivity.firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_COPY_HEX_CODE, null)
+            AnalyticsHelper.getInstance()?.logEvent(MaterialColor.FIREBASE_EVENT_COPY_HEX_CODE, null)
             Tools.copyToClipboard(this, hexCode, "HEX code $hexCode")
         }
         bind.lytHex.setOnLongClickListener {
@@ -122,7 +123,7 @@ class CustomColorActivity : BaseActivity() {
 
         bind.lytRgb.setOnClickListener {
             val rgbCode = "( $red, $green, $blue )"
-            HomeActivity.firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_COPY_RGB_CODE, null)
+            AnalyticsHelper.getInstance()?.logEvent(MaterialColor.FIREBASE_EVENT_COPY_RGB_CODE, null)
             Tools.copyToClipboard(this, rgbCode, "RGB code $rgbCode")
         }
 

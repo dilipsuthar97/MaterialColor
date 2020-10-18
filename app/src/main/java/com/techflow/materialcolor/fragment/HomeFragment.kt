@@ -17,6 +17,7 @@ import com.techflow.materialcolor.activity.HomeActivity
 import com.techflow.materialcolor.adapter.AdapterColor
 import com.techflow.materialcolor.data.DataGenerator
 import com.techflow.materialcolor.databinding.FragmentHomeBinding
+import com.techflow.materialcolor.helpers.AnalyticsHelper
 import com.techflow.materialcolor.helpers.isTablet
 import com.techflow.materialcolor.model.Color
 import com.techflow.materialcolor.utils.StorageKey
@@ -55,7 +56,6 @@ class HomeFragment : Fragment(), AdapterColor.OnItemClickListener {
 
     /**
      * @func init all component's config
-     * @param view view
      */
     private fun initComponent() {
 
@@ -103,7 +103,7 @@ class HomeFragment : Fragment(), AdapterColor.OnItemClickListener {
      * @param position recycler view item position
      */
     override fun onItemLongClick(view: View, color: Color, position: Int) {
-        HomeActivity.firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_COPY_HEX_CODE, null)
+        AnalyticsHelper.getInstance()?.logEvent(MaterialColor.FIREBASE_EVENT_COPY_HEX_CODE, null)
         Tools.copyToClipboard(requireContext(), color.colorCode, "HEX code ${color.colorCode}")
     }
 
