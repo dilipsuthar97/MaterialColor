@@ -52,6 +52,10 @@ android {
     dataBinding {
         enabled = true
     }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -72,7 +76,7 @@ dependencies {
 
     // Firebase
     implementation 'com.google.firebase:firebase-analytics-ktx:17.4.3'          // Analytics
-    implementation 'com.google.firebase:firebase-crashlytics:17.0.1'            // Crashlytics
+    implementation 'com.google.firebase:firebase-crashlytics-ktx:17.2.2'        // Crashlytics
     implementation 'com.google.firebase:firebase-perf:19.0.7'                   // Performance
     implementation 'com.google.firebase:firebase-config-ktx:19.1.4'             // Remote Config
 

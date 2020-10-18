@@ -16,11 +16,10 @@
 
 package com.techflow.materialcolor.activity
 
-import android.os.Bundle
-import com.techflow.materialcolor.utils.Tools
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -42,20 +41,22 @@ import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
-import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.ktx.Firebase
-import com.techflow.materialcolor.MaterialColor.AdType
 import com.techflow.materialcolor.MaterialColor
+import com.techflow.materialcolor.MaterialColor.AdType
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivityHomeBinding
-import com.techflow.materialcolor.fragment.*
+import com.techflow.materialcolor.fragment.BookmarkedColorFragment
+import com.techflow.materialcolor.fragment.ColorPickerFragment
+import com.techflow.materialcolor.fragment.GradientFragment
+import com.techflow.materialcolor.fragment.HomeFragment
+import com.techflow.materialcolor.helpers.AnalyticsHelper
 import com.techflow.materialcolor.helpers.displaySnackbar
 import com.techflow.materialcolor.helpers.displayToast
 import com.techflow.materialcolor.helpers.isDebug
-import com.techflow.materialcolor.utils.StorageKey
 import com.techflow.materialcolor.utils.SharedPref
+import com.techflow.materialcolor.utils.StorageKey
 import com.techflow.materialcolor.utils.ThemeUtils
+import com.techflow.materialcolor.utils.Tools
 
 /**
  * @author Dilip Suthar
@@ -69,7 +70,6 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
     // STATIC
     companion object {
-        lateinit var firebaseAnalytics: FirebaseAnalytics
 
         // Audience network
         private lateinit var interstitialAd: InterstitialAd
@@ -99,7 +99,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
     private lateinit var bookmarkedColorFragment: BookmarkedColorFragment
     private lateinit var activeFragment: Fragment
 
-    private lateinit var bottomSheet: MaterialDialog
+    private var bottomSheet: MaterialDialog? = null
 
     private var adView: AdView? = null
 
@@ -107,7 +107,6 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
         sharedPref = SharedPref.getInstance(this)
-        firebaseAnalytics = Firebase.analytics
 
         initToolbar()
         initComponent()
@@ -127,7 +126,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
     override fun onPause() {
         super.onPause()
         if (!sharedPref.getBoolean(StorageKey.BOTTOM_SHEET_CONFIG, false))
-            bottomSheet.cancel()
+            bottomSheet?.cancel()
     }
 
     override fun onDestroy() {
@@ -157,7 +156,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_menu) {
-            bottomSheet.show()
+            bottomSheet?.show()
             return true
         }
         return super.onOptionsItemSelected(item)
@@ -219,22 +218,22 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
             when(barItem.id) {
                 R.id.nav_home -> {
-                    firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_TAB_COLOR, null)
+                    AnalyticsHelper.getInstance()?.logEvent(MaterialColor.FIREBASE_EVENT_TAB_COLOR, null)
                     displayFragment(homeFragment)
                     supportActionBar?.title = "MaterialColor"
                 }
                 R.id.nav_gradients -> {
-                    firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_TAB_GRADIENT, null)
+                    AnalyticsHelper.getInstance()?.logEvent(MaterialColor.FIREBASE_EVENT_TAB_GRADIENT, null)
                     displayFragment(gradientFragment)
                     supportActionBar?.title = "Gradients"
                 }
                 R.id.nav_color_picker -> {
-                    firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_TAB_COLOR_PICKER, null)
+                    AnalyticsHelper.getInstance()?.logEvent(MaterialColor.FIREBASE_EVENT_TAB_COLOR_PICKER, null)
                     displayFragment(colorPickerFragment)
                     supportActionBar?.title = "Color Picker"
                 }
                 R.id.nav_bookmarked_color -> {
-                    firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_TAB_BOOKMARKED_COLOR, null)
+                    AnalyticsHelper.getInstance()?.logEvent(MaterialColor.FIREBASE_EVENT_TAB_BOOKMARKED_COLOR, null)
                     displayFragment(bookmarkedColorFragment)
                     supportActionBar?.title = "Bookmarked Color"
                 }
@@ -266,44 +265,44 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             .cornerRadius(16f)
             .customView(R.layout.bottom_sheet_menu, scrollable = true)
 
-        val view = bottomSheet.getCustomView()
+        val view = bottomSheet?.getCustomView()
 
-        view.findViewById<ImageButton>(R.id.btn_settings).setOnClickListener {
+        view?.findViewById<ImageButton>(R.id.btn_settings)?.setOnClickListener {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
 
-        view.findViewById<LinearLayout>(R.id.btn_custom_color_maker).setOnClickListener {
-            firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_CUSTOM_COLOR_MAKER, null)
+        view?.findViewById<LinearLayout>(R.id.btn_custom_color_maker)?.setOnClickListener {
+            AnalyticsHelper.getInstance()?.logEvent(MaterialColor.FIREBASE_EVENT_CUSTOM_COLOR_MAKER, null)
             startActivity(Intent(this, CustomColorActivity::class.java))
         }
 
-        view.findViewById<LinearLayout>(R.id.btn_gradient_maker).setOnClickListener {
-            firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_CUSTOM_GRADIENT_MAKER, null)
+        view?.findViewById<LinearLayout>(R.id.btn_gradient_maker)?.setOnClickListener {
+            AnalyticsHelper.getInstance()?.logEvent(MaterialColor.FIREBASE_EVENT_CUSTOM_GRADIENT_MAKER, null)
             startActivity(Intent(this, CustomGradientActivity::class.java))
         }
 
-        view.findViewById<LinearLayout>(R.id.btn_material_design_tool).setOnClickListener {
-            firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_MATERIAL_DESIGN_TOOL, null)
+        view?.findViewById<LinearLayout>(R.id.btn_material_design_tool)?.setOnClickListener {
+            AnalyticsHelper.getInstance()?.logEvent(MaterialColor.FIREBASE_EVENT_MATERIAL_DESIGN_TOOL, null)
             startActivity(Intent(this, DesignToolActivity::class.java))
         }
 
-        view.findViewById<LinearLayout>(R.id.btn_flat_ui_colors).setOnClickListener {
-            firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_FLAT_UI_COLORS, null)
+        view?.findViewById<LinearLayout>(R.id.btn_flat_ui_colors)?.setOnClickListener {
+            AnalyticsHelper.getInstance()?.logEvent(MaterialColor.FIREBASE_EVENT_FLAT_UI_COLORS, null)
             startActivity(Intent(this, FlatUIColorsActivity::class.java))
         }
 
-        view.findViewById<LinearLayout>(R.id.btn_social_colors).setOnClickListener {
-            firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_SOCIAL_COLORS, null)
+        view?.findViewById<LinearLayout>(R.id.btn_social_colors)?.setOnClickListener {
+            AnalyticsHelper.getInstance()?.logEvent(MaterialColor.FIREBASE_EVENT_SOCIAL_COLORS, null)
             startActivity(Intent(this, SocialColorsActivity::class.java))
         }
 
-        view.findViewById<LinearLayout>(R.id.btn_metro_colors).setOnClickListener {
-            firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_METRO_COLORS, null)
+        view?.findViewById<LinearLayout>(R.id.btn_metro_colors)?.setOnClickListener {
+            AnalyticsHelper.getInstance()?.logEvent(MaterialColor.FIREBASE_EVENT_METRO_COLORS, null)
             startActivity(Intent(this, MetroColorsActivity::class.java))
         }
 
-        view.findViewById<MaterialButton>(R.id.btn_support_development).setOnClickListener {
-            firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_SUPPORT_DEVELOPMENT, null)
+        view?.findViewById<MaterialButton>(R.id.btn_support_development)?.setOnClickListener {
+            AnalyticsHelper.getInstance()?.logEvent(MaterialColor.FIREBASE_EVENT_SUPPORT_DEVELOPMENT, null)
             startActivity(Intent(this, SupportDevelopmentActivity::class.java))
         }
     }
