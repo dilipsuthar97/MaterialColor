@@ -75,10 +75,13 @@ dependencies {
     implementation 'com.google.android.play:core-ktx:1.7.0'
 
     // Firebase
-    implementation 'com.google.firebase:firebase-analytics-ktx:17.4.3'          // Analytics
-    implementation 'com.google.firebase:firebase-crashlytics-ktx:17.2.2'        // Crashlytics
-    implementation 'com.google.firebase:firebase-perf:19.0.7'                   // Performance
-    implementation 'com.google.firebase:firebase-config-ktx:19.1.4'             // Remote Config
+    // Import the BoM for the Firebase platform
+    implementation platform('com.google.firebase:firebase-bom:25.12.0')
+
+    implementation 'com.google.firebase:firebase-analytics-ktx'          // Analytics
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'        // Crashlytics
+    implementation 'com.google.firebase:firebase-perf-ktx'               // Performance
+    implementation 'com.google.firebase:firebase-config-ktx'             // Remote Config
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
