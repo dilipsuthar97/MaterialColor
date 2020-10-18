@@ -14,10 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.techflow.materialcolor.MaterialColor
 
 import com.techflow.materialcolor.R
-import com.techflow.materialcolor.activity.HomeActivity
 import com.techflow.materialcolor.adapter.AdapterColor
 import com.techflow.materialcolor.db.AppDatabase
 import com.techflow.materialcolor.databinding.FragmentBookmarkedColorBinding
+import com.techflow.materialcolor.helpers.AnalyticsHelper
 import com.techflow.materialcolor.helpers.AppExecutorHelper
 import com.techflow.materialcolor.helpers.displayToast
 import com.techflow.materialcolor.helpers.isTablet
@@ -95,7 +95,7 @@ class BookmarkedColorFragment : Fragment(), AdapterColor.OnItemClickListener {
      * @param position recycler view item position
      */
     override fun onItemClick(view: View, color: Color, position: Int) {
-        HomeActivity.firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_COPY_HEX_CODE, null)
+        AnalyticsHelper.getInstance()?.logEvent(MaterialColor.FIREBASE_EVENT_COPY_HEX_CODE, null)
         Tools.copyToClipboard(requireContext(), color.colorCode, "HEX code ${color.colorCode}")
     }
 

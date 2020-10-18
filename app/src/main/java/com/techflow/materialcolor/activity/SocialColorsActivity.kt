@@ -15,6 +15,7 @@ import com.techflow.materialcolor.adapter.AdapterColor
 import com.techflow.materialcolor.data.DataGenerator
 import com.techflow.materialcolor.db.AppDatabase
 import com.techflow.materialcolor.databinding.ActivitySocialColorsBinding
+import com.techflow.materialcolor.helpers.AnalyticsHelper
 import com.techflow.materialcolor.helpers.AppExecutorHelper
 import com.techflow.materialcolor.helpers.displayToast
 import com.techflow.materialcolor.helpers.isTablet
@@ -90,7 +91,7 @@ class SocialColorsActivity : BaseActivity(), AdapterColor.OnItemClickListener {
      * @param position recycler view item position
      */
     override fun onItemClick(view: View, color: Color, position: Int) {
-        HomeActivity.firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_COPY_HEX_CODE, null)
+        AnalyticsHelper.getInstance()?.logEvent(MaterialColor.FIREBASE_EVENT_COPY_HEX_CODE, null)
         Tools.copyToClipboard(this, color.colorCode, "HEX code ${color.colorCode}")
     }
 
