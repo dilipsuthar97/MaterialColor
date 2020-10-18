@@ -6,7 +6,7 @@ import android.view.View
 import androidx.appcompat.widget.PopupMenu
 import com.techflow.materialcolor.MaterialColor
 import com.techflow.materialcolor.R
-import com.techflow.materialcolor.activity.HomeActivity
+import com.techflow.materialcolor.helpers.AnalyticsHelper
 import com.techflow.materialcolor.helpers.showPopup
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -103,7 +103,7 @@ object ColorUtils {
                         rgb.toString(),
                         "RGB code ${rgb.toString()}"
                     )
-                    HomeActivity.firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_COPY_RGB_CODE, null)
+                    AnalyticsHelper.getInstance()?.logEvent(MaterialColor.FIREBASE_EVENT_COPY_RGB_CODE, null)
                 }
                 R.id.action_to_hsv -> {
                     val hsv = ColorUtils.hexToHsv(hexCode)
@@ -112,7 +112,7 @@ object ColorUtils {
                         hsv.toString(),
                         "HSV code ${hsv.toString()}"
                     )
-                    HomeActivity.firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_COPY_HSV_CODE, null)
+                    AnalyticsHelper.getInstance()?.logEvent(MaterialColor.FIREBASE_EVENT_COPY_HSV_CODE, null)
                 }
                 else -> return@OnMenuItemClickListener false
             }

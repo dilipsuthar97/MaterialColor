@@ -16,7 +16,9 @@
             android:roundIcon="@mipmap/ic_launcher"
             android:supportsRtl="true"
             android:theme="@style/MaterialColor.Base.Light">
-        <activity android:name=".activity.LicensesActivity"></activity>
+        <activity
+                android:name=".activity.LicensesActivity"
+                android:screenOrientation="portrait" />
         <activity
                 android:name=".activity.AppIntroActivity"
                 android:screenOrientation="portrait" />
@@ -57,11 +59,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- Image crop activity -->
         <activity
                 android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
                 android:screenOrientation="portrait"
                 android:theme="@style/Base.Theme.AppCompat" />
 
+        <!-- Fonts meta-data -->
         <meta-data
                 android:name="preloaded_fonts"
                 android:resource="@array/preloaded_fonts" />

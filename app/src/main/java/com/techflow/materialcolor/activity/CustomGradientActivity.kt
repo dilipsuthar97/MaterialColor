@@ -11,6 +11,7 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.techflow.materialcolor.MaterialColor
 import com.techflow.materialcolor.R
 import com.techflow.materialcolor.databinding.ActivityCustomGradientBinding
+import com.techflow.materialcolor.helpers.AnalyticsHelper
 import com.techflow.materialcolor.utils.*
 import com.techflow.materialcolor.utils.ColorUtils.rgbToHex
 import it.sephiroth.android.library.xtooltip.ClosePolicy
@@ -98,7 +99,7 @@ class CustomGradientActivity : BaseActivity() {
          */
         binding.btnPrimaryColor.setOnClickListener {
             AnimUtils.bounceAnim(it)
-            HomeActivity.firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_COPY_HEX_CODE, null)
+            AnalyticsHelper.getInstance()?.logEvent(MaterialColor.FIREBASE_EVENT_COPY_HEX_CODE, null)
             Tools.copyToClipboard(
                 this,
                 rgbToHex(pRed, pGreen, pBlue),
@@ -116,7 +117,7 @@ class CustomGradientActivity : BaseActivity() {
 
         binding.btnSecondaryColor.setOnClickListener {
             AnimUtils.bounceAnim(it)
-            HomeActivity.firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_COPY_HEX_CODE, null)
+            AnalyticsHelper.getInstance()?.logEvent(MaterialColor.FIREBASE_EVENT_COPY_HEX_CODE, null)
             Tools.copyToClipboard(
                 this,
                 rgbToHex(sRed, sGreen, sBlue),

@@ -144,7 +144,7 @@ class ColorActivity : BaseActivity(), AdapterColor.OnItemClickListener {
      * @param position recycler view item position
      */
     override fun onItemClick(view: View, color: Color, position: Int) {
-        HomeActivity.firebaseAnalytics.logEvent(MaterialColor.FIREBASE_EVENT_COPY_HEX_CODE, null)
+        AnalyticsHelper.getInstance()?.logEvent(MaterialColor.FIREBASE_EVENT_COPY_HEX_CODE, null)
         Tools.copyToClipboard(this@ColorActivity, color.colorCode, "HEX code ${color.colorCode}")
     }
 
